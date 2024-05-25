@@ -30,6 +30,7 @@ void GameManager::Init(HWND hWnd)
 
 void GameManager::Update(float DeltaTime)
 {
+	
 }
 
 void GameManager::DoubleBuffer(float DeltaTime)
