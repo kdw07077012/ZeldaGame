@@ -24,13 +24,37 @@ void GameManager::Init(HWND hWnd)
 
 	BitMapManager::GetInstance()->Init(m_hDC);
 	WindowSize = BitMapManager::GetInstance()->GetWindowSize();
-	m_eCurGameState = GAMESTATE_MENU;
+	m_eCurGameState = GAMESTATE_TITLE;
+
+	//동적할당
+	m_Menu = new Menu;
+	m_Title = new Title;
+
+	//다운캐스팅
+	m_oMenu = dynamic_cast<Object*>(m_Menu);
+	m_oTitle = dynamic_cast<Object*>(m_Title);
 
 }
 
 void GameManager::Update(float DeltaTime)
 {
-	
+	switch (m_eCurGameState)
+	{
+	case GAMESTATE_TITLE:
+		m_Title->Update(DeltaTime);
+		if (m_Title->GetGameState())
+		{
+			m_eCurGameState = GAMESTATE_MENU;
+		}
+		break;
+	case GAMESTATE_MENU:
+		m_Menu->Update(DeltaTime);
+		break;
+	case GAMESTATE_START:
+		break;
+	default:
+		break;
+	}
 }
 
 void GameManager::DoubleBuffer(float DeltaTime)
@@ -43,7 +67,11 @@ void GameManager::DoubleBuffer(float DeltaTime)
 
 	switch (m_eCurGameState)
 	{
+	case GAMESTATE_TITLE:
+		m_Title->Draw(backDC, DeltaTime);
+		break;
 	case GAMESTATE_MENU:
+		m_Menu->Draw(backDC, DeltaTime);
 		break;
 	case GAMESTATE_START:
 		break;

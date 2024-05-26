@@ -135,6 +135,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Title.h" />
     <ClInclude Include="ZeldaGame.h" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +143,7 @@
     <ClCompile Include="BitMapManager.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Title.cpp" />
     <ClCompile Include="ZeldaGame.cpp" />
   </ItemGroup>
   <ItemGroup>

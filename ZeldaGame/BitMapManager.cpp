@@ -5,9 +5,10 @@ BitMapManager* BitMapManager::m_hThis = NULL;
 void BitMapManager::Init(HDC hdc)
 {
 
-    m_WindowBitMap.Init(hdc, (char*)"Image//Title_Screen//BackGround.bmp");
+    m_WindowBitMap.Init(hdc, (char*)"Image//Ending//BackGround.bmp");
+    m_TitleBitMap = ImageRoad(hdc,(char*)"Image//Title_Screen//%d.bmp", ImageType_Title);
+    m_MenuBitMap = ImageRoad(hdc, (char*)"Image//Menu//Menu%d.bmp", ImageType_Menu);
 
-    //m_PlayerBitMap->Init(hdc, (char*)"Image//Player//LEFT//Player_WALK.bmp");
 }
 
 
@@ -18,6 +19,9 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     int Size = 0;
     switch (type)
     {
+    case ImageType_Title:
+        Size = 1;
+        break;
     case ImageType_Interface:
         break;
     case ImageType_BackGround:
@@ -26,6 +30,7 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
         Size = 1;
         break;
     case ImageType_Menu:
+        Size = 1;
         break;
     case ImageType_InGame:
         break;
@@ -48,6 +53,9 @@ BitMap* BitMapManager::GetBitMap(ImageType Image) const
 {
     switch (Image)
     {
+    case ImageType_Title:
+        return m_TitleBitMap;
+        break;
     case ImageType_Interface:
         return m_InterfaceBitMap;
         break;

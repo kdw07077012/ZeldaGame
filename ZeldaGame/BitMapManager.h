@@ -1,8 +1,10 @@
 #pragma once
 #include "BitMap.h"
+
 #include <string>
 enum ImageType // 이미지 타입을 통해 불러옴
 {
+	ImageType_Title,
 	ImageType_Interface,
 	ImageType_BackGround,
 	ImageType_Player,
@@ -16,11 +18,12 @@ private:
 	static BitMapManager* m_hThis; // 싱글톤 사용 
 
 	BitMap m_WindowBitMap;
-	BitMap test;
-	BitMap* m_BackBitMap; // 배경 이미지
-	BitMap* m_PlayerBitMap; // 플레이어 이미지
-	BitMap* m_InterfaceBitMap; //인터페이스 UI 이미지
-	BitMap* m_MenuBitMap;	   // 메뉴 이미지
+
+	BitMap* m_TitleBitMap;		// 타이틀 이미지
+	BitMap* m_BackBitMap;		// 배경 이미지
+	BitMap* m_PlayerBitMap;	    // 플레이어 이미지
+	BitMap* m_InterfaceBitMap;  //인터페이스 UI 이미지
+	BitMap* m_MenuBitMap;	    // 메뉴 이미지
 	BitMap* m_InGameBitMap;		//인게임 이미지
 
 public:

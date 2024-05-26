@@ -1,5 +1,6 @@
 #pragma once
 #include "Menu.h"
+#include "Title.h"
 #include "BitMapManager.h"
 
 class GameManager
@@ -12,6 +13,13 @@ private:
 	GAMESTATE m_eCurGameState;
 	SIZE	WindowSize;
 	HBITMAP CreateDIBSectionRe(int width, int Height);
+
+	Object* m_oMenu;
+	Object* m_oTitle;
+
+	Menu* m_Menu;
+	Title* m_Title;
+
 public:
 	static GameManager* GetInstance()
 	{
