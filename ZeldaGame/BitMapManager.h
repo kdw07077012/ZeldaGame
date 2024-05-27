@@ -9,7 +9,8 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_BackGround,
 	ImageType_Player,
 	ImageType_Menu,
-	ImageType_InGame
+	ImageType_InGame,
+	ImageType_Button,
 };
 
 class BitMapManager
@@ -19,6 +20,7 @@ private:
 
 	BitMap m_WindowBitMap;
 
+	BitMap* m_ButtonBitMap;		// 버튼 이미지
 	BitMap* m_TitleBitMap;		// 타이틀 이미지
 	BitMap* m_BackBitMap;		// 배경 이미지
 	BitMap* m_PlayerBitMap;	    // 플레이어 이미지

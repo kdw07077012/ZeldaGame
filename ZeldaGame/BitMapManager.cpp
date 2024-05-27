@@ -8,9 +8,10 @@ void BitMapManager::Init(HDC hdc)
     m_WindowBitMap.Init(hdc, (char*)"Image//Ending//BackGround.bmp");
     m_TitleBitMap = ImageRoad(hdc,(char*)"Image//Title_Screen//%d.bmp", ImageType_Title);
     m_MenuBitMap = ImageRoad(hdc, (char*)"Image//Menu//Menu%d.bmp", ImageType_Menu);
+    m_ButtonBitMap = ImageRoad(hdc, (char*)"Image//Button//%d.bmp", ImageType_Button);
+    m_BackBitMap = ImageRoad(hdc, (char*)"Image//Map//Field//Field%d.bmp", ImageType_BackGround);
 
 }
-
 
 
 BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
@@ -19,12 +20,16 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     int Size = 0;
     switch (type)
     {
+    case ImageType_Button:
+        Size = 3;
+        break;
     case ImageType_Title:
         Size = 1;
         break;
     case ImageType_Interface:
         break;
     case ImageType_BackGround:
+        Size = 1;
         break;
     case ImageType_Player:
         Size = 1;
@@ -53,6 +58,9 @@ BitMap* BitMapManager::GetBitMap(ImageType Image) const
 {
     switch (Image)
     {
+    case ImageType_Button:
+        return m_ButtonBitMap;
+        break;
     case ImageType_Title:
         return m_TitleBitMap;
         break;

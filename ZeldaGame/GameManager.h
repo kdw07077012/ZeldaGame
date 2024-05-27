@@ -2,6 +2,15 @@
 #include "Menu.h"
 #include "Title.h"
 #include "BitMapManager.h"
+#include "BackGround.h"
+
+enum GAMESTATE
+{
+	GAMESTATE_TITLE,
+	GAMESTATE_MENU,
+	GAMESTATE_START,
+};
+
 
 class GameManager
 {
@@ -16,9 +25,12 @@ private:
 
 	Object* m_oMenu;
 	Object* m_oTitle;
+	Object* m_oBackGround;
 
+	BackGround* m_BackGround;
 	Menu* m_Menu;
 	Title* m_Title;
+	POINT ptMouse;
 
 public:
 	static GameManager* GetInstance()
@@ -35,5 +47,6 @@ public:
 	void Release(HWND hWnd);
 
 	SIZE GetWindowSize() const { return WindowSize; }
+	POINT GetMousePos() const { return ptMouse; }
 };
 

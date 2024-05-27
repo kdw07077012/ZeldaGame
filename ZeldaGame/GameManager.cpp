@@ -26,13 +26,17 @@ void GameManager::Init(HWND hWnd)
 	WindowSize = BitMapManager::GetInstance()->GetWindowSize();
 	m_eCurGameState = GAMESTATE_TITLE;
 
+	
+
 	//동적할당
 	m_Menu = new Menu;
 	m_Title = new Title;
+	m_BackGround = new BackGround;
 
 	//다운캐스팅
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
 	m_oTitle = dynamic_cast<Object*>(m_Title);
+	m_oBackGround = dynamic_cast<Object*>(m_BackGround);
 
 }
 
@@ -48,9 +52,31 @@ void GameManager::Update(float DeltaTime)
 		}
 		break;
 	case GAMESTATE_MENU:
-		m_Menu->Update(DeltaTime);
+		GetCursorPos(&ptMouse);
+		ScreenToClient(m_hWnd, &ptMouse);		
+		m_Menu->MenuSelect(ptMouse);
+
+		if (GetAsyncKeyState(VK_LBUTTON) & 0x8000 && m_Menu->m_bEnableButton)
+		{
+			//std::string integerVal = std::to_string(0);
+			// 메세지로 출력
+			//MessageBoxA(NULL, integerVal.c_str(), NULL, MB_OK);
+
+			switch (m_Menu->m_currSelectMenu)
+			{
+			case SelectMenu_START:
+				m_eCurGameState = GAMESTATE_START;
+				break;
+			case SelectMenu_EDIT:
+				break;
+			case SelectMenu_QUIT:
+				break;
+			}
+		}
+
 		break;
 	case GAMESTATE_START:
+		m_BackGround->Update(DeltaTime);
 		break;
 	default:
 		break;
@@ -74,6 +100,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		m_Menu->Draw(backDC, DeltaTime);
 		break;
 	case GAMESTATE_START:
+		m_BackGround->Draw(backDC, DeltaTime);
 		break;
 	default:
 		break;

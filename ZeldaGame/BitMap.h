@@ -11,6 +11,9 @@ public:
 	SIZE GetSize() const { return m_Size; }  
 	void Init(HDC hdc, char* FileName);					// 파일불러와서 생성
 	void Draw(HDC backDC, int x, int y, bool isAlpha); // 비트맵 Draw
+	// 자르고자하는 비트맵의 위치, 크기 
+	void CutDraw(HDC backDC, int x, int y, int CposX, int CposY, SIZE CSize); 
+	void BackGroundDraw(HDC backDC, int x, int y);
 
 	~BitMap(); // 비트맵 메모리 해제
 };

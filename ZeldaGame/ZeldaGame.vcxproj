@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BackGround.h" />
     <ClInclude Include="BitMap.h" />
     <ClInclude Include="BitMapManager.h" />
     <ClInclude Include="framework.h" />
@@ -139,6 +140,7 @@
     <ClInclude Include="ZeldaGame.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="BitMapManager.cpp" />
     <ClCompile Include="GameManager.cpp" />

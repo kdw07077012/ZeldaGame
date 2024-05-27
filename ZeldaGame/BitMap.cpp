@@ -27,6 +27,16 @@ void BitMap::Draw(HDC backDC, int x, int y, bool isAlpha)
 	}
 }
 
+void BitMap::CutDraw(HDC backDC, int x, int y, int CposX, int CposY, SIZE CSize)
+{
+	TransparentBlt(backDC, x, y, m_Size.cx, m_Size.cy, m_memdc, CposX, CposY, CSize.cx, CSize.cy, RGB(244, 0, 244));
+}
+
+void BitMap::BackGroundDraw(HDC backDC, int x, int y)
+{
+	BitBlt(backDC, 0, 0, m_Size.cx, m_Size.cy, m_memdc, x, y, SRCCOPY);
+}
+
 BitMap::~BitMap()
 {
 	DeleteObject(m_Bitmap);
