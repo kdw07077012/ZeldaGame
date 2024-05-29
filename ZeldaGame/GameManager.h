@@ -2,7 +2,7 @@
 #include "Menu.h"
 #include "Title.h"
 #include "BitMapManager.h"
-#include "BackGround.h"
+#include "Field.h"
 
 enum GAMESTATE
 {
@@ -26,10 +26,12 @@ private:
 	Object* m_oMenu;
 	Object* m_oTitle;
 	Object* m_oBackGround;
+	Object* m_oPlayer;
 
 	BackGround* m_BackGround;
 	Menu* m_Menu;
 	Title* m_Title;
+	Player* m_Player;
 	POINT ptMouse;
 
 public:

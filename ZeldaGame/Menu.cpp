@@ -8,12 +8,13 @@ Menu::Menu()
 
 	for (int i = 0; i < SelectMenu_End; i++)
 	{
-		buttonPos[i].posX = Default_ButtonX;
-		buttonPos[i].PosY = Default_ButtonY * (i + 1);
+		buttonPos[i].X = Default_ButtonX;
+		buttonPos[i].Y = Default_ButtonY * (i + 1);
 	}	
 
 	m_SButtonSize = m_SelectMenuBitmap[0].GetSize();
 	m_SButtonSize.cy /= 2;
+	Button_sizMult = 2.0f;
 }
 
 Menu::~Menu()
@@ -31,33 +32,33 @@ void Menu::Draw(HDC backDC, float DeltaTime)
 	{
 	case SelectMenu_START:
 		if (!m_bEnableButton) {
-			m_SelectMenuBitmap[SelectMenu_START].CutDraw(backDC, buttonPos[SelectMenu_START].posX, buttonPos[SelectMenu_START].PosY, 0, 0, m_SButtonSize);
+			m_SelectMenuBitmap[SelectMenu_START].CutDraw(backDC, buttonPos[SelectMenu_START].X, buttonPos[SelectMenu_START].Y, 0, 0, m_SButtonSize, Button_sizMult);
 		}
-		m_SelectMenuBitmap[SelectMenu_EDIT].CutDraw(backDC, buttonPos[SelectMenu_EDIT].posX, buttonPos[SelectMenu_EDIT].PosY, 0, 0, m_SButtonSize);
-		m_SelectMenuBitmap[SelectMenu_QUIT].CutDraw(backDC, buttonPos[SelectMenu_QUIT].posX, buttonPos[SelectMenu_QUIT].PosY, 0, 0, m_SButtonSize);
+		m_SelectMenuBitmap[SelectMenu_EDIT].CutDraw(backDC, buttonPos[SelectMenu_EDIT].X, buttonPos[SelectMenu_EDIT].Y, 0, 0, m_SButtonSize, Button_sizMult);
+		m_SelectMenuBitmap[SelectMenu_QUIT].CutDraw(backDC, buttonPos[SelectMenu_QUIT].X, buttonPos[SelectMenu_QUIT].Y, 0, 0, m_SButtonSize, Button_sizMult);
 		break;
 	case SelectMenu_EDIT:
 		if (!m_bEnableButton) {
-			m_SelectMenuBitmap[SelectMenu_EDIT].CutDraw(backDC, buttonPos[SelectMenu_EDIT].posX, buttonPos[SelectMenu_EDIT].PosY, 0, 0, m_SButtonSize);
+			m_SelectMenuBitmap[SelectMenu_EDIT].CutDraw(backDC, buttonPos[SelectMenu_EDIT].X, buttonPos[SelectMenu_EDIT].Y, 0, 0, m_SButtonSize, Button_sizMult);
 		}
 
-		m_SelectMenuBitmap[SelectMenu_START].CutDraw(backDC, buttonPos[SelectMenu_START].posX, buttonPos[SelectMenu_START].PosY, 0, 0, m_SButtonSize);
-		m_SelectMenuBitmap[SelectMenu_QUIT].CutDraw(backDC, buttonPos[SelectMenu_QUIT].posX, buttonPos[SelectMenu_QUIT].PosY, 0, 0, m_SButtonSize);
+		m_SelectMenuBitmap[SelectMenu_START].CutDraw(backDC, buttonPos[SelectMenu_START].X, buttonPos[SelectMenu_START].Y, 0, 0, m_SButtonSize, Button_sizMult);
+		m_SelectMenuBitmap[SelectMenu_QUIT].CutDraw(backDC, buttonPos[SelectMenu_QUIT].X, buttonPos[SelectMenu_QUIT].Y, 0, 0, m_SButtonSize, Button_sizMult);
 		break;
 	case SelectMenu_QUIT:
 		if (!m_bEnableButton) {
-			m_SelectMenuBitmap[SelectMenu_QUIT].CutDraw(backDC, buttonPos[SelectMenu_QUIT].posX, buttonPos[SelectMenu_QUIT].PosY, 0, 0, m_SButtonSize);
+			m_SelectMenuBitmap[SelectMenu_QUIT].CutDraw(backDC, buttonPos[SelectMenu_QUIT].X, buttonPos[SelectMenu_QUIT].Y, 0, 0, m_SButtonSize, Button_sizMult);
 		}
 
-		m_SelectMenuBitmap[SelectMenu_START].CutDraw(backDC, buttonPos[SelectMenu_START].posX, buttonPos[SelectMenu_START].PosY, 0, 0, m_SButtonSize);
-		m_SelectMenuBitmap[SelectMenu_EDIT].CutDraw(backDC, buttonPos[SelectMenu_EDIT].posX, buttonPos[SelectMenu_EDIT].PosY, 0, 0, m_SButtonSize);
+		m_SelectMenuBitmap[SelectMenu_START].CutDraw(backDC, buttonPos[SelectMenu_START].X, buttonPos[SelectMenu_START].Y, 0, 0, m_SButtonSize, Button_sizMult);
+		m_SelectMenuBitmap[SelectMenu_EDIT].CutDraw(backDC, buttonPos[SelectMenu_EDIT].X, buttonPos[SelectMenu_EDIT].Y, 0, 0, m_SButtonSize, Button_sizMult);
 		break;
 	default:
 		break;
 	}
 
 	if (m_bEnableButton) // 버튼이 활성화
-		m_SelectMenuBitmap[m_currSelectMenu].CutDraw(backDC, buttonPos[m_currSelectMenu].posX, buttonPos[m_currSelectMenu].PosY, 0, 25, m_SButtonSize);
+		m_SelectMenuBitmap[m_currSelectMenu].CutDraw(backDC, buttonPos[m_currSelectMenu].X, buttonPos[m_currSelectMenu].Y, 0, 25, m_SButtonSize, Button_sizMult);
 	
 
 
@@ -70,9 +71,7 @@ void Menu::Update(float DeltaTime)
 {
 	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000 && m_bEnableButton)
 	{
-		//std::string integerVal = std::to_string(0);
-		// 메세지로 출력
-		//MessageBoxA(NULL, integerVal.c_str(), NULL, MB_OK);
+		
 
 		switch (m_currSelectMenu)
 		{
@@ -88,22 +87,25 @@ void Menu::Update(float DeltaTime)
 	}
 }
 
-void Menu::MenuSelect(POINT mousePos)
+void Menu::MenuSelect(POINT mousePos) //마우스 커서가 버튼 위에 올라와있는지 체크
 {
+	//std::string integerVal = std::to_string(m_posX.x);
+	//메세지로 출력
+	//MessageBoxA(NULL, integerVal.c_str(), NULL, MB_OK);
 
-	if (mousePos.x > Default_ButtonX && m_SelectMenuBitmap[0].GetSize().cx + Default_ButtonX > mousePos.x)
+	if (mousePos.x > Default_ButtonX && m_SelectMenuBitmap[0].GetSize().cx * Button_sizMult + Default_ButtonX  > mousePos.x)
 	{
-		if (mousePos.y > buttonPos[SelectMenu_START].PosY && m_SelectMenuBitmap[0].GetSize().cy + buttonPos[SelectMenu_START].PosY > mousePos.y)
+		if (mousePos.y > buttonPos[SelectMenu_START].Y && m_SelectMenuBitmap[0].GetSize().cy * Button_sizMult + buttonPos[SelectMenu_START].Y > mousePos.y)
 		{
 			m_bEnableButton = true;
 			m_currSelectMenu = SelectMenu_START;
 		}
-		else if (mousePos.y > buttonPos[SelectMenu_EDIT].PosY && m_SelectMenuBitmap[0].GetSize().cy + buttonPos[SelectMenu_EDIT].PosY > mousePos.y)
+		else if (mousePos.y > buttonPos[SelectMenu_EDIT].Y && m_SelectMenuBitmap[0].GetSize().cy * Button_sizMult + buttonPos[SelectMenu_EDIT].Y > mousePos.y)
 		{
 			m_bEnableButton = true;
 			m_currSelectMenu = SelectMenu_EDIT;
 		}
-		else if (mousePos.y > buttonPos[SelectMenu_QUIT].PosY && m_SelectMenuBitmap[0].GetSize().cy + buttonPos[SelectMenu_QUIT].PosY > mousePos.y)
+		else if (mousePos.y > buttonPos[SelectMenu_QUIT].Y && m_SelectMenuBitmap[0].GetSize().cy * Button_sizMult + buttonPos[SelectMenu_QUIT].Y > mousePos.y)
 		{
 			m_bEnableButton = true;
 			m_currSelectMenu = SelectMenu_QUIT;

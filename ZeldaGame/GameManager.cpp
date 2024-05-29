@@ -20,23 +20,24 @@ void GameManager::Init(HWND hWnd)
 {
 	m_hWnd = hWnd;
 	m_hDC = GetDC(hWnd);
-	backDC = CreateCompatibleDC(m_hDC);
 
+	backDC = CreateCompatibleDC(m_hDC);
 	BitMapManager::GetInstance()->Init(m_hDC);
 	WindowSize = BitMapManager::GetInstance()->GetWindowSize();
 	m_eCurGameState = GAMESTATE_TITLE;
-
-	
+	Camera::GetInstance()->Init(0,0);
 
 	//동적할당
 	m_Menu = new Menu;
 	m_Title = new Title;
 	m_BackGround = new BackGround;
+	m_Player = new Player;
 
 	//다운캐스팅
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
 	m_oTitle = dynamic_cast<Object*>(m_Title);
 	m_oBackGround = dynamic_cast<Object*>(m_BackGround);
+	m_oPlayer = dynamic_cast<Object*>(m_Player);
 
 }
 
@@ -76,6 +77,9 @@ void GameManager::Update(float DeltaTime)
 
 		break;
 	case GAMESTATE_START:
+		Camera::GetInstance()->Update();
+		m_Player->PlayerInput(DeltaTime);
+		m_Player->Update(DeltaTime);
 		m_BackGround->Update(DeltaTime);
 		break;
 	default:
@@ -89,6 +93,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 	GetWindowRect(m_hWnd, &windowRect); // init 함수에서 호출.
 
 	HBITMAP backBitmap = CreateDIBSectionRe(windowRect.right - windowRect.left, windowRect.bottom - windowRect.top);
+
 	HBITMAP oldBack = (HBITMAP)SelectObject(backDC, backBitmap);
 
 	switch (m_eCurGameState)
@@ -101,14 +106,19 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		break;
 	case GAMESTATE_START:
 		m_BackGround->Draw(backDC, DeltaTime);
+		m_Player->Draw(backDC, DeltaTime);	
 		break;
 	default:
 		break;
 	}
 
+
+
 	BitBlt(m_hDC, 0, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, backDC, 0, 0, SRCCOPY);
+	
 	SelectObject(backDC, oldBack);
 	DeleteObject(backBitmap);
+
 }
 
 void GameManager::Release(HWND hWnd)

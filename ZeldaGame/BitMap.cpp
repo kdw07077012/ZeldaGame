@@ -27,15 +27,24 @@ void BitMap::Draw(HDC backDC, int x, int y, bool isAlpha)
 	}
 }
 
-void BitMap::CutDraw(HDC backDC, int x, int y, int CposX, int CposY, SIZE CSize)
+
+void BitMap::CutDraw(HDC backDC, int x, int y, int CposX, int CposY, SIZE CSize, float fDrainage)
 {
-	TransparentBlt(backDC, x, y, m_Size.cx, m_Size.cy, m_memdc, CposX, CposY, CSize.cx, CSize.cy, RGB(244, 0, 244));
+	TransparentBlt(backDC, x, y, CSize.cx * fDrainage, CSize.cy * fDrainage, m_memdc, CposX, CposY, CSize.cx, CSize.cy, RGB(244, 0, 244));
 }
+
+
 
 void BitMap::BackGroundDraw(HDC backDC, int x, int y)
 {
-	BitBlt(backDC, 0, 0, m_Size.cx, m_Size.cy, m_memdc, x, y, SRCCOPY);
+	StretchBlt(backDC, 0, 0, m_Size.cx * 1.0f, m_Size.cy * 1.f, m_memdc, x, y, m_Size.cx, m_Size.cy, SRCCOPY);
 }
+
+void BitMap::AnimationUpdate(HDC backDC, int frame, int x, int y, SIZE size, float fDrainage)
+{
+	CutDraw(backDC, x, y, size.cx * frame, 0, size, fDrainage);
+}
+
 
 BitMap::~BitMap()
 {

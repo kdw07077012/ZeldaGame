@@ -127,24 +127,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BitMap.h" />
     <ClInclude Include="BitMapManager.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Field.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="ZeldaGame.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="BitMapManager.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="ZeldaGame.cpp" />
   </ItemGroup>

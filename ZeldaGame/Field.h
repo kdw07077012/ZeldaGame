@@ -1,15 +1,13 @@
 #pragma once
 #include "Object.h"
-#include "Camera.h"
-class BackGround : public Object
+#include "BackGround.h"
+#include "Player.h"
+
+class Field : public Object
 {
-private:
-	Position tPos;
-	Position pos;
-	float m_fMoveDeltaTime;
 public:
-	BackGround();
-	~BackGround();
+	Field();
+	~Field();
 	virtual void Draw(HDC backDC, float DeltaTime) override;
 	void Update(float DeltaTime);
 	virtual void Reset() override;

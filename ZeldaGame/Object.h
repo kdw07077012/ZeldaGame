@@ -1,6 +1,15 @@
 #pragma once
 #include "BitMapManager.h"
 
+
+
+struct Position
+{
+	int X;
+	int Y;
+};
+
+
 class Object // 추상 클래스
 {
 protected:
