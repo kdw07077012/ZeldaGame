@@ -10,12 +10,17 @@ public:
 	Camera();
 	~Camera();
 
+	float fTime;
+	bool bMapEndX;
+	bool bMapEndY;
 	void Init(int x, int y);
-	void Update();
-
+	void Update(float DeltaTime);
+	
+	
 	int GetX() const { return m_posX; }
 	int GetY() const { return m_posY; }
-
+	bool GetMapEndX() const { return bMapEndX; }
+	bool GetMapEndY() const { return bMapEndY; }
 	static Camera* GetInstance()
 	{
 		if (NULL == m_hThis)

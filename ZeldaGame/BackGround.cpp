@@ -13,22 +13,12 @@ BackGround::BackGround()
 
 BackGround::~BackGround()
 {
+
 }
 
 void BackGround::Draw(HDC backDC, float DeltaTime)
 {
-	int screenPosX =  pos.X + Camera::GetInstance()->GetX();
-	int screenPosY =  pos.Y + Camera::GetInstance()->GetY();
-	
-	//m_fMoveDeltaTime += DeltaTime;
-	//
-	//if (m_fMoveDeltaTime > 0.05f)
-	//{
-	//	m_fMoveDeltaTime = 0.0f;
-	//}
-
-	m_BitMap[0].BackGroundDraw(backDC, screenPosX, screenPosY);
-
+	m_BitMap[0].BackGroundDraw(backDC, Camera::GetInstance()->GetX(), Camera::GetInstance()->GetY());
 }
 
 void BackGround::Update(float DeltaTime)

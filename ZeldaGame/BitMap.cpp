@@ -37,7 +37,7 @@ void BitMap::CutDraw(HDC backDC, int x, int y, int CposX, int CposY, SIZE CSize,
 
 void BitMap::BackGroundDraw(HDC backDC, int x, int y)
 {
-	StretchBlt(backDC, 0, 0, m_Size.cx * 1.0f, m_Size.cy * 1.f, m_memdc, x, y, m_Size.cx, m_Size.cy, SRCCOPY);
+	StretchBlt(backDC, 0, 0, m_Size.cx, m_Size.cy, m_memdc, x, y, m_Size.cx, m_Size.cy, SRCCOPY);
 }
 
 void BitMap::AnimationUpdate(HDC backDC, int frame, int x, int y, SIZE size, float fDrainage)

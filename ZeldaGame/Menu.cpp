@@ -15,6 +15,7 @@ Menu::Menu()
 	m_SButtonSize = m_SelectMenuBitmap[0].GetSize();
 	m_SButtonSize.cy /= 2;
 	Button_sizMult = 2.0f;
+	DrawCount = 0;
 }
 
 Menu::~Menu()
@@ -23,7 +24,22 @@ Menu::~Menu()
 
 void Menu::Draw(HDC backDC, float DeltaTime)
 {
-	m_BitMap[0].Draw(backDC, 0, 0, 0); // 바탕 드로우
+
+	fDrawDeltaTime += DeltaTime;
+	
+
+	if (fDrawDeltaTime > 0.1f)
+	{
+		DrawCount++;
+		if (DrawCount > 3)
+			DrawCount = 0;
+		
+		fDrawDeltaTime = 0.0f;
+	}
+
+
+	m_BitMap[0].Draw(backDC, -720 * DrawCount, 0, 0); // 바탕 드로우
+	
 
 	
 

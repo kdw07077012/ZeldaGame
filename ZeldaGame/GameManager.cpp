@@ -32,6 +32,7 @@ void GameManager::Init(HWND hWnd)
 	m_Title = new Title;
 	m_BackGround = new BackGround;
 	m_Player = new Player;
+	m_Field = new Field;
 
 	//다운캐스팅
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
@@ -77,10 +78,12 @@ void GameManager::Update(float DeltaTime)
 
 		break;
 	case GAMESTATE_START:
-		Camera::GetInstance()->Update();
+		Camera::GetInstance()->Update(DeltaTime);
 		m_Player->PlayerInput(DeltaTime);
 		m_Player->Update(DeltaTime);
 		m_BackGround->Update(DeltaTime);
+		m_Field->Collision(m_Player->player_rect);
+		
 		break;
 	default:
 		break;
@@ -107,6 +110,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 	case GAMESTATE_START:
 		m_BackGround->Draw(backDC, DeltaTime);
 		m_Player->Draw(backDC, DeltaTime);	
+		m_Field->Draw(backDC, DeltaTime);
 		break;
 	default:
 		break;

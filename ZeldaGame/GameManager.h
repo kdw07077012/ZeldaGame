@@ -28,6 +28,7 @@ private:
 	Object* m_oBackGround;
 	Object* m_oPlayer;
 
+	Field* m_Field;
 	BackGround* m_BackGround;
 	Menu* m_Menu;
 	Title* m_Title;

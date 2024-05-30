@@ -7,6 +7,8 @@ private:
 	Position tPos;
 	Position pos;
 	float m_fMoveDeltaTime;
+	int screenPosX;
+	int screenPosY;
 public:
 	BackGround();
 	~BackGround();

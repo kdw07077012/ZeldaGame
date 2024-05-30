@@ -4,14 +4,15 @@ Player::Player()
 {
 	m_playerDirBitmap = BitMapManager::GetInstance()->GetPlayerDirBitmap();
 
-	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
-	msize.cx /= 2;
-	msize.cy /= 2;
-
-	m_pos.X = msize.cx - 50;
-	m_pos.Y = msize.cy;
+	msize = BitMapManager::GetInstance()->GetWindowSize();
+	m_pos.X = 0;
+	m_pos.Y = 0;
 	AnimationCount = 0;
 	dir = DOWN;
+	MaxAnimCount = 10;
+	
+	
+
 }
 
 Player::~Player()
@@ -27,32 +28,46 @@ void Player::PlayerInput(float DeltaTime)
 
 	if (GetAsyncKeyState(0x57) && 0x8000) //W
 	{
-		m_pos.Y -= 2;
 		m_bmoveable = true;
 		dir = UP;
+		m_pos.Y -= 500 * DeltaTime;
+			
 	}
 
 
 	if (GetAsyncKeyState(0x53) && 0x8000) // S
 	{
-		m_pos.Y += 2;
 		m_bmoveable = true;
 		dir = DOWN;
+		m_pos.Y += 500 * DeltaTime;
+
+			
 	}
 
 	if (GetAsyncKeyState(0x41) && 0x8000) // A
 	{
-		m_pos.X -= 2;
 		m_bmoveable = true;
 		dir = LEFT;
+
+		m_pos.X -= 500 * DeltaTime;
+
+
+		
+			
 	}
 
 	if (GetAsyncKeyState(0x44) && 0x8000) // D
 	{
 
-		m_pos.X += 2;
 		m_bmoveable = true;
 		dir = RIGHT;
+
+		
+
+
+
+		m_pos.X += 500 * DeltaTime;
+			
 	}
 	
 }
@@ -60,47 +75,74 @@ void Player::PlayerInput(float DeltaTime)
 
 void Player::Draw(HDC backDC, float DeltaTime)
 {
-	//m_playerDirBitmap = BitMapManager::GetInstance()->GetPlayerDirBitmap();
-	
+	Rectangle(backDC, (((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X,
+		(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y,
+		(((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X + size.cx * 2,
+		(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y + size.cy * 2);
 
-	int screenPosX = (m_pos.X + Camera::GetInstance()->GetX() * 0.01f);
-	int screenPosY = (m_pos.Y + Camera::GetInstance()->GetY() * 0.01f);
 
-	
-	
-
+	player_rect = { (((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X,
+		(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y,
+		(((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X + size.cx * 2,
+		(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y + size.cy * 2 };
 
 	switch (dir)
 	{
 	case LEFT:
 		if (m_bmoveable)
-			m_playerDirBitmap.Left_Bitmap[PlayerState_WALK].AnimationUpdate(backDC, AnimationCount, m_pos.X, m_pos.Y, size, 1.5f);
+			m_playerDirBitmap.Left_Bitmap[PlayerState_WALK].AnimationUpdate(backDC, AnimationCount,
+				(((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X,
+				(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y,
+				size, 2.0f);
 		else
-			m_playerDirBitmap.Left_Bitmap[PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount, m_pos.X, m_pos.Y, size, 1.5f);
+			m_playerDirBitmap.Left_Bitmap[PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount,
+				(((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X,
+				(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y,
+				size, 2.0f);
 		break;
 	case RIGHT:
 		if (m_bmoveable)
-			m_playerDirBitmap.Right_Bitmap[PlayerState_WALK].AnimationUpdate(backDC, AnimationCount, m_pos.X, m_pos.Y, size, 1.5f);
+			m_playerDirBitmap.Right_Bitmap[PlayerState_WALK].AnimationUpdate(backDC, AnimationCount,
+				(((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X,
+				(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y,
+				size, 2.0f);
 		else
-			m_playerDirBitmap.Right_Bitmap[PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount, m_pos.X, m_pos.Y, size, 1.5f);
+			m_playerDirBitmap.Right_Bitmap[PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount,
+				(((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X,
+				(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y,
+				size, 2.0f);
 		break;
 	case UP:
 		if (m_bmoveable)
-			m_playerDirBitmap.Up_Bitmap[PlayerState_WALK].AnimationUpdate(backDC, AnimationCount, m_pos.X, m_pos.Y, size, 1.5f);
+			m_playerDirBitmap.Up_Bitmap[PlayerState_WALK].AnimationUpdate(backDC, AnimationCount,
+				(((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X,
+				(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y,
+				size, 2.0f);
 		else
-			m_playerDirBitmap.Up_Bitmap[PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount, m_pos.X, m_pos.Y, size, 1.5f);
+			m_playerDirBitmap.Up_Bitmap[PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount,
+				(((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X,
+				(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y,
+				size, 2.0f);
 		break;
 	case DOWN:
 		if (m_bmoveable)
-			m_playerDirBitmap.Down_Bitmap[PlayerState_WALK].AnimationUpdate(backDC, AnimationCount, m_pos.X, m_pos.Y, size, 1.5f);
+			m_playerDirBitmap.Down_Bitmap[PlayerState_WALK].AnimationUpdate(backDC, AnimationCount,
+				(((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X,
+				(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y,
+				size, 2.0f);
 		else
-			m_playerDirBitmap.Down_Bitmap[PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount, m_pos.X, m_pos.Y, size, 1.5f);
+			m_playerDirBitmap.Down_Bitmap[PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount,
+				(((msize.cx / 2) + (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X,
+				(((msize.cy / 2) + (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y,
+				size, 2.0f);
 		break;
 	default:
 		break;
 	}
 
-
+	//디버깅 드로우
+	//std::string str = "Obstacle : " + std::to_string(Camera::GetInstance()->GetX());
+	//TextOutA(backDC, 100, 0, str.c_str(), str.length());
 	
 	
 	
@@ -109,28 +151,20 @@ void Player::Draw(HDC backDC, float DeltaTime)
 void Player::Update(float DeltaTime)
 {
 	
-
-	if (m_bmoveable)
-	{
-		size.cx = 29;
-		MaxAnimCount = 10;
-	}
-	else
-	{
-		size.cx = 30;
-		MaxAnimCount = 10;
-	}
-
+	size.cx = 30;
 	size.cy = 25;
-
+	
 
 	fMoveDeltaTime += DeltaTime;
 
-	if (fMoveDeltaTime > 0.1f)
+	if (fMoveDeltaTime > 0.04f)
 	{
-		AnimationCount++;
-		if (AnimationCount >= MaxAnimCount)
+		
+		if (AnimationCount + 1 >= MaxAnimCount)
 			AnimationCount = 1;
+		else
+			AnimationCount++;
+
 		fMoveDeltaTime = 0.0f;
 	}
 }
@@ -138,3 +172,4 @@ void Player::Update(float DeltaTime)
 void Player::Reset()
 {
 }
+

@@ -32,7 +32,8 @@ private:
 public:
 	Player();
 	~Player();
-
+	
+	RECT player_rect;
 	SIZE size;
 	int MaxAnimCount;
 	Direction dir;
@@ -44,8 +45,12 @@ public:
 	virtual void Draw(HDC backDC, float DeltaTime) override;
 	void Update(float DeltaTime);
 	virtual void Reset() override;
+	int screenPosX;
+	int screenPosY;
+	SIZE msize;
 
 	Position GetPlayerPos() const { return m_pos; }
+	
 
 };
 

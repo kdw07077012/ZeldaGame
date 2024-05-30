@@ -14,33 +14,80 @@ void Camera::Init(int x, int y)
 {
 	m_posX = x;
 	m_posY = y;
+	fTime = 0.0f;
+	bMapEndX = false;
 }
 
-void Camera::Update()
+void Camera::Update(float DeltaTime)
 {
 	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
+	fTime += DeltaTime;
 
-
-	if (GetAsyncKeyState(0x57) & 0x8000 && m_posY > 0) //W
+	if (fTime > 0.01f)
 	{
-		m_posY -= 5;
+		if (GetAsyncKeyState(0x57) & 0x8000) //W
+		{
+			if(m_posY < 0)
+				bMapEndY = true;
+			else
+			{
+				bMapEndY = false;
+				m_posY -= 500 * DeltaTime;
+			}
+
+
+			
+		}
+
+		if (GetAsyncKeyState(0x53) & 0x8000) // S
+		{
+			
+
+			if (m_posY > 1024 - msize.cy)
+				bMapEndY = true;
+			else
+			{
+				bMapEndY = false;
+				m_posY += 500 * DeltaTime;
+			}
+
+			
+		}
+
+		if (GetAsyncKeyState(0x41) & 0x8000) // A
+		{
+			if (m_posX < 0)
+				bMapEndX = true;
+			else
+			{
+				bMapEndX = false;
+				m_posX -= 500 * DeltaTime;
+			}
+
+			
+		}
+
+		if (GetAsyncKeyState(0x44) & 0x8000 ) // D
+		{
+			
+
+			if (m_posX >= 1500 - msize.cx)
+				bMapEndX = true;
+			else
+			{
+				bMapEndX = false;
+				m_posX += 500 * DeltaTime;
+			}
+			
+				
+			
+			
+		}
+
+		fTime = 0.0f;
 	}
 
-	if (GetAsyncKeyState(0x53) & 0x8000 && m_posY < 1024 - msize.cy) // S
-	{
-		m_posY += 5;
-	}
-
-	if (GetAsyncKeyState(0x41) & 0x8000 && m_posX > 0) // A
-	{
-		m_posX -= 5;
-	}
-
-	if (GetAsyncKeyState(0x44) & 0x8000 && m_posX < 1500 - msize.cx) // D
-	{
-
-		m_posX += 5;
-	}
+	
 
 	//std::string integerVal = std::to_string(m_posY);
 	////메세지로 출력

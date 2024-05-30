@@ -1,7 +1,7 @@
 #pragma once
 #include "Object.h"
 
-#define Default_ButtonX 200
+#define Default_ButtonX 100
 #define Default_ButtonY 100
 
 enum SelectMenu
@@ -26,6 +26,8 @@ public:
 	bool m_bEnableButton = false;        // 버튼이 활성화 되있는지 
 	float Button_sizMult; // 버튼 크기 배수
 
+	int DrawCount;
+	float fDrawDeltaTime;
 	virtual void Draw(HDC backDC, float DeltaTime) override;
 	void Update(float DeltaTime);
 	void MenuSelect(POINT mousePos);
