@@ -3,6 +3,7 @@
 #include "Title.h"
 #include "BitMapManager.h"
 #include "Field.h"
+#include "HUD.h"
 
 enum GAMESTATE
 {
@@ -28,6 +29,8 @@ private:
 	Object* m_oBackGround;
 	Object* m_oPlayer;
 
+
+	HUD* m_HUD;
 	Field* m_Field;
 	BackGround* m_BackGround;
 	Menu* m_Menu;
@@ -48,7 +51,9 @@ public:
 	void Update(float DeltaTime);
 	void DoubleBuffer(float DeltaTime);
 	void Release(HWND hWnd);
+	bool FieldCollision(RECT rect);
 
+	Player* GetPlayer() { return m_Player; }
 	SIZE GetWindowSize() const { return WindowSize; }
 	POINT GetMousePos() const { return ptMouse; }
 };

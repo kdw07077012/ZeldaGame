@@ -33,6 +33,7 @@ void GameManager::Init(HWND hWnd)
 	m_BackGround = new BackGround;
 	m_Player = new Player;
 	m_Field = new Field;
+	m_HUD = new HUD;
 
 	//다운캐스팅
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
@@ -78,11 +79,14 @@ void GameManager::Update(float DeltaTime)
 
 		break;
 	case GAMESTATE_START:
-		Camera::GetInstance()->Update(DeltaTime);
-		m_Player->PlayerInput(DeltaTime);
+
+		if (m_Player->PlayerInput(DeltaTime))
+		{
+			Camera::GetInstance()->Update(DeltaTime);
+		}
+		
 		m_Player->Update(DeltaTime);
 		m_BackGround->Update(DeltaTime);
-		m_Field->Collision(m_Player->player_rect);
 		
 		break;
 	default:
@@ -111,6 +115,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		m_BackGround->Draw(backDC, DeltaTime);
 		m_Player->Draw(backDC, DeltaTime);	
 		m_Field->Draw(backDC, DeltaTime);
+		m_HUD->Draw(backDC, DeltaTime);
 		break;
 	default:
 		break;
@@ -129,4 +134,11 @@ void GameManager::Release(HWND hWnd)
 {
 	DeleteObject(backDC);
 	ReleaseDC(hWnd, m_hDC);
+}
+
+bool GameManager::FieldCollision(RECT rect)
+{
+	if(m_Field->Collision(rect))
+		return true;
+	return false;
 }

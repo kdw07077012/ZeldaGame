@@ -3,6 +3,9 @@
 #include "BackGround.h"
 #include "Player.h"
 #include "Camera.h"
+#include "Obstacle.h"
+
+//#define DEBUG
 
 class Field : public Object
 {
@@ -13,6 +16,9 @@ public:
 	void Update(float DeltaTime);
 	virtual void Reset() override;
 	bool Collision(RECT rect);
-	RECT test_rect;
+	int obstacleSize;
+	int WaterobstacleSize;
+	Obstacle *obstacles;
+	Obstacle *Waterobstacles;
 };
 

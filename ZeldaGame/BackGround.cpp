@@ -8,7 +8,7 @@ BackGround::BackGround()
 	pos.X = 0;
 	pos.Y = 0;
 	m_fMoveDeltaTime = 0.0f;
-	Camera::GetInstance()->Init(100, 100);
+	Camera::GetInstance()->Init(613, 370); // 613 370
 }
 
 BackGround::~BackGround()

@@ -11,6 +11,7 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_Menu,
 	ImageType_InGame,
 	ImageType_Button,
+	ImageType_HUD,
 };
 
 struct PlayerDirBitmap // 플레이어 방향별 애니메이션을 담을 구조체
@@ -35,6 +36,7 @@ private:
 	BitMap* m_InterfaceBitMap;  //인터페이스 UI 이미지
 	BitMap* m_MenuBitMap;	    // 메뉴 이미지
 	BitMap* m_InGameBitMap;		//인게임 이미지
+	BitMap* m_PlayerHudBitMap;  // HUD 이미지  
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지
 

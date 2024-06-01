@@ -27,12 +27,16 @@ enum Direction
 class Player : public Object
 {
 private:
-	PlayerDirBitmap m_playerDirBitmap;
+	BitMap *m_playerDirBitmap[4];
 	
 public:
 	Player();
 	~Player();
 	
+	bool AnimLoop;
+	bool bHit;
+	float DieDeltaTime;
+	PlayerState m_playerState;
 	RECT player_rect;
 	SIZE size;
 	int MaxAnimCount;
@@ -41,7 +45,8 @@ public:
 	Position m_pos;
 	int AnimationCount;
 	float fMoveDeltaTime;
-	void PlayerInput(float DeltaTime);
+	float fAnimSpeed;
+	bool PlayerInput(float DeltaTime);
 	virtual void Draw(HDC backDC, float DeltaTime) override;
 	void Update(float DeltaTime);
 	virtual void Reset() override;
@@ -49,6 +54,7 @@ public:
 	int screenPosY;
 	SIZE msize;
 
+	void SetPlayerState(PlayerState state);
 	Position GetPlayerPos() const { return m_pos; }
 	
 

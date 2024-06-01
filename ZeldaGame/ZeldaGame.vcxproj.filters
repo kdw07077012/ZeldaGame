@@ -60,6 +60,15 @@
     <ClInclude Include="Animation.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Water.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ZeldaGame.cpp">
@@ -93,6 +102,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Water.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
