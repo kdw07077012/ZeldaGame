@@ -12,6 +12,17 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_InGame,
 	ImageType_Button,
 	ImageType_HUD,
+	ImageType_Inventory,
+	ImageType_Item,
+};
+
+enum FieldImageType
+{
+	Default_Field,
+	Store_Field,
+	Dungeon_Field,
+	Boss_Field,
+	End_Field,
 };
 
 struct PlayerDirBitmap // 플레이어 방향별 애니메이션을 담을 구조체
@@ -37,6 +48,9 @@ private:
 	BitMap* m_MenuBitMap;	    // 메뉴 이미지
 	BitMap* m_InGameBitMap;		//인게임 이미지
 	BitMap* m_PlayerHudBitMap;  // HUD 이미지  
+	BitMap* m_InventoryBitMap;  // HUD 이미지  
+	BitMap* m_ItemBitMap;	    // 아이템 이미지 
+	BitMap* m_FieldBitMap[End_Field];		// 맵 이미지
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지
 
@@ -56,6 +70,10 @@ public:
 	SIZE GetWindowSize() const { return m_WindowBitMap.GetSize(); }  // 윈도우 사이즈 반환
 	BitMap GetWindowBitMap() const { return m_WindowBitMap; }
 	PlayerDirBitmap GetPlayerDirBitmap() const { return playerDirBitmap; }
+
+	BitMap* GetBackGroundBitMap(FieldImageType Image) const {
+		return m_FieldBitMap[Image];
+	}
 
 };
 

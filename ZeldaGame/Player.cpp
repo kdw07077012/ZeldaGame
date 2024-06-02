@@ -161,7 +161,7 @@ void Player::Draw(HDC backDC, float DeltaTime)
 
 #ifdef DEBUG
 	//디버깅 드로우
-	std::string str = "m_pos : " + std::to_string(m_pos.X);
+	std::string str = "m_pos : " + std::to_string(m_pos.Y);
 	TextOutA(backDC, 100, 50, str.c_str(), str.length());
 	std::string str1 = "Camera : " + std::to_string(Camera::GetInstance()->GetX());
 	TextOutA(backDC, 100, 100, str1.c_str(), str1.length());

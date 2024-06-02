@@ -30,10 +30,11 @@ void GameManager::Init(HWND hWnd)
 	//동적할당
 	m_Menu = new Menu;
 	m_Title = new Title;
-	m_BackGround = new BackGround;
+	m_BackGround = new BackGround(Default_Field);
 	m_Player = new Player;
 	m_Field = new Field;
 	m_HUD = new HUD;
+	m_Ivnentory = new Inventory;
 
 	//다운캐스팅
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
@@ -41,10 +42,32 @@ void GameManager::Init(HWND hWnd)
 	m_oBackGround = dynamic_cast<Object*>(m_BackGround);
 	m_oPlayer = dynamic_cast<Object*>(m_Player);
 
+
 }
 
 void GameManager::Update(float DeltaTime)
 {
+	if (m_eCurGameState == GAMESTATE_START || m_eCurGameState == GAMESTATE_INVENTORY)
+	{
+		if (GetAsyncKeyState(0x49) && 0x8000) // 인벤토리 열고 닫기 I키
+		{
+			if (m_Ivnentory->Enabled == false)
+			{
+				m_Ivnentory->Enabled = true;
+				m_eCurGameState = GAMESTATE_INVENTORY;
+			}
+			else
+			{
+				m_Ivnentory->Enabled = false;
+				m_eCurGameState = GAMESTATE_START;
+			}
+			
+		}
+	}
+	
+	
+
+
 	switch (m_eCurGameState)
 	{
 	case GAMESTATE_TITLE:
@@ -80,13 +103,25 @@ void GameManager::Update(float DeltaTime)
 		break;
 	case GAMESTATE_START:
 
-		if (m_Player->PlayerInput(DeltaTime))
+		if (m_Player->PlayerInput(DeltaTime)) // 캐릭터가 움직일 수있는지에 따라 카메라 추적
 		{
 			Camera::GetInstance()->Update(DeltaTime);
 		}
 		
 		m_Player->Update(DeltaTime);
 		m_BackGround->Update(DeltaTime);
+
+		
+		
+		break;
+	case GAMESTATE_INVENTORY:
+	
+
+		GetCursorPos(&ptMouse);
+		ScreenToClient(m_hWnd, &ptMouse);
+		m_Ivnentory->Update(DeltaTime, ptMouse);
+		
+			
 		
 		break;
 	default:
@@ -116,6 +151,9 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		m_Player->Draw(backDC, DeltaTime);	
 		m_Field->Draw(backDC, DeltaTime);
 		m_HUD->Draw(backDC, DeltaTime);
+		break;
+	case GAMESTATE_INVENTORY:
+		m_Ivnentory->Draw(backDC, DeltaTime);
 		break;
 	default:
 		break;

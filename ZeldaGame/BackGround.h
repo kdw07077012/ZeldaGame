@@ -10,7 +10,7 @@ private:
 	int screenPosX;
 	int screenPosY;
 public:
-	BackGround();
+	BackGround(FieldImageType fieldtype);
 	~BackGround();
 	virtual void Draw(HDC backDC, float DeltaTime) override;
 	void Update(float DeltaTime);

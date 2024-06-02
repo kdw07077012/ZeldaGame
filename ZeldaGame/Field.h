@@ -5,7 +5,7 @@
 #include "Camera.h"
 #include "Obstacle.h"
 
-//#define DEBUG
+#define DEBUG
 
 class Field : public Object
 {
@@ -20,5 +20,6 @@ public:
 	int WaterobstacleSize;
 	Obstacle *obstacles;
 	Obstacle *Waterobstacles;
+	BackGround* m_BackGround;
 };
 

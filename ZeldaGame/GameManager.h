@@ -4,12 +4,13 @@
 #include "BitMapManager.h"
 #include "Field.h"
 #include "HUD.h"
-
+#include "Inventory.h"
 enum GAMESTATE
 {
 	GAMESTATE_TITLE,
 	GAMESTATE_MENU,
 	GAMESTATE_START,
+	GAMESTATE_INVENTORY,
 };
 
 
@@ -36,6 +37,7 @@ private:
 	Menu* m_Menu;
 	Title* m_Title;
 	Player* m_Player;
+	Inventory* m_Ivnentory;
 	POINT ptMouse;
 
 public:
