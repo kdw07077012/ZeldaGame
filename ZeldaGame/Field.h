@@ -5,13 +5,14 @@
 #include "Camera.h"
 #include "Obstacle.h"
 
-#define DEBUG
+//#define DEBUG
 
 class Field : public Object
 {
 protected:
 	int obstacleSize;
 	int WaterobstacleSize;
+	Position EndPosition;
 	Obstacle* obstacles;  //벽 콜리전 
 	Obstacle* Waterobstacles; // 물 콜리전 
 	Obstacle* NextField_obstacles; // 다음 필드로 갈 수 있는 콜리전 
@@ -19,6 +20,7 @@ protected:
 public:
 	Field();
 	~Field();
+	virtual void Init();
 	virtual void Draw(HDC backDC, float DeltaTime) override;
 	void Update(float DeltaTime);
 	virtual void Reset() override;

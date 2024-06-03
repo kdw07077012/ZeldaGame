@@ -6,6 +6,9 @@
 #include "HUD.h"
 #include "Inventory.h"
 #include "Store_Field.h"
+#include "ShoeStroe_Field.h"
+#include "StoreRoom_Field.h"
+
 enum GAMESTATE
 {
 	GAMESTATE_TITLE,
@@ -32,10 +35,11 @@ private:
 	Object* m_oTitle;
 	Object* m_oPlayer;
 
-
-	HUD* m_HUD;
 	Field* m_Field;
-	Store_Field* m_StoreField;
+	Store_Field*	m_StoreField;
+	ShoeStroe_Field* m_ShoeStroe_Field;
+	StoreRoom_Field* m_StoreRoom_Field;
+	HUD* m_HUD;
 	Menu* m_Menu;
 	Title* m_Title;
 	Player* m_Player;
@@ -56,7 +60,7 @@ public:
 	void DoubleBuffer(float DeltaTime);
 	void Release(HWND hWnd);
 	bool FieldCollision(RECT rect);
-	void NextField(FieldType curr_Field);
+	void NextField(FieldType Field);
 
 	Player* GetPlayer() { return m_Player; }
 	SIZE GetWindowSize() const { return WindowSize; }

@@ -143,6 +143,8 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ShoeStroe_Field.h" />
+    <ClInclude Include="StoreRoom_Field.h" />
     <ClInclude Include="Store_Field.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Title.h" />
@@ -163,6 +165,8 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="ShoeStroe_Field.cpp" />
+    <ClCompile Include="StoreRoom_Field.cpp" />
     <ClCompile Include="Store_Field.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Water.cpp" />

@@ -22,7 +22,7 @@ void BitMapManager::Init(HDC hdc)
 
 
     m_FieldBitMap[FieldType_Default] = ImageRoad(hdc, (char*)"Image//Map//Field//Field%d.bmp", ImageType_BackGround);
-    m_FieldBitMap[FieldType_Store] = ImageRoad(hdc, (char*)"Image//Map//Store//Store%d.bmp", ImageType_BackGround);
+    m_FieldBitMap[FieldType_Store] = ImageRoad(hdc, (char*)"Image//Map//Store//Store%d.bmp", ImageType_Store);
     m_FieldBitMap[FieldType_Store_ShoeStroe] = ImageRoad(hdc, (char*)"Image//Map//Store//ShoeStore%d.bmp", ImageType_BackGround);
     m_FieldBitMap[FieldType_Store_StoreRoom] = ImageRoad(hdc, (char*)"Image//Map//Store//StoreRoom%d.bmp", ImageType_BackGround);
 
@@ -38,6 +38,9 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     int Size = 0;
     switch (type)
     {
+    case ImageType_Store:
+        Size = 2;
+        break;
     case ImageType_Item:
         Size = 4;
         break;

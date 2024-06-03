@@ -7,6 +7,7 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_Title,
 	ImageType_Interface,
 	ImageType_BackGround,
+	ImageType_Store,
 	ImageType_Player,
 	ImageType_Menu,
 	ImageType_InGame,

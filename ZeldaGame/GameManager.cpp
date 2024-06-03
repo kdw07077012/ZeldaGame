@@ -36,6 +36,8 @@ void GameManager::Init(HWND hWnd)
 	m_HUD = new HUD;
 	m_Ivnentory = new Inventory;
 	m_StoreField = new Store_Field;
+	m_ShoeStroe_Field = new ShoeStroe_Field;
+	m_StoreRoom_Field = new StoreRoom_Field;
 
 	//다운캐스팅,
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
@@ -147,6 +149,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		m_Menu->Draw(backDC, DeltaTime);
 		break;
 	case GAMESTATE_START:	
+		
 		switch (currentField)
 		{
 		case FieldType_Default:
@@ -154,6 +157,12 @@ void GameManager::DoubleBuffer(float DeltaTime)
 			break;
 		case FieldType_Store:
 			m_StoreField->Draw(backDC, DeltaTime);
+			break;
+		case FieldType_Store_ShoeStroe:
+			m_ShoeStroe_Field->Draw(backDC, DeltaTime);
+			break;
+		case FieldType_Store_StoreRoom:
+			m_StoreRoom_Field->Draw(backDC, DeltaTime);
 			break;
 		case FieldType_Dungeon:
 			break;
@@ -164,6 +173,11 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		default:
 			break;
 		}
+
+
+		
+		
+
 		m_Player->Draw(backDC, DeltaTime);	
 		m_HUD->Draw(backDC, DeltaTime);
 		
@@ -192,12 +206,61 @@ void GameManager::Release(HWND hWnd)
 
 bool GameManager::FieldCollision(RECT rect)
 {
-	if(m_Field->Collision(rect))
-		return true;
+	switch (currentField)
+	{
+	case FieldType_Default:
+		if (m_Field->Collision(rect))
+			return true;
+		break;
+	case FieldType_Store:
+		if (m_StoreField->Collision(rect))
+			return true;
+		break;
+	case FieldType_Store_ShoeStroe:
+		if (m_ShoeStroe_Field->Collision(rect))
+			return true;
+		break;
+	case FieldType_Store_StoreRoom:
+		if (m_StoreRoom_Field->Collision(rect))
+			return true;
+		break;
+	case FieldType_Dungeon:
+		break;
+	case FieldType_Boss:
+		break;
+	case End_Field:
+		break;
+	default:
+		break;
+	}
+	
 	return false;
 }
 
-void GameManager::NextField(FieldType curr_Field)
+void GameManager::NextField(FieldType Field)
 {
-	currentField = FieldType(curr_Field + 1);
+	currentField = FieldType(Field);
+
+	switch (Field)
+	{
+	case FieldType_Default:
+		break;
+	case FieldType_Store:
+		m_StoreField->Init();
+		break;
+	case FieldType_Store_ShoeStroe:
+		m_ShoeStroe_Field->Init();
+		break;
+	case FieldType_Store_StoreRoom:
+		m_StoreRoom_Field->Init();
+		break;
+	case FieldType_Dungeon:
+		break;
+	case FieldType_Boss:
+		break;
+	case End_Field:
+		break;
+	default:
+		break;
+	}
 }

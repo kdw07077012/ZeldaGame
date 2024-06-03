@@ -37,6 +37,12 @@ Field::~Field()
 {
 }
 
+void Field::Init()
+{
+	Camera::GetInstance()->Init(EndPosition.X, EndPosition.Y);
+	GameManager::GetInstance()->GetPlayer()->m_pos = EndPosition;
+}
+
 void Field::Draw(HDC backDC, float DeltaTime)
 {
 	m_BackGround->Draw(backDC, DeltaTime); // 배경을 그려줌 
@@ -89,13 +95,15 @@ bool Field::Collision(RECT rect)
 		if (IntersectRect(&tmp, &Waterobstacles[i].GetCollision(), &rect))
 		{
 			GameManager::GetInstance()->GetPlayer()->SetPlayerState(PlayerState_FALLWATER);
+			return true;
 		}
 	}
 	
 	if (IntersectRect(&tmp, &NextField_obstacles[0].GetCollision(), &rect))
 	{
 		
-		GameManager::GetInstance()->NextField(m_BackGround->GetFieldType());
+		GameManager::GetInstance()->NextField(FieldType_Store);
+		return true;
 	}
 
 
