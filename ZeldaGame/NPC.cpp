@@ -27,7 +27,7 @@ void NPC::Draw(HDC backDC, float DeltaTime)
 
 void NPC::Update(float DeltaTime)
 {
-	RECT temp
+	RECT temp;
 
 	//if (IntersectRect(&tmp, &NextField_obstacles[1].GetCollision(), &rect))
 }
