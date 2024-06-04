@@ -38,13 +38,14 @@ void GameManager::Init(HWND hWnd)
 	m_StoreField = new Store_Field;
 	m_ShoeStroe_Field = new ShoeStroe_Field;
 	m_StoreRoom_Field = new StoreRoom_Field;
+	m_Npc = new NPC;
 
 	//다운캐스팅,
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
 	m_oTitle = dynamic_cast<Object*>(m_Title);
 	m_oPlayer = dynamic_cast<Object*>(m_Player);
 
-	Camera::GetInstance()->Init(613, 370); // 613 370
+	Camera::GetInstance()->Init(650, 370); // 613 370
 }
 
 void GameManager::Update(float DeltaTime)
@@ -154,6 +155,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		{
 		case FieldType_Default:
 			m_Field->Draw(backDC, DeltaTime);
+			m_Npc->Draw(backDC, DeltaTime);
 			break;
 		case FieldType_Store:
 			m_StoreField->Draw(backDC, DeltaTime);
@@ -166,7 +168,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 			break;
 		case FieldType_Dungeon:
 			break;
-		case FieldType_Boss:
+		case FieldType_Boss: 
 			break;
 		case End_Field:
 			break;

@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Field">
+      <UniqueIdentifier>{7ad8d7a1-86a3-47a2-b79c-0977d1030780}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Field">
+      <UniqueIdentifier>{f24c8d81-1e1a-4080-8fd1-dc608eee4c8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Object">
+      <UniqueIdentifier>{aa6d1151-2003-40ae-9c98-1ff9ce4e95e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -51,9 +60,6 @@
     <ClInclude Include="Player.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Field.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -75,13 +81,19 @@
     <ClInclude Include="Item.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Store_Field.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Field.h">
+      <Filter>헤더 파일\Field</Filter>
     </ClInclude>
     <ClInclude Include="ShoeStroe_Field.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="Store_Field.h">
+      <Filter>헤더 파일\Field</Filter>
     </ClInclude>
     <ClInclude Include="StoreRoom_Field.h">
+      <Filter>헤더 파일\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -110,9 +122,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Field.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -134,13 +143,19 @@
     <ClCompile Include="Item.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Store_Field.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Field.cpp">
+      <Filter>소스 파일\Field</Filter>
     </ClCompile>
     <ClCompile Include="ShoeStroe_Field.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="Store_Field.cpp">
+      <Filter>소스 파일\Field</Filter>
     </ClCompile>
     <ClCompile Include="StoreRoom_Field.cpp">
+      <Filter>소스 파일\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

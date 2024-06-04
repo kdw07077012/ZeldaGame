@@ -8,7 +8,7 @@ Player::Player()
 	m_playerDirBitmap[DOWN] = BitMapManager::GetInstance()->GetPlayerDirBitmap().Down_Bitmap;
 
 	msize = BitMapManager::GetInstance()->GetWindowSize();
-	m_pos.X = 618;
+	m_pos.X = 650;
 	m_pos.Y = 372;
 	AnimationCount = 0;
 	dir = DOWN;
