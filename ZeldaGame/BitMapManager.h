@@ -2,11 +2,13 @@
 #include "BitMap.h"
 
 #include <string>
+#define DEBUG // 콜리전 텍스트딩 디버깅 
 enum ImageType // 이미지 타입을 통해 불러옴
 {
 	ImageType_Title,
 	ImageType_Interface,
 	ImageType_BackGround,
+	ImageType_Store,
 	ImageType_Player,
 	ImageType_Menu,
 	ImageType_InGame,
@@ -14,14 +16,18 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_HUD,
 	ImageType_Inventory,
 	ImageType_Item,
+	ImageType_NPC,
+	ImageType_NPCTextBar,
 };
 
-enum FieldImageType
+enum FieldType
 {
-	Default_Field,
-	Store_Field,
-	Dungeon_Field,
-	Boss_Field,
+	FieldType_Default,  // 기본스타트 맵
+	FieldType_Store,    // 상점 맵 
+	FieldType_Store_ShoeStroe, // 상점 맵 안 신발 상점
+	FieldType_Store_StoreRoom, // 상점 맵 안 스토어 
+	FieldType_Dungeon,
+	FieldType_Boss,
 	End_Field,
 };
 
@@ -50,7 +56,9 @@ private:
 	BitMap* m_PlayerHudBitMap;  // HUD 이미지  
 	BitMap* m_InventoryBitMap;  // HUD 이미지  
 	BitMap* m_ItemBitMap;	    // 아이템 이미지 
-	BitMap* m_FieldBitMap[End_Field];		// 맵 이미지
+	BitMap* m_FieldBitMap[End_Field];	// 맵 이미지
+	BitMap* m_NpcBitMap;		//Npc 이미지 
+	BitMap* m_NpcTextBarBitMap; // npc텍스트바 이미지
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지
 
@@ -71,7 +79,7 @@ public:
 	BitMap GetWindowBitMap() const { return m_WindowBitMap; }
 	PlayerDirBitmap GetPlayerDirBitmap() const { return playerDirBitmap; }
 
-	BitMap* GetBackGroundBitMap(FieldImageType Image) const {
+	BitMap* GetBackGroundBitMap(FieldType Image) const {
 		return m_FieldBitMap[Image];
 	}
 

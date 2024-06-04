@@ -139,10 +139,14 @@
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="NPC.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ShoeStroe_Field.h" />
+    <ClInclude Include="StoreRoom_Field.h" />
+    <ClInclude Include="Store_Field.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Water.h" />
@@ -160,8 +164,12 @@
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="ShoeStroe_Field.cpp" />
+    <ClCompile Include="StoreRoom_Field.cpp" />
+    <ClCompile Include="Store_Field.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Water.cpp" />
     <ClCompile Include="ZeldaGame.cpp" />

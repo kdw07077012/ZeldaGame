@@ -3,7 +3,7 @@
 #include "GameManager.h"
 Field::Field()
 {
-	//m_BackGround = new BackGround;
+	m_BackGround = new BackGround(FieldType_Default);
 
 
 	int left, top, width, height, frame;
@@ -28,14 +28,25 @@ Field::Field()
 	}
 
 	fclose(fp);
+
+	NextField_obstacles = new Obstacle[1];
+	NextField_obstacles[0].Init(694, 0, 807, 48);
 }
 
 Field::~Field()
 {
 }
 
+void Field::Init()
+{
+	Camera::GetInstance()->Init(EndPosition.X, EndPosition.Y);
+	GameManager::GetInstance()->GetPlayer()->m_pos = EndPosition;
+}
+
 void Field::Draw(HDC backDC, float DeltaTime)
 {
+	m_BackGround->Draw(backDC, DeltaTime); // 배경을 그려줌 
+
 	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
 	int  cameraX = Camera::GetInstance()->GetX();
 	int  cameraY = Camera::GetInstance()->GetY();
@@ -50,14 +61,14 @@ void Field::Draw(HDC backDC, float DeltaTime)
 	{
 		obstacles[i].Draw(backDC, cameraX, cameraY);
 	}
-
 	
+	NextField_obstacles[0].Draw(backDC, cameraX, cameraY);
 
 }
 
 void Field::Update(float DeltaTime)
 {
-	
+	m_BackGround->Update(DeltaTime);
 }
 
 //0 955
@@ -84,9 +95,16 @@ bool Field::Collision(RECT rect)
 		if (IntersectRect(&tmp, &Waterobstacles[i].GetCollision(), &rect))
 		{
 			GameManager::GetInstance()->GetPlayer()->SetPlayerState(PlayerState_FALLWATER);
+			return true;
 		}
 	}
 	
+	if (IntersectRect(&tmp, &NextField_obstacles[0].GetCollision(), &rect))
+	{
+		
+		GameManager::GetInstance()->NextField(FieldType_Store);
+		return true;
+	}
 
 
 	return false;

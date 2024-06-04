@@ -1,6 +1,6 @@
 #include "BackGround.h"
 
-BackGround::BackGround(FieldImageType fieldtype)
+BackGround::BackGround(FieldType fieldtype)
 {
 
 	m_BitMap = BitMapManager::GetInstance()->GetBackGroundBitMap(fieldtype);
@@ -13,7 +13,8 @@ BackGround::BackGround(FieldImageType fieldtype)
 	screenPosY = 0;
 	m_fMoveDeltaTime = 0.0f;
 	m_fMoveDeltaTime = 0.0f;
-	Camera::GetInstance()->Init(613, 370); // 613 370
+	field = fieldtype;
+	
 }
 
 BackGround::~BackGround()

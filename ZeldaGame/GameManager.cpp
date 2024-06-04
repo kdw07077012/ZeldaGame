@@ -24,8 +24,9 @@ void GameManager::Init(HWND hWnd)
 	backDC = CreateCompatibleDC(m_hDC);
 	BitMapManager::GetInstance()->Init(m_hDC);
 	WindowSize = BitMapManager::GetInstance()->GetWindowSize();
-	m_eCurGameState = GAMESTATE_TITLE;
+	m_eCurGameState = GAMESTATE_START;
 	Camera::GetInstance()->Init(0,0);
+	currentField = FieldType_Default;
 
 	//동적할당
 	m_Menu = new Menu;
@@ -35,14 +36,18 @@ void GameManager::Init(HWND hWnd)
 	m_Field = new Field;
 	m_HUD = new HUD;
 	m_Ivnentory = new Inventory;
+	m_StoreField = new Store_Field;
+	m_ShoeStroe_Field = new ShoeStroe_Field;
+	m_StoreRoom_Field = new StoreRoom_Field;
+	m_Npc = new NPC;
 
-	//다운캐스팅
+	//다운캐스팅,
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
 	m_oTitle = dynamic_cast<Object*>(m_Title);
 	m_oBackGround = dynamic_cast<Object*>(m_BackGround);
 	m_oPlayer = dynamic_cast<Object*>(m_Player);
 
-
+	Camera::GetInstance()->Init(650, 370); // 613 370
 }
 
 void GameManager::Update(float DeltaTime)
@@ -110,6 +115,7 @@ void GameManager::Update(float DeltaTime)
 		
 		m_Player->Update(DeltaTime);
 		m_BackGround->Update(DeltaTime);
+		
 
 		
 		
@@ -146,11 +152,41 @@ void GameManager::DoubleBuffer(float DeltaTime)
 	case GAMESTATE_MENU:
 		m_Menu->Draw(backDC, DeltaTime);
 		break;
-	case GAMESTATE_START:
-		m_BackGround->Draw(backDC, DeltaTime);
+	case GAMESTATE_START:	
+		
+		switch (currentField)
+		{
+		case FieldType_Default:
+			m_Field->Draw(backDC, DeltaTime);
+			m_Npc->Draw(backDC, DeltaTime);
+			break;
+		case FieldType_Store:
+			m_StoreField->Draw(backDC, DeltaTime);
+			break;
+		case FieldType_Store_ShoeStroe:
+			m_ShoeStroe_Field->Draw(backDC, DeltaTime);
+			break;
+		case FieldType_Store_StoreRoom:
+			m_StoreRoom_Field->Draw(backDC, DeltaTime);
+			break;
+		case FieldType_Dungeon:
+			break;
+		case FieldType_Boss: 
+			break;
+		case End_Field:
+			break;
+		default:
+			break;
+		}
+
+
+		
+		
+
 		m_Player->Draw(backDC, DeltaTime);	
 		m_Field->Draw(backDC, DeltaTime);
 		m_HUD->Draw(backDC, DeltaTime);
+		
 		break;
 	case GAMESTATE_INVENTORY:
 		m_Ivnentory->Draw(backDC, DeltaTime);
@@ -176,7 +212,61 @@ void GameManager::Release(HWND hWnd)
 
 bool GameManager::FieldCollision(RECT rect)
 {
-	if(m_Field->Collision(rect))
-		return true;
+	switch (currentField)
+	{
+	case FieldType_Default:
+		if (m_Field->Collision(rect))
+			return true;
+		break;
+	case FieldType_Store:
+		if (m_StoreField->Collision(rect))
+			return true;
+		break;
+	case FieldType_Store_ShoeStroe:
+		if (m_ShoeStroe_Field->Collision(rect))
+			return true;
+		break;
+	case FieldType_Store_StoreRoom:
+		if (m_StoreRoom_Field->Collision(rect))
+			return true;
+		break;
+	case FieldType_Dungeon:
+		break;
+	case FieldType_Boss:
+		break;
+	case End_Field:
+		break;
+	default:
+		break;
+	}
+	
 	return false;
+}
+
+void GameManager::NextField(FieldType Field)
+{
+	currentField = FieldType(Field);
+
+	switch (Field)
+	{
+	case FieldType_Default:
+		break;
+	case FieldType_Store:
+		m_StoreField->Init();
+		break;
+	case FieldType_Store_ShoeStroe:
+		m_ShoeStroe_Field->Init();
+		break;
+	case FieldType_Store_StoreRoom:
+		m_StoreRoom_Field->Init();
+		break;
+	case FieldType_Dungeon:
+		break;
+	case FieldType_Boss:
+		break;
+	case End_Field:
+		break;
+	default:
+		break;
+	}
 }
