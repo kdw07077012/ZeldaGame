@@ -2,7 +2,7 @@
 #include "BitMap.h"
 
 #include <string>
-#define DEBUG // 콜리전 텍스트딩 디버깅 
+//#define DEBUG // 콜리전 텍스트딩 디버깅 
 enum ImageType // 이미지 타입을 통해 불러옴
 {
 	ImageType_Title,
@@ -15,9 +15,10 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_Button,
 	ImageType_HUD,
 	ImageType_Inventory,
-	ImageType_Item,
+	ImageType_InvenItem,
 	ImageType_NPC,
 	ImageType_NPCTextBar,
+	ImageType_Item,
 };
 
 enum FieldType
@@ -55,10 +56,11 @@ private:
 	BitMap* m_InGameBitMap;		//인게임 이미지
 	BitMap* m_PlayerHudBitMap;  // HUD 이미지  
 	BitMap* m_InventoryBitMap;  // HUD 이미지  
-	BitMap* m_ItemBitMap;	    // 아이템 이미지 
+	BitMap* m_IvenItemBitMap;	    // 인벤토리 아이템 이미지 
 	BitMap* m_FieldBitMap[End_Field];	// 맵 이미지
 	BitMap* m_NpcBitMap;		//Npc 이미지 
 	BitMap* m_NpcTextBarBitMap; // npc텍스트바 이미지
+	BitMap* m_ItemBitMap;		// 아이템 이미지
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지
 

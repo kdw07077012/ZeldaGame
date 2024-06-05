@@ -1,7 +1,13 @@
 #pragma once
 #include "Field.h"
+#include "StoreNPC.h"
+#include "Item.h"
+#include <vector>
 class StoreRoom_Field : public Field
 {
+private:
+	std::vector<Item*> Items;
+	StoreNPC* Npc;
 public:
 	StoreRoom_Field();
 	~StoreRoom_Field();

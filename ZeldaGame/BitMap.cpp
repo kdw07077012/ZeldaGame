@@ -16,15 +16,11 @@ void BitMap::Init(HDC hdc, char* FileName)
 
 void BitMap::Draw(HDC backDC, int x, int y, bool isAlpha)
 {
-	switch (isAlpha) /// 바탕색을 제거할건지 선택
-	{
-	case 1:
+	if(isAlpha)
 		TransparentBlt(backDC, x, y, m_Size.cx, m_Size.cy, m_memdc, 0, 0, m_Size.cx, m_Size.cy, RGB(244, 0, 244));
-		break;
-	case 0:
+	else
 		BitBlt(backDC, x, y, m_Size.cx, m_Size.cy, m_memdc, 0, 0, SRCCOPY);
-		break;
-	}
+	
 }
 
 
@@ -35,9 +31,12 @@ void BitMap::CutDraw(HDC backDC, int x, int y, int CposX, int CposY, SIZE CSize,
 
 
 
-void BitMap::BackGroundDraw(HDC backDC, int x, int y)
+void BitMap::BackGroundDraw(HDC backDC, int x, int y, bool isAlpha)
 {
-	StretchBlt(backDC, 0, 0, m_Size.cx, m_Size.cy, m_memdc, x, y, m_Size.cx, m_Size.cy, SRCCOPY);
+	if(isAlpha)
+		TransparentBlt(backDC, 0, 0, m_Size.cx, m_Size.cy, m_memdc, x, y, m_Size.cx, m_Size.cy, RGB(244, 0, 244));
+	else
+		StretchBlt(backDC, 0, 0, m_Size.cx, m_Size.cy, m_memdc, x, y, m_Size.cx, m_Size.cy, SRCCOPY);
 }
 
 void BitMap::AnimationUpdate(HDC backDC, int frame, int x, int y, SIZE size, float fDrainage)

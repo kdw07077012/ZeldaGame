@@ -1,7 +1,12 @@
 #pragma once
 #include "Field.h"
+#include "ShoeNPC.h"
+
 class ShoeStroe_Field : public Field
 {
+private:
+	ShoeNPC* NPC;
+	
 public:
 	ShoeStroe_Field();
 	~ShoeStroe_Field();

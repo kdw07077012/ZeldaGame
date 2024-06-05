@@ -12,9 +12,10 @@ void BitMapManager::Init(HDC hdc)
     m_BackBitMap = ImageRoad(hdc, (char*)"Image//Map//Field//Field%d.bmp", ImageType_BackGround);
     m_PlayerHudBitMap = ImageRoad(hdc, (char*)"Image//HUD//PlayerHUD.bmp", ImageType_HUD);
     m_InventoryBitMap = ImageRoad(hdc, (char*)"Image//Menu//Inventory//EmptyInven.bmp", ImageType_Inventory);
-    m_ItemBitMap = ImageRoad(hdc, (char*)"Image//Menu//Inventory//Item//%d.bmp", ImageType_Item);
+    m_IvenItemBitMap = ImageRoad(hdc, (char*)"Image//Menu//Inventory//Item//%d.bmp", ImageType_InvenItem);
     m_NpcBitMap  = ImageRoad(hdc, (char*)"Image//Npc//Npc%d.bmp", ImageType_NPC);
     m_NpcTextBarBitMap = ImageRoad(hdc, (char*)"Image//Npc//Npc_TextBar%d.bmp", ImageType_NPCTextBar);
+    m_ItemBitMap = ImageRoad(hdc, (char*)"Image//Item//Item%d.bmp", ImageType_Item);
 
 
     //플레이어 방향별 비트맵
@@ -41,16 +42,19 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     int Size = 0;
     switch (type)
     {
+    case ImageType_Item:
+        Size = 4;
+        break;
     case ImageType_NPCTextBar:
-        Size = 1;
+        Size = 3;
         break;
     case ImageType_NPC:
-        Size = 1;
+        Size = 3;
         break;
     case ImageType_Store:
         Size = 2;
         break;
-    case ImageType_Item:
+    case ImageType_InvenItem:
         Size = 4;
         break;
     case ImageType_Inventory:
@@ -98,14 +102,17 @@ BitMap* BitMapManager::GetBitMap(ImageType Image) const
 {
     switch (Image)
     {
+    case ImageType_Item:
+        return m_ItemBitMap;
+        break;
     case ImageType_NPCTextBar:
         return m_NpcTextBarBitMap;
         break;
     case ImageType_NPC:
         return m_NpcBitMap;
         break;
-    case ImageType_Item:
-        return m_ItemBitMap;
+    case ImageType_InvenItem:
+        return m_IvenItemBitMap;
         break;
     case ImageType_Inventory:
         return m_InventoryBitMap;

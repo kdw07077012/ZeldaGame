@@ -1,5 +1,5 @@
 #include "GameManager.h"
-
+#
 GameManager* GameManager::m_pThis = NULL;
 
 HBITMAP GameManager::CreateDIBSectionRe(int width, int Height)
@@ -31,7 +31,7 @@ void GameManager::Init(HWND hWnd)
 	//동적할당
 	m_Menu = new Menu;
 	m_Title = new Title;
-	m_BackGround = new BackGround(Default_Field);
+
 	m_Player = new Player;
 	m_Field = new Field;
 	m_HUD = new HUD;
@@ -39,12 +39,10 @@ void GameManager::Init(HWND hWnd)
 	m_StoreField = new Store_Field;
 	m_ShoeStroe_Field = new ShoeStroe_Field;
 	m_StoreRoom_Field = new StoreRoom_Field;
-	m_Npc = new NPC;
 
 	//다운캐스팅,
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
 	m_oTitle = dynamic_cast<Object*>(m_Title);
-	m_oBackGround = dynamic_cast<Object*>(m_BackGround);
 	m_oPlayer = dynamic_cast<Object*>(m_Player);
 
 	Camera::GetInstance()->Init(650, 370); // 613 370
@@ -114,10 +112,32 @@ void GameManager::Update(float DeltaTime)
 		}
 		
 		m_Player->Update(DeltaTime);
-		m_BackGround->Update(DeltaTime);
-		
 
 		
+		switch (currentField)
+		{
+		case FieldType_Default:
+			m_Field->Update(DeltaTime);
+			break;
+		case FieldType_Store:
+			m_StoreField->Update(DeltaTime);
+			break;
+		case FieldType_Store_ShoeStroe:
+			m_ShoeStroe_Field->Update(DeltaTime);
+			break;
+		case FieldType_Store_StoreRoom:
+			m_StoreRoom_Field->Update(DeltaTime);
+			break;
+		case FieldType_Dungeon:
+			break;
+		case FieldType_Boss:
+			break;
+		case End_Field:
+			break;
+		default:
+			break;
+		}
+
 		
 		break;
 	case GAMESTATE_INVENTORY:
@@ -144,6 +164,14 @@ void GameManager::DoubleBuffer(float DeltaTime)
 
 	HBITMAP oldBack = (HBITMAP)SelectObject(backDC, backBitmap);
 
+
+	// 바탕색 그려주기위해 사용
+	HBRUSH brush = CreateSolidBrush(RGB(248, 240, 224));
+	RECT rect = { windowRect.left,windowRect.top, windowRect.right, windowRect.bottom };
+	FillRect(backDC, &rect, brush);
+
+	
+	
 	switch (m_eCurGameState)
 	{
 	case GAMESTATE_TITLE:
@@ -153,15 +181,14 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		m_Menu->Draw(backDC, DeltaTime);
 		break;
 	case GAMESTATE_START:	
-		
 		switch (currentField)
 		{
 		case FieldType_Default:
 			m_Field->Draw(backDC, DeltaTime);
-			m_Npc->Draw(backDC, DeltaTime);
 			break;
 		case FieldType_Store:
 			m_StoreField->Draw(backDC, DeltaTime);
+			
 			break;
 		case FieldType_Store_ShoeStroe:
 			m_ShoeStroe_Field->Draw(backDC, DeltaTime);
@@ -184,9 +211,11 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		
 
 		m_Player->Draw(backDC, DeltaTime);	
-		m_Field->Draw(backDC, DeltaTime);
 		m_HUD->Draw(backDC, DeltaTime);
-		
+
+		if(currentField == FieldType_Store)
+			m_StoreField->BackDraw(backDC, DeltaTime);
+
 		break;
 	case GAMESTATE_INVENTORY:
 		m_Ivnentory->Draw(backDC, DeltaTime);
@@ -201,6 +230,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 	
 	SelectObject(backDC, oldBack);
 	DeleteObject(backBitmap);
+	DeleteObject(brush);
 
 }
 
@@ -250,6 +280,7 @@ void GameManager::NextField(FieldType Field)
 	switch (Field)
 	{
 	case FieldType_Default:
+		m_Field->Init();
 		break;
 	case FieldType_Store:
 		m_StoreField->Init();

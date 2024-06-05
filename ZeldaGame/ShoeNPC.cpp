@@ -1,0 +1,63 @@
+#include "ShoeNPC.h"
+
+ShoeNPC::ShoeNPC()
+{
+	MaxAnimCount = 20;
+	Collisioon.Init(622, 402, 768, 493);
+}
+
+ShoeNPC::~ShoeNPC()
+{
+}
+
+void ShoeNPC::Draw(HDC backDC, float DeltaTime)
+{
+	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
+	SIZE size = { 20,40 };
+	int screenX = (((msize.cx / 2) - (size.cx * 2)) - Camera::GetInstance()->GetX()) + 363;
+	int screenY = (((msize.cy / 2) - (size.cy * 2)) - Camera::GetInstance()->GetY()) + 150;
+
+	Collisioon.Draw(backDC, Camera::GetInstance()->GetX(), Camera::GetInstance()->GetY());
+
+	m_BitMap[1].AnimationUpdate(backDC, AnimationCount, screenX, screenY, size, 2.0f);
+
+
+	if (bCollision)
+		m_NpcTextBar[1].CutDraw(backDC, screenX - size.cx, screenY - m_NpcTextBar->GetSize().cy / 2, 0, 0, m_NpcTextBar->GetSize(), 0.5f);
+}
+
+bool ShoeNPC::EventCollision(RECT player)
+{
+	RECT temp;
+
+	if (IntersectRect(&temp, &Collisioon.GetCollision(), &player))
+	{
+		bCollision = true;
+		return true;
+	}
+
+	bCollision = false;
+	return false;
+}
+
+void ShoeNPC::Update(float DeltaTime)
+{
+	fMoveDeltaTime += DeltaTime;
+
+	if (fMoveDeltaTime > fAnimSpeed)
+	{
+		//
+		if (AnimationCount + 1 >= MaxAnimCount)
+		{
+			AnimationCount = 1;
+		}
+		else
+			AnimationCount++;
+
+		fMoveDeltaTime = 0.0f;
+	}
+}
+
+void ShoeNPC::Reset()
+{
+}

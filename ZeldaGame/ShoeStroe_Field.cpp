@@ -3,7 +3,7 @@
 ShoeStroe_Field::ShoeStroe_Field()
 {
     m_BackGround = new BackGround(FieldType_Store_ShoeStroe);
-
+	NPC = new ShoeNPC;
     NextField_obstacles = new Obstacle[1];
     NextField_obstacles->Init(689, 763, 843, 808);
 	EndPosition = { 413,413 };
@@ -27,11 +27,13 @@ void ShoeStroe_Field::Draw(HDC backDC, float DeltaTime)
 	int  cameraY = Camera::GetInstance()->GetY();
 
     NextField_obstacles[0].Draw(backDC, cameraX, cameraY);
+
+	NPC->Draw(backDC, DeltaTime);
 }
 
 void ShoeStroe_Field::Update(float DeltaTime)
 {
-
+	NPC->Update(DeltaTime);
 }
 
 void ShoeStroe_Field::Reset()
@@ -47,6 +49,9 @@ bool ShoeStroe_Field::Collision(RECT rect)
 		GameManager::GetInstance()->NextField(FieldType_Store);
 		return true;
 	}
+
+	if (NPC->EventCollision(rect))
+		return true;
 
 	return false;
 }

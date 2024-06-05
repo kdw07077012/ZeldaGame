@@ -127,12 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BitMap.h" />
     <ClInclude Include="BitMapManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Field.h" />
+    <ClInclude Include="FieldNPC.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="HUD.h" />
@@ -144,7 +144,9 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ShoeNPC.h" />
     <ClInclude Include="ShoeStroe_Field.h" />
+    <ClInclude Include="StoreNPC.h" />
     <ClInclude Include="StoreRoom_Field.h" />
     <ClInclude Include="Store_Field.h" />
     <ClInclude Include="targetver.h" />
@@ -153,12 +155,12 @@
     <ClInclude Include="ZeldaGame.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="BitMapManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Field.cpp" />
+    <ClCompile Include="FieldNPC.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Inventory.cpp" />
@@ -167,7 +169,9 @@
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="ShoeNPC.cpp" />
     <ClCompile Include="ShoeStroe_Field.cpp" />
+    <ClCompile Include="StoreNPC.cpp" />
     <ClCompile Include="StoreRoom_Field.cpp" />
     <ClCompile Include="Store_Field.cpp" />
     <ClCompile Include="Title.cpp" />

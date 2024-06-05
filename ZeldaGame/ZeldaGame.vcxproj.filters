@@ -22,6 +22,12 @@
     <Filter Include="소스 파일\Object">
       <UniqueIdentifier>{aa6d1151-2003-40ae-9c98-1ff9ce4e95e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\NPC">
+      <UniqueIdentifier>{66f1a15d-c9ed-47cd-aca2-60a248c821b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\NPC">
+      <UniqueIdentifier>{d96ef19b-63a3-4019-b62e-1d81b1bc595e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -63,9 +69,6 @@
     <ClInclude Include="Camera.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Water.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -94,6 +97,15 @@
       <Filter>헤더 파일\Field</Filter>
     </ClInclude>
     <ClInclude Include="NPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="ShoeNPC.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="StoreNPC.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -125,9 +137,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Water.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -156,6 +165,15 @@
       <Filter>소스 파일\Field</Filter>
     </ClCompile>
     <ClCompile Include="NPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="ShoeNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="StoreNPC.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

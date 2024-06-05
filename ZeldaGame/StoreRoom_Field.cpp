@@ -4,6 +4,13 @@
 StoreRoom_Field::StoreRoom_Field()
 {
     m_BackGround = new BackGround(FieldType_Store_StoreRoom);
+    Npc = new StoreNPC;
+    for (int i = 0; i < 4; i++)
+    {
+        Item* item = new Item(EItem(i), 136 + (50 * i), 127, 1);
+        Items.push_back(item);
+    }
+  
     NextField_obstacles = new Obstacle[1];
     NextField_obstacles->Init(682, 778, 797, 835);
     EndPosition = { 413,413 };
@@ -28,11 +35,19 @@ void StoreRoom_Field::Draw(HDC backDC, float DeltaTime)
 
     NextField_obstacles[0].Draw(backDC, cameraX, cameraY);
 
-    
+    Npc->Draw(backDC, DeltaTime);
+
+    for (int i = 0; i < 4; i++)
+    {
+        Items[i]->Draw(backDC, DeltaTime);
+     
+    }
+      
 }
 
 void StoreRoom_Field::Update(float DeltaTime)
 {
+    Npc->Update(DeltaTime);
 }
 
 void StoreRoom_Field::Reset()
@@ -49,6 +64,9 @@ bool StoreRoom_Field::Collision(RECT rect)
         GameManager::GetInstance()->NextField(FieldType_Store);
         return true;
     }
+
+    if (Npc->EventCollision(rect))
+        return true;
 
     return false;
 }

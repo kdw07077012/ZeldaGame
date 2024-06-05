@@ -8,7 +8,6 @@
 #include "Store_Field.h"
 #include "ShoeStroe_Field.h"
 #include "StoreRoom_Field.h"
-#include "NPC.h"
 
 enum GAMESTATE
 {
@@ -41,7 +40,6 @@ private:
 	ShoeStroe_Field* m_ShoeStroe_Field;
 	StoreRoom_Field* m_StoreRoom_Field;
 
-	NPC* m_Npc;
 	HUD* m_HUD;
 	Menu* m_Menu;
 	Title* m_Title;
@@ -66,7 +64,7 @@ public:
 	void NextField(FieldType Field);
 
 	Player* GetPlayer() { return m_Player; }
-	SIZE GetWindowSize() const { return WindowSize; }
+	SIZE  GetWindowSize() const { return WindowSize; }
 	POINT GetMousePos() const { return ptMouse; }
 };
 

@@ -17,6 +17,7 @@ public:
 	void Update(float DeltaTime);
 	virtual void Reset() override;
 	FieldType GetFieldType() const { return field; }
+	BitMap* GetBitMap() const { return m_BitMap; }
 
 };
 
