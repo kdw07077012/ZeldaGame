@@ -1,10 +1,25 @@
 #include "Field.h"
 #include <stdio.h>
 #include "GameManager.h"
+
 Field::Field()
 {
-	
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			dstrObj* obj = new dstrObj(dstrObjType_Thicket, 145 + (j * 20), 312 + (i * 25));
+			AttackableObjects.push_back(obj);
+		}
+	}
+	//578, 363
 
+	dstrObj* obj = new dstrObj(dstrObjType_Jar, 145 + 200, 312);
+	AttackableObjects.push_back(obj);
+
+	dstrObj* obj1 = new dstrObj(dstrObjType_Jar, 722, 363);
+	AttackableObjects.push_back(obj1);
+	
 	m_BackGround = new BackGround(FieldType_Default);
 	NPC = new FieldNPC;
 
@@ -67,6 +82,11 @@ void Field::Draw(HDC backDC, float DeltaTime)
 	{
 		obstacles[i].Draw(backDC, cameraX, cameraY);
 	}
+
+	for (auto obj : AttackableObjects)
+	{
+		obj->Draw(backDC, DeltaTime);
+	}
 	
 	NextField_obstacles[0].Draw(backDC, cameraX, cameraY);
 
@@ -102,8 +122,27 @@ bool Field::Collision(RECT rect)
 	{
 		if (IntersectRect(&tmp, &Waterobstacles[i].GetCollision(), &rect))
 		{
-			
+			GameManager::GetInstance()->GetPlayer()->SetPlayerState(PlayerState_FALLWATER);
+			return false;
 		}
+	}
+
+	for (auto obj : AttackableObjects)
+	{
+		if (IntersectRect(&tmp, &obj->GetCollision(), &rect))
+		{
+			if (!obj->Attacked)
+				return true;
+			else if(!obj->GetCoinPickup())
+			{
+				GameManager::GetInstance()->GetPlayer()->AddCoin(obj->CoinPickup());
+				return false;
+			}
+
+
+
+		}
+
 	}
 	
 	if (IntersectRect(&tmp, &NextField_obstacles[0].GetCollision(), &rect))
@@ -113,8 +152,26 @@ bool Field::Collision(RECT rect)
 		return true;
 	}
 
+
+
 	NPC->EventCollision(rect);
 
 
 	return false;
+}
+
+dstrObj* Field::AttackableObjects_Collision(RECT rect)
+{
+	RECT tmp;
+
+	for (auto obj : AttackableObjects)
+	{
+		if(IntersectRect(&tmp, &obj->GetCollision(), &rect))
+		{
+			if(!obj->Attacked)
+				return obj;		
+		}
+
+	}
+	return NULL;
 }

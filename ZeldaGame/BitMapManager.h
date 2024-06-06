@@ -2,6 +2,7 @@
 #include "BitMap.h"
 
 #include <string>
+
 //#define DEBUG // 콜리전 텍스트딩 디버깅 
 enum ImageType // 이미지 타입을 통해 불러옴
 {
@@ -19,6 +20,8 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_NPC,
 	ImageType_NPCTextBar,
 	ImageType_Item,
+	ImageType_DstrObj,
+	ImageType_Coin,
 };
 
 enum FieldType
@@ -61,9 +64,11 @@ private:
 	BitMap* m_NpcBitMap;		//Npc 이미지 
 	BitMap* m_NpcTextBarBitMap; // npc텍스트바 이미지
 	BitMap* m_ItemBitMap;		// 아이템 이미지
+	BitMap* m_DstrObjBitMap;		// 파괴가능오브젝트 이미지
+	BitMap* m_CoinBitMap;		// 코인 이미지
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지
-
+	PlayerDirBitmap playerSkillDirBitmap;  // 플레이어 방향별이미지
 public:
 	static BitMapManager* GetInstance() // 싱글톤
 	{
@@ -79,11 +84,19 @@ public:
 	BitMap* GetBitMap(ImageType Image) const; 					 // 해당 타입의 이미지 반환
 	SIZE GetWindowSize() const { return m_WindowBitMap.GetSize(); }  // 윈도우 사이즈 반환
 	BitMap GetWindowBitMap() const { return m_WindowBitMap; }
-	PlayerDirBitmap GetPlayerDirBitmap() const { return playerDirBitmap; }
+	PlayerDirBitmap GetPlayerDirBitmap(bool Skill = 0) const 
+	{
+		if(Skill) 
+			return playerSkillDirBitmap;
+		else 
+			return playerDirBitmap;
+	}
 
 	BitMap* GetBackGroundBitMap(FieldType Image) const {
 		return m_FieldBitMap[Image];
 	}
+
+	void ChangeFont_TextDraw(HDC backDC, std::string str, int FontSize, int x, int y);
 
 };
 

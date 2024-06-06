@@ -7,6 +7,11 @@ Player::Player()
 	m_playerDirBitmap[UP] = BitMapManager::GetInstance()->GetPlayerDirBitmap().Up_Bitmap;
 	m_playerDirBitmap[DOWN] = BitMapManager::GetInstance()->GetPlayerDirBitmap().Down_Bitmap;
 
+	m_playerSkillDirBitmap[UP] = BitMapManager::GetInstance()->GetPlayerDirBitmap(true).Up_Bitmap;
+	m_playerSkillDirBitmap[DOWN] = BitMapManager::GetInstance()->GetPlayerDirBitmap(true).Down_Bitmap;
+	m_playerSkillDirBitmap[LEFT] = BitMapManager::GetInstance()->GetPlayerDirBitmap(true).Left_Bitmap;
+	m_playerSkillDirBitmap[RIGHT] = BitMapManager::GetInstance()->GetPlayerDirBitmap(true).Right_Bitmap;
+
 	msize = BitMapManager::GetInstance()->GetWindowSize();
 	m_pos.X = 650;
 	m_pos.Y = 372;
@@ -19,14 +24,55 @@ Player::Player()
 
 	size.cx = 30;
 	size.cy = 25;
-
-
+	Skill = false;
+	CoinCount = 0;
+	
 }
 
 //976 633
 Player::~Player()
 {
 	
+}
+
+void Player::AddCoin(int Count)
+{
+	CoinCount += Count;
+}
+
+void Player::AttackCheck()
+{
+	RECT rect = player_rect;
+	SIZE size = { 30, 25 };
+
+	switch (dir)
+	{
+	case LEFT:
+		rect.left = player_rect.left - (size.cx / 2);
+		rect.right = player_rect.right - (size.cx / 2);
+		break;
+	case RIGHT:
+		rect.left = player_rect.left + (size.cx / 2);
+		rect.right = player_rect.right + (size.cx / 2);
+		break;
+	case UP:
+		rect.top = player_rect.top - (size.cy / 2);
+		rect.bottom = player_rect.bottom - (size.cy);
+		break;
+	case DOWN:
+		rect.top = player_rect.top + (size.cy);
+		rect.bottom = player_rect.bottom + (size.cy / 2);
+		break;
+	default:
+		break;
+	}
+
+
+
+	if (GameManager::GetInstance()->FieldObject_AttackCollision(rect))
+	{
+		
+	}
 }
 
 bool Player::PlayerInput(float DeltaTime)
@@ -36,6 +82,20 @@ bool Player::PlayerInput(float DeltaTime)
 
 	m_bmoveable = false;
 	RECT rect = player_rect;
+
+
+	if (GetAsyncKeyState(0x4A) && 0x8000) // J : 공격
+	{
+		m_playerState = PlayerState_Attack;
+		Skill = true;
+		AnimationCount = 1;
+		MaxAnimCount = 8;
+		
+		size.cx = 200;
+		size.cy = 200;
+
+		AttackCheck();
+	}
 
 
 	if (GetAsyncKeyState(0x57) && 0x8000) //W
@@ -153,12 +213,32 @@ bool Player::PlayerInput(float DeltaTime)
 
 void Player::Draw(HDC backDC, float DeltaTime)
 {
+	int screenX = 0;
+	int screenY = 0;
+
+	
+
+	
+
 	//화면 중심 좌표에서 카메라랜더링 좌표값과 플레이어윈도우 좌표값 대입
-	int screenX = (((msize.cx / 2) - (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X;
-	int screenY = (((msize.cy / 2) - (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y;
-	player_rect = { screenX + 10, screenY, screenX + size.cx * 2 - 10, screenY + size.cy * 2};
+	if (Skill)
+	{
+		screenX = (((msize.cx / 2) - (size.cx / 2)) - Camera::GetInstance()->GetX()) + m_pos.X;
+		screenY = (((msize.cy / 2) - (size.cy / 2)) - Camera::GetInstance()->GetY()) + m_pos.Y;
+	}
+	else
+	{
+		screenX = (((msize.cx / 2) - (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X;
+		screenY = (((msize.cy / 2) - (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y;
+	}
 
+	int AttackX = (((msize.cx / 2) - (30 * 2)) - Camera::GetInstance()->GetX()) + m_pos.X;
+	int AttackY = (((msize.cy / 2) - (25 * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y;
 
+	player_rect = { AttackX + 10, AttackY, AttackX + 30 * 2 - 10, AttackY + 25 * 2};
+
+	//std::string str = "CoinCount : " + std::to_string(CoinCount);
+	//TextOutA(backDC, 200, 50, str.c_str(), str.length());
 #ifdef DEBUG
 	//디버깅 드로우
 	std::string str = "m_posX : " + std::to_string(m_pos.X);
@@ -218,8 +298,35 @@ void Player::Draw(HDC backDC, float DeltaTime)
 
 		}
 	}
+	else if (m_playerState == PlayerState_Attack)
+	{
+		m_playerSkillDirBitmap[dir]->AnimationUpdate(backDC, AnimationCount,
+			screenX,
+			screenY,
+			size, 0.7f, 600);
+
+		AnimLoop = false;
+		fAnimSpeed = 0.01f;
+
+		if (AnimationCount >= MaxAnimCount - 1)
+		{
+		
+			AnimLoop = true;
+			fAnimSpeed = 0.04;
+			m_playerState = PlayerState_IDLE;
+			AnimationCount = 1;
+			MaxAnimCount = 10;
+			size.cx = 30;
+			size.cy = 25;
+			Skill = false;
+			m_bmoveable = false;
+
+		}
+
+	}
 	else
 	{
+		
 		if (m_bmoveable)
 			m_playerDirBitmap[dir][PlayerState_WALK].AnimationUpdate(backDC, AnimationCount,
 				screenX,
@@ -229,7 +336,7 @@ void Player::Draw(HDC backDC, float DeltaTime)
 			m_playerDirBitmap[dir][PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount,
 				screenX,
 				screenY, size, 2.0f);
-		
+			
 	}
 	
 
@@ -246,7 +353,7 @@ void Player::Update(float DeltaTime)
 	if (bHit)
 	{
 		DieDeltaTime += DeltaTime;
-		if (DieDeltaTime > 1.0f)
+		if (DieDeltaTime > 0.5f)
 		{
 			bHit = false;
 			DieDeltaTime = 0.0f;

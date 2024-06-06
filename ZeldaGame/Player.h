@@ -9,6 +9,7 @@ enum PlayerState
 	PlayerState_IDLE,		// 가만히 있는상태
 	PlayerState_WALK,     //걷는상태
 	PlayerState_FALLWATER, // 물에 빠진상태
+	PlayerState_Attack,
 	PlayerState_HIT,	   // 히트
 	PlayerState_PICKUP,   //물건줍는 상태
 	PlayerState_PICKUP_WALK, //물건줍은상태에서 걷는 상태
@@ -28,31 +29,40 @@ class Player : public Object
 {
 private:
 	BitMap *m_playerDirBitmap[4];
+	BitMap* m_playerSkillDirBitmap[4];
+
+	PlayerState m_playerState; //플레이어 상태
+	RECT player_rect;			// 콜리전
+	SIZE size;
+	Direction dir;
 	
-public:
-	Player();
-	~Player();
-	
+	SIZE msize;
+
+	bool Skill;
 	bool AnimLoop;
 	bool bHit;
 	float DieDeltaTime;
-	PlayerState m_playerState;
-	RECT player_rect;
-	SIZE size;
 	int MaxAnimCount;
-	Direction dir;
 	bool m_bmoveable;
-	Position m_pos;
 	int AnimationCount;
 	float fMoveDeltaTime;
 	float fAnimSpeed;
+	int screenPosX;
+	int screenPosY;
+	int CoinCount;
+public:
+	Player();
+	~Player();
+
+	Position m_pos;
+	void AddCoin(int Count);
+	void AttackCheck();
 	bool PlayerInput(float DeltaTime);
 	virtual void Draw(HDC backDC, float DeltaTime) override;
 	void Update(float DeltaTime);
 	virtual void Reset() override;
-	int screenPosX;
-	int screenPosY;
-	SIZE msize;
+	int GetCurrentCoin()const { return CoinCount; }
+	
 
 	void SetPlayerState(PlayerState state);
 	Position GetPlayerPos() const { return m_pos; }

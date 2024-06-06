@@ -18,6 +18,7 @@ protected:
 
 public:
 	Object() : m_ix(0), m_iy(0) {};
+	Object(int x, int y) : m_ix(x), m_iy(y) {};
 	virtual ~Object() { delete m_BitMap; }
 
 	virtual void Draw(HDC backDC, float DeltaTime = 0.0f) = 0; 

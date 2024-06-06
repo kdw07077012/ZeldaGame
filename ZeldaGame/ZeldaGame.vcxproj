@@ -131,6 +131,8 @@
     <ClInclude Include="BitMap.h" />
     <ClInclude Include="BitMapManager.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Coin.h" />
+    <ClInclude Include="dstrObj.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="FieldNPC.h" />
     <ClInclude Include="framework.h" />
@@ -159,6 +161,8 @@
     <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="BitMapManager.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="dstrObj.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="FieldNPC.cpp" />
     <ClCompile Include="GameManager.cpp" />

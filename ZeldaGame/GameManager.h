@@ -61,6 +61,7 @@ public:
 	void DoubleBuffer(float DeltaTime);
 	void Release(HWND hWnd);
 	bool FieldCollision(RECT rect);
+	bool FieldObject_AttackCollision(RECT rect);
 	void NextField(FieldType Field);
 
 	Player* GetPlayer() { return m_Player; }

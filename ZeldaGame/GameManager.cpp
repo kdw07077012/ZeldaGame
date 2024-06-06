@@ -212,7 +212,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 
 		m_Player->Draw(backDC, DeltaTime);	
 		m_HUD->Draw(backDC, DeltaTime);
-
+		BitMapManager::GetInstance()->ChangeFont_TextDraw(backDC, std::to_string(m_Player->GetCurrentCoin()), 20, 270, 15);
 		if(currentField == FieldType_Store)
 			m_StoreField->BackDraw(backDC, DeltaTime);
 
@@ -270,6 +270,40 @@ bool GameManager::FieldCollision(RECT rect)
 		break;
 	}
 	
+	return false;
+}
+
+bool GameManager::FieldObject_AttackCollision(RECT rect)
+{
+	dstrObj* obj = NULL;
+
+	switch (currentField)
+	{
+	case FieldType_Default:
+		obj = m_Field->AttackableObjects_Collision(rect);
+		if (obj != NULL)
+		{
+			obj->AttackedObject();
+			return true;
+		}
+			
+		break;
+	case FieldType_Store:
+		break;
+	case FieldType_Store_ShoeStroe:
+		break;
+	case FieldType_Store_StoreRoom:
+		break;
+	case FieldType_Dungeon:
+		break;
+	case FieldType_Boss:
+		break;
+	case End_Field:
+		break;
+	default:
+		break;
+	}
+
 	return false;
 }
 

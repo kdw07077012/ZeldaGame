@@ -6,7 +6,7 @@
 #include "Obstacle.h"
 #include "FieldNPC.h"
 #include <vector>
-
+#include "dstrObj.h"
 //#define DEBUG
 
 class Field : public Object
@@ -19,7 +19,9 @@ protected:
 	Obstacle* Waterobstacles; // 물 콜리전 
 	Obstacle* NextField_obstacles; // 다음 필드로 갈 수 있는 콜리전 
 	BackGround* m_BackGround; // 필드 배경 
+
 	FieldNPC* NPC;
+	std::vector<dstrObj*> AttackableObjects;
 public:
 	Field();
 	~Field();
@@ -29,7 +31,7 @@ public:
 	virtual void Reset() override;
 	
 	virtual bool Collision(RECT rect);  // 필드 콜리전 체크 
-
+	dstrObj* AttackableObjects_Collision(RECT rect);	//플레이어가 공격가능한 오브젝트들의 콜리전체크
 
 
 };
