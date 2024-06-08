@@ -68,8 +68,6 @@ void GameManager::Update(float DeltaTime)
 		}
 	}
 	
-	
-
 
 	switch (m_eCurGameState)
 	{
@@ -127,6 +125,8 @@ void GameManager::Update(float DeltaTime)
 			break;
 		case FieldType_Store_StoreRoom:
 			m_StoreRoom_Field->Update(DeltaTime);
+			
+			
 			break;
 		case FieldType_Dungeon:
 			break;
@@ -138,6 +138,11 @@ void GameManager::Update(float DeltaTime)
 			break;
 		}
 
+		//
+		if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+		{
+			m_Player->DamageHP(0.2f);
+		}
 		
 		break;
 	case GAMESTATE_INVENTORY:
@@ -147,6 +152,26 @@ void GameManager::Update(float DeltaTime)
 		ScreenToClient(m_hWnd, &ptMouse);
 		m_Ivnentory->Update(DeltaTime, ptMouse);
 		
+		if (m_Ivnentory->SelectItem != NULL)
+		{
+			if (GetAsyncKeyState(VK_RETURN) & 0x8000) // 키 선택된상태에서 엔터누를시 장비 장착
+			{
+				if (m_Ivnentory->SelectItem->IvenSlot->ItemEquipment)
+				{
+					m_Ivnentory->SelectItem->IvenSlot->ItemEquipment = false;
+					m_HUD->EquipmentedItem(m_Ivnentory->SelectItem->GetItem()->item, false);
+					m_Player->EqupmentAdd(m_Ivnentory->SelectItem->GetItem()->item, false);
+				}
+				else
+				{
+					m_Ivnentory->SelectItem->IvenSlot->ItemEquipment = true;
+					m_HUD->EquipmentedItem(m_Ivnentory->SelectItem->GetItem()->item, true);
+					m_Player->EqupmentAdd(m_Ivnentory->SelectItem->GetItem()->item, true);
+				}
+
+				
+			}
+		}
 			
 		
 		break;
@@ -219,6 +244,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		break;
 	case GAMESTATE_INVENTORY:
 		m_Ivnentory->Draw(backDC, DeltaTime);
+
 		break;
 	default:
 		break;
@@ -333,5 +359,38 @@ void GameManager::NextField(FieldType Field)
 		break;
 	default:
 		break;
+	}
+}
+
+void GameManager::StoreItemBuy(InGame_Item itemType, int price)
+{
+	if (m_Player->GetCurrentCoin() >= price)
+	{
+		Item* item;
+
+		switch (itemType)
+		{
+		case InGame_Item_Lanton:
+			item = new Item(Item_Lanton, 0, 0, ItemImageType_Inven);
+			m_Ivnentory->AddItem(item);
+			break;
+		case InGame_Item_Shield:
+			item = new Item(Item_Shield, 0, 0, ItemImageType_Inven);
+			m_Ivnentory->AddItem(item);
+			break;
+		case InGame_Item_HpAdd:
+			m_Player->AddMaxHP();
+			m_HUD->HPMaxAdd();
+			// 바로 체력증가
+			break;
+		case InGame_Item_Position:
+			m_Player->Hp_Portion();
+			// 바로 회복
+			break;
+		default:
+			break;
+		}
+
+		m_Player->RemvoeCoin(price);
 	}
 }

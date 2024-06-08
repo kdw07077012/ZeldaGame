@@ -70,7 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             {
                 float DeltaTime = (FrameTime - limitFrameTime) * 0.01f;
 
-                limitFrameTime = FrameTime + 60; // 30 => 0.03초 : 프레임 30
+                limitFrameTime = FrameTime + 60; // 60 => 0.06초 : 프레임 60
 
 
                 GameManager::GetInstance()->DoubleBuffer(DeltaTime); // 게임 버퍼, 그리기 

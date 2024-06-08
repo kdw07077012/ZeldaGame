@@ -12,12 +12,16 @@ void BitMapManager::Init(HDC hdc)
     m_BackBitMap       = ImageRoad(hdc, (char*)"Image//Map//Field//Field%d.bmp", ImageType_BackGround);
     m_PlayerHudBitMap  = ImageRoad(hdc, (char*)"Image//HUD//PlayerHUD.bmp", ImageType_HUD);
     m_InventoryBitMap  = ImageRoad(hdc, (char*)"Image//Menu//Inventory//EmptyInven.bmp", ImageType_Inventory);
-    m_IvenItemBitMap   = ImageRoad(hdc, (char*)"Image//Menu//Inventory//Item//%d.bmp", ImageType_InvenItem);
+    m_IvenItemBitMap   = ImageRoad(hdc, (char*)"Image//Menu//Inventory//Item//Inven_%d.bmp", ImageType_InvenItem);
     m_NpcBitMap        = ImageRoad(hdc, (char*)"Image//Npc//Npc%d.bmp", ImageType_NPC);
     m_NpcTextBarBitMap = ImageRoad(hdc, (char*)"Image//Npc//Npc_TextBar%d.bmp", ImageType_NPCTextBar);
     m_ItemBitMap       = ImageRoad(hdc, (char*)"Image//Item//Item%d.bmp", ImageType_Item);
     m_DstrObjBitMap    = ImageRoad(hdc, (char*)"Image//Block//DstrObj%d.bmp", ImageType_DstrObj);
     m_CoinBitMap       = ImageRoad(hdc, (char*)"Image//Item//Bonus_Coin%d.bmp", ImageType_Coin);
+    m_ChooseItemBitMap = ImageRoad(hdc, (char*)"Image//Menu//Inventory//Item//Choose_Item%d.bmp", ImageType_Choose_Item);
+    m_ItemTextBarBitMap = ImageRoad(hdc, (char*)"Image//Map//Store//TextBar//Text_%d.bmp", ImageType_ItemTextBar);
+    m_LinkHpBitMap     = ImageRoad(hdc, (char*)"Image//HUD//LinkHp.bmp", ImageType_LikHp);
+
     //플레이어 방향별 비트맵
     playerDirBitmap.Down_Bitmap   = ImageRoad(hdc, (char*)"Image//Player//DOWN//%d_(1).bmp", ImageType_Player);
     playerDirBitmap.Up_Bitmap     = ImageRoad(hdc, (char*)"Image//Player//UP//%d_(1).bmp", ImageType_Player);
@@ -36,7 +40,7 @@ void BitMapManager::Init(HDC hdc)
 
 
     //Thicket0
-    
+
 }
 
 void BitMapManager::ChangeFont_TextDraw(HDC backDC, std::string str, int FontSize, int x, int y)
@@ -79,7 +83,8 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     char buf[256];
     int Size = 0;
     switch (type)
-    {
+    {  
+    case ImageType_ItemTextBar:
     case ImageType_Item:
         Size = 4;
         break;
@@ -94,7 +99,7 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
         Size = 2;
         break;
     case ImageType_InvenItem:
-        Size = 4;
+        Size = 6;
         break;
     case ImageType_Inventory:
         Size = 1;
@@ -105,6 +110,8 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     case ImageType_Button:
         Size = 3;
         break;
+    case ImageType_LikHp:
+    case ImageType_Choose_Item:
     case ImageType_Coin:
     case ImageType_Title:
         Size = 1;
@@ -142,6 +149,15 @@ BitMap* BitMapManager::GetBitMap(ImageType Image) const
 {
     switch (Image)
     {
+    case ImageType_LikHp:
+        return m_LinkHpBitMap;
+        break;
+    case ImageType_ItemTextBar:
+        return m_ItemTextBarBitMap;
+        break;
+    case ImageType_Choose_Item:
+        return m_ChooseItemBitMap;
+        break;
     case ImageType_Coin:
         return m_CoinBitMap;
         break;

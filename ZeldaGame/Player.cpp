@@ -12,6 +12,7 @@ Player::Player()
 	m_playerSkillDirBitmap[LEFT] = BitMapManager::GetInstance()->GetPlayerDirBitmap(true).Left_Bitmap;
 	m_playerSkillDirBitmap[RIGHT] = BitMapManager::GetInstance()->GetPlayerDirBitmap(true).Right_Bitmap;
 
+
 	msize = BitMapManager::GetInstance()->GetWindowSize();
 	m_pos.X = 650;
 	m_pos.Y = 372;
@@ -25,8 +26,13 @@ Player::Player()
 	size.cx = 30;
 	size.cy = 25;
 	Skill = false;
-	CoinCount = 0;
-	
+	CoinCount = 1000;
+
+	Equipment[0] = None;
+	Equipment[1] = None;
+
+	PlayerMaxHP = 5;
+	PlayerHP = 4.4f;
 }
 
 //976 633
@@ -38,6 +44,11 @@ Player::~Player()
 void Player::AddCoin(int Count)
 {
 	CoinCount += Count;
+}
+void Player::RemvoeCoin(int Count)
+
+{
+	CoinCount -= Count;
 }
 
 void Player::AttackCheck()
@@ -84,7 +95,7 @@ bool Player::PlayerInput(float DeltaTime)
 	RECT rect = player_rect;
 
 
-	if (GetAsyncKeyState(0x4A) && 0x8000) // J : 공격
+	if (GetAsyncKeyState(0x4A) && 0x8000 && Equipment[0] == Item_Sword) // J : 공격 무기를장착했을시
 	{
 		m_playerState = PlayerState_Attack;
 		Skill = true;
@@ -237,8 +248,9 @@ void Player::Draw(HDC backDC, float DeltaTime)
 
 	player_rect = { AttackX + 10, AttackY, AttackX + 30 * 2 - 10, AttackY + 25 * 2};
 
-	//std::string str = "CoinCount : " + std::to_string(CoinCount);
-	//TextOutA(backDC, 200, 50, str.c_str(), str.length());
+	std::string str = "m_posX : " + std::to_string(PlayerHP);
+	TextOutA(backDC, 200, 50, str.c_str(), str.length());
+
 #ifdef DEBUG
 	//디버깅 드로우
 	std::string str = "m_posX : " + std::to_string(m_pos.X);
@@ -377,8 +389,40 @@ void Player::Update(float DeltaTime)
 	}
 }
 
+void Player::EqupmentAdd(EItem item, bool Equipped) 
+{
+	if (item == Item_Sword)
+	{
+		if(Equipped)
+			Equipment[0] = item;
+		else
+			Equipment[0] = None;
+		
+	}
+	else
+	{
+		Equipment[1] = item;
+	}
+}
+
 void Player::Reset()
 {
+}
+
+void Player::Hp_Portion()
+{
+	// PlayerHP += 1.0f;
+	float hp = PlayerHP;
+	hp += 1.0f;
+
+	if (hp >= PlayerMaxHP)
+	{
+		PlayerHP = PlayerMaxHP;
+	}
+	else
+	{
+		PlayerHP = hp;
+	}
 }
 
 void Player::SetPlayerState(PlayerState state)

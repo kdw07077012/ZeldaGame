@@ -15,7 +15,7 @@ private:
 	Coin* m_coin;
 	SIZE m_size;
 	dstrObjType m_type;
-
+	int m_CoinProbability; // ÄÚÀÎÈ®·ü
 	float JarAimTimer;
 public:
 	dstrObj(dstrObjType Type, int x, int y);

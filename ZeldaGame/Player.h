@@ -1,7 +1,7 @@
 #pragma once
 #include "Object.h"
 #include "Camera.h"
-
+#include "Item.h"
 #define PLAYER_MAX_SPEED 300
 
 enum PlayerState
@@ -37,6 +37,7 @@ private:
 	Direction dir;
 	
 	SIZE msize;
+	EItem Equipment[2]; // 현재 장비 0 : 무기 1: 장비
 
 	bool Skill;
 	bool AnimLoop;
@@ -50,20 +51,30 @@ private:
 	int screenPosX;
 	int screenPosY;
 	int CoinCount;
+	
+	float PlayerHP;
+	int PlayerMaxHP;
+	
 public:
 	Player();
 	~Player();
 
 	Position m_pos;
 	void AddCoin(int Count);
+	void RemvoeCoin(int Count);
 	void AttackCheck();
 	bool PlayerInput(float DeltaTime);
 	virtual void Draw(HDC backDC, float DeltaTime) override;
 	void Update(float DeltaTime);
+	void EqupmentAdd(EItem item, bool Equipped);
 	virtual void Reset() override;
 	int GetCurrentCoin()const { return CoinCount; }
-	
+	float GetHp() const { return PlayerHP; }
+	float GetMaxHP() const { return PlayerMaxHP; }
 
+	void DamageHP(float dmage) { PlayerHP -= dmage; }
+	void AddMaxHP() { PlayerMaxHP += 1; }
+	void Hp_Portion();
 	void SetPlayerState(PlayerState state);
 	Position GetPlayerPos() const { return m_pos; }
 	

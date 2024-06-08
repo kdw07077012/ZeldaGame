@@ -22,6 +22,9 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_Item,
 	ImageType_DstrObj,
 	ImageType_Coin,
+	ImageType_Choose_Item,
+	ImageType_ItemTextBar,
+	ImageType_LikHp,
 };
 
 enum FieldType
@@ -66,6 +69,9 @@ private:
 	BitMap* m_ItemBitMap;		// 아이템 이미지
 	BitMap* m_DstrObjBitMap;		// 파괴가능오브젝트 이미지
 	BitMap* m_CoinBitMap;		// 코인 이미지
+	BitMap* m_ChooseItemBitMap;		// 아이템 선택표시 이미지
+	BitMap* m_ItemTextBarBitMap;
+	BitMap* m_LinkHpBitMap;		// 캐릭터HP 이미지
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지
 	PlayerDirBitmap playerSkillDirBitmap;  // 플레이어 방향별이미지

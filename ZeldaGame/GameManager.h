@@ -63,6 +63,7 @@ public:
 	bool FieldCollision(RECT rect);
 	bool FieldObject_AttackCollision(RECT rect);
 	void NextField(FieldType Field);
+	void StoreItemBuy(InGame_Item itemType, int price);
 
 	Player* GetPlayer() { return m_Player; }
 	SIZE  GetWindowSize() const { return WindowSize; }

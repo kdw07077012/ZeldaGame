@@ -1,23 +1,25 @@
 #include "Inventory.h"
-
+#include "GameManager.h"
 Inventory::Inventory()
 {
 	m_BitMap = BitMapManager::GetInstance()->GetBitMap(ImageType_Inventory);
+	
 	int Count = 0;
 	Enabled = false;
+	SelectItem = NULL;
 
 	for (int i = 0; i < 3; i++) // 세로
 	{
 		for (int j = 0; j < 4; j++) // 가로 
 		{
-			SlotPos[Count].X = SLOT_STARTX + (110 * j + 1);
-			SlotPos[Count].Y = SLOT_STARTY + (78 * i + 1);  
+			SlotPos[Count].X = SLOT_STARTX + (SLOT_OFFEST_X * j + 1);
+			SlotPos[Count].Y = SLOT_STARTY + (SLOT_OFFEST_Y * i + 1);
 			Count++;
 
 			ItemSlot* itemSlot = new ItemSlot;
-			itemSlot->item = NULL;
-			itemSlot->pos.X = SLOT_STARTX + (110 * j + 1);
-			itemSlot->pos.Y = SLOT_STARTY + (78 * i + 1);
+			
+			itemSlot->pos.X = SLOT_STARTX + (SLOT_OFFEST_X * j + 1);
+			itemSlot->pos.Y = SLOT_STARTY + (SLOT_OFFEST_Y * i + 1);
 			itemSlots.push_back(itemSlot);
 		}
 
@@ -25,7 +27,12 @@ Inventory::Inventory()
 	}
 
 
+
+	Item* item = new Item(Item_Sword, 0, 0, ItemImageType_Inven);
+	AddItem(item);
+
 }
+//ImageType_InvenItem
 
 Inventory::~Inventory()
 {
@@ -38,10 +45,7 @@ void Inventory::Draw(HDC backDC, float DeltaTime)
 
 	for (ItemSlot* slot : itemSlots)
 	{
-		if (slot->item != NULL)
-		{
-			slot->item->Draw(backDC, DeltaTime);
-		}
+		slot->Draw(backDC, DeltaTime);
 	}
 
 	//item->Draw(backDC, DeltaTime);
@@ -52,19 +56,29 @@ void Inventory::Update(float DeltaTime, POINT mousePos)
 {
 	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) // 키 눌렀는지
 	{
-		for (int i = 0; i < SLOT_COUNT; i++)
+		
+		for (ItemSlot* slot : itemSlots) // 인벤선택 체크 
 		{
-			if (SlotPos[i].X < mousePos.x && SlotPos[i].X + SLOT_SIZEX > mousePos.x)
+			if (slot->pos.X < mousePos.x && slot->pos.X + SLOT_SIZEX > mousePos.x)
 			{
-				if (SlotPos[i].Y < mousePos.y && SlotPos[i].Y + SLOT_SIZEY > mousePos.y)
+				if (slot->pos.Y < mousePos.y && slot->pos.Y + SLOT_SIZEY > mousePos.y)
 				{
-					std::string integerVal = std::to_string(i);
-					//메세지로 출력
-					MessageBoxA(NULL, integerVal.c_str(), NULL, MB_OK);
+					if (SelectItem != NULL)
+					{
+						SelectItem->Selected = false;
+					}
+
+					slot->Selected = true;
+					SelectItem = slot;
+					break;
 				}
 			}
 		}
+
 	}
+
+
+
 
 
 
@@ -76,10 +90,10 @@ bool Inventory::AddItem(Item* _item)
 {
 	for (ItemSlot* slot : itemSlots)
 	{
-		if (slot->item == NULL)
+		if (slot->GetItem() == NULL)
 		{
 			_item->itemPos = slot->pos;
-			slot->item = _item;			
+			slot->SlotItemAdd(_item);
 			return true;
 		}
 	}

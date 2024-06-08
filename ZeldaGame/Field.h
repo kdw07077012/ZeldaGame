@@ -19,6 +19,7 @@ protected:
 	Obstacle* Waterobstacles; // 물 콜리전 
 	Obstacle* NextField_obstacles; // 다음 필드로 갈 수 있는 콜리전 
 	BackGround* m_BackGround; // 필드 배경 
+	
 
 	FieldNPC* NPC;
 	std::vector<dstrObj*> AttackableObjects;

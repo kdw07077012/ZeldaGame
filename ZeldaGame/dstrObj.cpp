@@ -1,6 +1,6 @@
 #include "dstrObj.h"
 #include "Camera.h"
-
+#include <time.h>
 dstrObj::dstrObj(dstrObjType Type, int x, int y)
 {
 	m_type = Type;
@@ -58,8 +58,7 @@ void dstrObj::Draw(HDC backDC, float DeltaTime)
 			{
 				if (fAnimDeltaTime > 0.01f)
 				{
-					JarAnimCount++;
-
+					JarAnimCount++;				
 					fAnimDeltaTime = 0.0f;
 				}
 			}	
@@ -70,7 +69,7 @@ void dstrObj::Draw(HDC backDC, float DeltaTime)
 		break;
 	}
 
-	if (Attacked)
+	if (Attacked && m_CoinProbability)
 		m_coin->Draw(backDC, DeltaTime);
 	
 
@@ -88,6 +87,7 @@ void dstrObj::Update(float DeltaTime)
 
 void dstrObj::AttackedObject()
 {
+	m_CoinProbability = rand() % 2; // 50프로 확률로 드랍
 	Attacked = true;
 }
 
