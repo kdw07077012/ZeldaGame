@@ -1,5 +1,5 @@
 #include "Camera.h"
-
+#include "GameManager.h"
 Camera* Camera::m_hThis = NULL;
 
 Camera::Camera()
@@ -14,6 +14,8 @@ void Camera::Init(int x, int y)
 {
 	m_posX = x;
 	m_posY = y;
+	m_width = 1500;
+	m_height = 1024;
 	fTime = 0.0f;
 	bMapEndX = false;
 }
@@ -55,7 +57,7 @@ void Camera::Update(float DeltaTime)
 		{
 
 
-			if (m_posY > 1024 - msize.cy)
+			if (m_posY > m_height - msize.cy)
 				bMapEndY = true;
 			else
 			{
@@ -69,7 +71,7 @@ void Camera::Update(float DeltaTime)
 		{
 
 
-			if (m_posX >= 1500 - msize.cx)
+			if (m_posX >= m_width - msize.cx)
 				bMapEndX = true;
 			else
 			{

@@ -7,6 +7,7 @@
 #include "FieldNPC.h"
 #include <vector>
 #include "dstrObj.h"
+#include "MiniWood.h"
 //#define DEBUG
 
 class Field : public Object
@@ -19,8 +20,9 @@ protected:
 	Obstacle* Waterobstacles; // 물 콜리전 
 	Obstacle* NextField_obstacles; // 다음 필드로 갈 수 있는 콜리전 
 	BackGround* m_BackGround; // 필드 배경 
+	BitMap* MiniWoodBitmap; //미니변신 나무 비트맵
 	
-
+	MiniWood* wood;
 	FieldNPC* NPC;
 	std::vector<dstrObj*> AttackableObjects;
 public:

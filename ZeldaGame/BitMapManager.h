@@ -25,6 +25,10 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_Choose_Item,
 	ImageType_ItemTextBar,
 	ImageType_LikHp,
+	ImageType_Dungeon,
+	ImageType_MiniWood,
+	ImageType_PlayerMini,
+	ImageType_Player_MiniChange,
 };
 
 enum FieldType
@@ -72,6 +76,9 @@ private:
 	BitMap* m_ChooseItemBitMap;		// 아이템 선택표시 이미지
 	BitMap* m_ItemTextBarBitMap;
 	BitMap* m_LinkHpBitMap;		// 캐릭터HP 이미지
+	BitMap* m_MiniWoodBitmap;   // 작아지기위한 나무 비트맵
+	BitMap* m_PlayerMiniBitMap; // 플레이어 미니 비트맵
+	BitMap* m_PlayerMiniChangeBitMap; // 플레이어 체인지 애니메이션 비트맵
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지
 	PlayerDirBitmap playerSkillDirBitmap;  // 플레이어 방향별이미지

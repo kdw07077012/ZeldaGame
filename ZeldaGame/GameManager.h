@@ -8,7 +8,7 @@
 #include "Store_Field.h"
 #include "ShoeStroe_Field.h"
 #include "StoreRoom_Field.h"
-
+#include "Dungeon_Field.h"
 enum GAMESTATE
 {
 	GAMESTATE_TITLE,
@@ -39,6 +39,7 @@ private:
 	Store_Field*	m_StoreField;
 	ShoeStroe_Field* m_ShoeStroe_Field;
 	StoreRoom_Field* m_StoreRoom_Field;
+	Dungeon_Field* m_Dungeon_Field;
 
 	HUD* m_HUD;
 	Menu* m_Menu;

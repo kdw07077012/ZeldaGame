@@ -21,6 +21,9 @@ void BitMapManager::Init(HDC hdc)
     m_ChooseItemBitMap = ImageRoad(hdc, (char*)"Image//Menu//Inventory//Item//Choose_Item%d.bmp", ImageType_Choose_Item);
     m_ItemTextBarBitMap = ImageRoad(hdc, (char*)"Image//Map//Store//TextBar//Text_%d.bmp", ImageType_ItemTextBar);
     m_LinkHpBitMap     = ImageRoad(hdc, (char*)"Image//HUD//LinkHp.bmp", ImageType_LikHp);
+    m_MiniWoodBitmap   = ImageRoad(hdc, (char*)"Image//Mini//Wood%d.bmp", ImageType_MiniWood);
+    m_PlayerMiniBitMap = ImageRoad(hdc, (char*)"Image//Mini//Player_Mini%d.bmp", ImageType_PlayerMini);
+    m_PlayerMiniChangeBitMap = ImageRoad(hdc, (char*)"Image//Player//Player_MiniChange%d.bmp", ImageType_Player_MiniChange);
 
     //플레이어 방향별 비트맵
     playerDirBitmap.Down_Bitmap   = ImageRoad(hdc, (char*)"Image//Player//DOWN//%d_(1).bmp", ImageType_Player);
@@ -37,6 +40,7 @@ void BitMapManager::Init(HDC hdc)
     m_FieldBitMap[FieldType_Store]           = ImageRoad(hdc, (char*)"Image//Map//Store//Store%d.bmp", ImageType_Store);
     m_FieldBitMap[FieldType_Store_ShoeStroe] = ImageRoad(hdc, (char*)"Image//Map//Store//ShoeStore%d.bmp", ImageType_BackGround);
     m_FieldBitMap[FieldType_Store_StoreRoom] = ImageRoad(hdc, (char*)"Image//Map//Store//StoreRoom%d.bmp", ImageType_BackGround);
+    m_FieldBitMap[FieldType_Dungeon]         = ImageRoad(hdc, (char*)"Image//Map//Dungeon//DunGeon%d.bmp", ImageType_Dungeon);
 
 
     //Thicket0
@@ -94,6 +98,7 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     case ImageType_NPC:
         Size = 3;
         break;
+    case ImageType_Dungeon:
     case ImageType_DstrObj:
     case ImageType_Store:
         Size = 2;
@@ -110,6 +115,9 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     case ImageType_Button:
         Size = 3;
         break;
+    case ImageType_Player_MiniChange:
+    case ImageType_PlayerMini:
+    case ImageType_MiniWood:
     case ImageType_LikHp:
     case ImageType_Choose_Item:
     case ImageType_Coin:
@@ -149,6 +157,15 @@ BitMap* BitMapManager::GetBitMap(ImageType Image) const
 {
     switch (Image)
     {
+    case ImageType_Player_MiniChange:
+        return m_PlayerMiniChangeBitMap;
+        break;
+    case ImageType_PlayerMini:
+        return m_PlayerMiniBitMap;
+        break;
+    case ImageType_MiniWood:
+        return m_MiniWoodBitmap;
+        break;
     case ImageType_LikHp:
         return m_LinkHpBitMap;
         break;

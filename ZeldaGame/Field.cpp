@@ -14,6 +14,8 @@ Field::Field()
 	}
 	//578, 363
 
+	wood = new MiniWood(735, 192);
+
 	dstrObj* obj = new dstrObj(dstrObjType_Jar, 145 + 200, 312);
 	AttackableObjects.push_back(obj);
 
@@ -48,8 +50,10 @@ Field::Field()
 
 	fclose(fp);
 
-	NextField_obstacles = new Obstacle[1];
+	//Æ÷Å» ÄÝ¸®Àü 
+	NextField_obstacles = new Obstacle[2];
 	NextField_obstacles[0].Init(694, 0, 807, 48);
+	NextField_obstacles[1].Init(81, 659, 123, 675);
 }
 
 Field::~Field()
@@ -60,6 +64,7 @@ void Field::Init()
 {
 	Camera::GetInstance()->Init(EndPosition.X, EndPosition.Y);
 	GameManager::GetInstance()->GetPlayer()->m_pos = EndPosition;
+	Camera::GetInstance()->SetHeight(1024);
 }
 
 void Field::Draw(HDC backDC, float DeltaTime)
@@ -71,6 +76,7 @@ void Field::Draw(HDC backDC, float DeltaTime)
 	int  cameraX = Camera::GetInstance()->GetX();
 	int  cameraY = Camera::GetInstance()->GetY();
 	
+	wood->Draw(backDC, DeltaTime);
 
 	for (int i = 0; i < WaterobstacleSize; i++)
 	{
@@ -88,7 +94,10 @@ void Field::Draw(HDC backDC, float DeltaTime)
 		obj->Draw(backDC, DeltaTime);
 	}
 	
-	NextField_obstacles[0].Draw(backDC, cameraX, cameraY);
+	for (int i = 0; i < 2; i++)
+	{
+		NextField_obstacles[i].Draw(backDC, cameraX, cameraY);
+	}
 
 }
 
@@ -145,10 +154,18 @@ bool Field::Collision(RECT rect)
 
 	}
 	
-	if (IntersectRect(&tmp, &NextField_obstacles[0].GetCollision(), &rect))
+	if (IntersectRect(&tmp, &NextField_obstacles[0].GetCollision(), &rect)) // ½ºÅä¾î Æ÷Å»
 	{
 		EndPosition = GameManager::GetInstance()->GetPlayer()->m_pos;
-		GameManager::GetInstance()->NextField(FieldType_Store);	
+		GameManager::GetInstance()->NextField(FieldType_Store);
+		return true;
+	}
+
+	if (IntersectRect(&tmp, &NextField_obstacles[1].GetCollision(), &rect) && GameManager::GetInstance()->GetPlayer()->GetMini()) // ´øÀü Æ÷Å»
+	{
+		EndPosition = GameManager::GetInstance()->GetPlayer()->m_pos;
+		GameManager::GetInstance()->NextField(FieldType_Dungeon);
+		GameManager::GetInstance()->GetPlayer()->MiniReset();
 		return true;
 	}
 

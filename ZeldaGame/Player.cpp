@@ -12,6 +12,8 @@ Player::Player()
 	m_playerSkillDirBitmap[LEFT] = BitMapManager::GetInstance()->GetPlayerDirBitmap(true).Left_Bitmap;
 	m_playerSkillDirBitmap[RIGHT] = BitMapManager::GetInstance()->GetPlayerDirBitmap(true).Right_Bitmap;
 
+	m_MiniChangeAnimBitmap = BitMapManager::GetInstance()->GetBitMap(ImageType_Player_MiniChange);
+	m_MiniBitmap		   = BitMapManager::GetInstance()->GetBitMap(ImageType_PlayerMini);
 
 	msize = BitMapManager::GetInstance()->GetWindowSize();
 	m_pos.X = 650;
@@ -31,8 +33,8 @@ Player::Player()
 	Equipment[0] = None;
 	Equipment[1] = None;
 
-	PlayerMaxHP = 5;
-	PlayerHP = 4.4f;
+	PlayerMaxHP = PLAYER_DEFAULT_HP;
+	PlayerHP = PLAYER_DEFAULT_HP;
 }
 
 //976 633
@@ -106,6 +108,13 @@ bool Player::PlayerInput(float DeltaTime)
 		size.cy = 200;
 
 		AttackCheck();
+	}
+
+	if (GetAsyncKeyState(0x45) && 0x8000) //E 변신
+	{
+		MiniChange = true;
+		MaxAnimCount = 20;
+		
 	}
 
 
@@ -228,7 +237,6 @@ void Player::Draw(HDC backDC, float DeltaTime)
 	int screenY = 0;
 
 	
-
 	
 
 	//화면 중심 좌표에서 카메라랜더링 좌표값과 플레이어윈도우 좌표값 대입
@@ -246,11 +254,11 @@ void Player::Draw(HDC backDC, float DeltaTime)
 	int AttackX = (((msize.cx / 2) - (30 * 2)) - Camera::GetInstance()->GetX()) + m_pos.X;
 	int AttackY = (((msize.cy / 2) - (25 * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y;
 
-	player_rect = { AttackX + 10, AttackY, AttackX + 30 * 2 - 10, AttackY + 25 * 2};
-
-	std::string str = "m_posX : " + std::to_string(PlayerHP);
-	TextOutA(backDC, 200, 50, str.c_str(), str.length());
-
+	if (Mini) // 미니 상태 콜리전 변경
+		player_rect = { AttackX + 20, AttackY + 20, AttackX + 30 * 2 - 20, AttackY + 25 * 2 };
+	else
+		player_rect = { AttackX + 10, AttackY, AttackX + 30 * 2 - 10, AttackY + 25 * 2 };
+	
 #ifdef DEBUG
 	//디버깅 드로우
 	std::string str = "m_posX : " + std::to_string(m_pos.X);
@@ -270,16 +278,25 @@ void Player::Draw(HDC backDC, float DeltaTime)
 
 #endif
 
-	
-
 
 	if (m_playerState == PlayerState_FALLWATER)
 	{
-		m_playerDirBitmap[dir][PlayerState_FALLWATER].AnimationUpdate(backDC, AnimationCount,
-			screenX,
-			screenY, size, 2.0f);
-		AnimLoop = false;
-		fAnimSpeed = 0.1f;
+		if (Mini)
+		{
+			m_MiniBitmap->AnimationUpdate(backDC, AnimationCount, screenX, screenY, size, 2.0f, 160);
+			AnimLoop = false;
+			fAnimSpeed = 0.1f;
+		}
+		else
+		{
+			m_playerDirBitmap[dir][PlayerState_FALLWATER].AnimationUpdate(backDC, AnimationCount,
+				screenX,
+				screenY, size, 2.0f);
+			AnimLoop = false;
+			fAnimSpeed = 0.1f;
+		}
+
+		
 
 
 		if (AnimationCount >= MaxAnimCount - 1)
@@ -338,16 +355,37 @@ void Player::Draw(HDC backDC, float DeltaTime)
 	}
 	else
 	{
-		
-		if (m_bmoveable)
-			m_playerDirBitmap[dir][PlayerState_WALK].AnimationUpdate(backDC, AnimationCount,
-				screenX,
-				screenY,
-				size, 2.0f);
+
+		if (MiniChange) // 미니 체인지 애니메이션 재생 
+		{
+			m_MiniChangeAnimBitmap->AnimationUpdate(backDC, AnimationCount, screenX, screenY, size, 2.0f);
+		}
 		else
-			m_playerDirBitmap[dir][PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount,
-				screenX,
-				screenY, size, 2.0f);
+		{
+
+			if (Mini)
+			{
+				m_MiniBitmap->AnimationUpdate(backDC, AnimationCount, screenX, screenY, size, 2.0f);
+			}
+			else
+			{
+				if (m_bmoveable)
+					m_playerDirBitmap[dir][PlayerState_WALK].AnimationUpdate(backDC, AnimationCount,
+						screenX,
+						screenY,
+						size, 2.0f);
+				else
+					m_playerDirBitmap[dir][PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount,
+						screenX,
+						screenY, size, 2.0f);
+			}
+
+
+			
+
+			
+		}
+	
 			
 	}
 	
@@ -381,6 +419,16 @@ void Player::Update(float DeltaTime)
 		{
 			if(AnimLoop)
 				AnimationCount = 1;
+
+			if (MiniChange)
+			{
+				MiniChange = false;
+				Mini = true;
+				AnimationCount = 1;
+				MaxAnimCount = 6;
+				size = { 20,20 };
+			}
+				
 		}
 		else
 			AnimationCount++;
@@ -409,6 +457,13 @@ void Player::Reset()
 {
 }
 
+void Player::MiniReset()
+{
+	size.cx = 30;
+	size.cy = 25;
+	Mini = false;
+}
+
 void Player::Hp_Portion()
 {
 	// PlayerHP += 1.0f;
@@ -428,5 +483,7 @@ void Player::Hp_Portion()
 void Player::SetPlayerState(PlayerState state)
 {
 	m_playerState = state;
+
+
 }
 

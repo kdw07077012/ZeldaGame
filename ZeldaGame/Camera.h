@@ -29,6 +29,8 @@ public:
 		return m_hThis;
 	}
 
+	void SetHeight(int height) { m_height = height; }
+
 private:
 	int m_posX;
 	int m_posY;

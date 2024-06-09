@@ -39,6 +39,7 @@ void GameManager::Init(HWND hWnd)
 	m_StoreField = new Store_Field;
 	m_ShoeStroe_Field = new ShoeStroe_Field;
 	m_StoreRoom_Field = new StoreRoom_Field;
+	m_Dungeon_Field = new Dungeon_Field;
 
 	//다운캐스팅,
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
@@ -222,6 +223,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 			m_StoreRoom_Field->Draw(backDC, DeltaTime);
 			break;
 		case FieldType_Dungeon:
+			m_Dungeon_Field->Draw(backDC, DeltaTime);
 			break;
 		case FieldType_Boss: 
 			break;
@@ -238,9 +240,10 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		m_Player->Draw(backDC, DeltaTime);	
 		m_HUD->Draw(backDC, DeltaTime);
 		BitMapManager::GetInstance()->ChangeFont_TextDraw(backDC, std::to_string(m_Player->GetCurrentCoin()), 20, 270, 15);
-		if(currentField == FieldType_Store)
+		if (currentField == FieldType_Store)
 			m_StoreField->BackDraw(backDC, DeltaTime);
-
+		else if (currentField == FieldType_Dungeon)
+			m_Dungeon_Field->BackDraw(backDC, DeltaTime);
 		break;
 	case GAMESTATE_INVENTORY:
 		m_Ivnentory->Draw(backDC, DeltaTime);
@@ -352,6 +355,7 @@ void GameManager::NextField(FieldType Field)
 		m_StoreRoom_Field->Init();
 		break;
 	case FieldType_Dungeon:
+		m_Dungeon_Field->Init();
 		break;
 	case FieldType_Boss:
 		break;

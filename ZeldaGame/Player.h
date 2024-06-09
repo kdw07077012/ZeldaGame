@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Item.h"
 #define PLAYER_MAX_SPEED 300
+#define PLAYER_DEFAULT_HP 4
 
 enum PlayerState
 {
@@ -31,6 +32,9 @@ private:
 	BitMap *m_playerDirBitmap[4];
 	BitMap* m_playerSkillDirBitmap[4];
 
+	BitMap* m_MiniChangeAnimBitmap;
+	BitMap* m_MiniBitmap;
+
 	PlayerState m_playerState; //플레이어 상태
 	RECT player_rect;			// 콜리전
 	SIZE size;
@@ -38,6 +42,9 @@ private:
 	
 	SIZE msize;
 	EItem Equipment[2]; // 현재 장비 0 : 무기 1: 장비
+
+	bool MiniChange;
+	bool Mini;
 
 	bool Skill;
 	bool AnimLoop;
@@ -71,6 +78,8 @@ public:
 	int GetCurrentCoin()const { return CoinCount; }
 	float GetHp() const { return PlayerHP; }
 	float GetMaxHP() const { return PlayerMaxHP; }
+	bool GetMini() const { return Mini; } //플레이어 미니상태인지
+	void MiniReset(); // 미니모드 해제 리셋
 
 	void DamageHP(float dmage) { PlayerHP -= dmage; }
 	void AddMaxHP() { PlayerMaxHP += 1; }
