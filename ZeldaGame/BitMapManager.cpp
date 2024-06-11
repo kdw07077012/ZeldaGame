@@ -42,6 +42,8 @@ void BitMapManager::Init(HDC hdc)
     m_FieldBitMap[FieldType_Store_StoreRoom] = ImageRoad(hdc, (char*)"Image//Map//Store//StoreRoom%d.bmp", ImageType_BackGround);
     m_FieldBitMap[FieldType_Dungeon]         = ImageRoad(hdc, (char*)"Image//Map//Dungeon//DunGeon%d.bmp", ImageType_Dungeon);
 
+    m_MonsterBitMap  = ImageRoad(hdc, (char*)"Image//Monster//Monster%d.bmp", ImageType_Monster);
+
 
     //Thicket0
 
@@ -88,6 +90,9 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     int Size = 0;
     switch (type)
     {  
+    case ImageType_Monster:
+        Size = 1;
+        break;
     case ImageType_ItemTextBar:
     case ImageType_Item:
         Size = 4;
@@ -157,6 +162,9 @@ BitMap* BitMapManager::GetBitMap(ImageType Image) const
 {
     switch (Image)
     {
+    case ImageType_Monster:
+        return m_MonsterBitMap;
+        break;
     case ImageType_Player_MiniChange:
         return m_PlayerMiniChangeBitMap;
         break;

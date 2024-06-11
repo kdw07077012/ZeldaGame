@@ -54,6 +54,10 @@ Field::Field()
 	NextField_obstacles = new Obstacle[2];
 	NextField_obstacles[0].Init(694, 0, 807, 48);
 	NextField_obstacles[1].Init(81, 659, 123, 675);
+
+
+	m_Snake = new SnakeMonster;
+	m_Snake->Init(400, 400);
 }
 
 Field::~Field()
@@ -99,6 +103,8 @@ void Field::Draw(HDC backDC, float DeltaTime)
 		NextField_obstacles[i].Draw(backDC, cameraX, cameraY);
 	}
 
+	m_Snake->Draw(backDC, DeltaTime);
+
 }
 
 
@@ -106,6 +112,10 @@ void Field::Update(float DeltaTime)
 {
 	m_BackGround->Update(DeltaTime);
 	NPC->Update(DeltaTime);
+
+	m_Snake->Update(DeltaTime);
+
+	m_Snake->Collision(GameManager::GetInstance()->GetPlayer()->getCollision());
 }
 
 //0 955
@@ -153,7 +163,8 @@ bool Field::Collision(RECT rect)
 		}
 
 	}
-	
+
+
 	if (IntersectRect(&tmp, &NextField_obstacles[0].GetCollision(), &rect)) // 스토어 포탈
 	{
 		EndPosition = GameManager::GetInstance()->GetPlayer()->m_pos;
@@ -177,6 +188,23 @@ bool Field::Collision(RECT rect)
 	return false;
 }
 
+void Field::MiniChangeWood_Collision(RECT rect)
+{
+	RECT tmp;
+
+	if (IntersectRect(&tmp, &wood->GetCollision(), &rect)) // 미니 변신 나무 
+	{
+		GameManager::GetInstance()->GetPlayer()->MiniModeChange(735, 168); // 나무의 현좌표값 넘겨줌
+	}
+
+	
+}
+
+void Field::InputCheck(int vKey)
+{
+
+}
+
 dstrObj* Field::AttackableObjects_Collision(RECT rect)
 {
 	RECT tmp;
@@ -191,4 +219,14 @@ dstrObj* Field::AttackableObjects_Collision(RECT rect)
 
 	}
 	return NULL;
+}
+
+void Field::Monsters_Collision(RECT rect)
+{
+	RECT tmp;
+
+	if (IntersectRect(&tmp, &m_Snake->GetCollision(), &rect))
+	{
+		m_Snake->Hit();
+	}
 }

@@ -7,7 +7,21 @@ struct Position
 {
 	int X;
 	int Y;
+
+	Position operator+(const Position& ref)
+	{
+		Position pos = { X + ref.X, Y + ref.Y };
+		return pos;
+	}
+
+	Position operator*(const int& ref)
+	{
+		Position pos = { X + ref, Y + ref};
+		return pos;
+	}
+
 };
+
 
 
 class Object // 추상 클래스

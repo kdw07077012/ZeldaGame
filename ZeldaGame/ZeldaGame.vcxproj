@@ -144,6 +144,7 @@
     <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MiniWood.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Obstacle.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ShoeNPC.h" />
     <ClInclude Include="ShoeStroe_Field.h" />
+    <ClInclude Include="SnakeMonster.h" />
     <ClInclude Include="StoreNPC.h" />
     <ClInclude Include="StoreRoom_Field.h" />
     <ClInclude Include="Store_Field.h" />
@@ -176,11 +178,13 @@
     <ClCompile Include="ItemSlot.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MiniWood.cpp" />
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ShoeNPC.cpp" />
     <ClCompile Include="ShoeStroe_Field.cpp" />
+    <ClCompile Include="SnakeMonster.cpp" />
     <ClCompile Include="StoreNPC.cpp" />
     <ClCompile Include="StoreRoom_Field.cpp" />
     <ClCompile Include="Store_Field.cpp" />

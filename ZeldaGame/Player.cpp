@@ -61,20 +61,20 @@ void Player::AttackCheck()
 	switch (dir)
 	{
 	case LEFT:
-		rect.left = player_rect.left - (size.cx / 2);
-		rect.right = player_rect.right - (size.cx / 2);
+		rect.left = player_rect.left - (size.cx);
+		rect.right = player_rect.right - (size.cx);
 		break;
 	case RIGHT:
-		rect.left = player_rect.left + (size.cx / 2);
-		rect.right = player_rect.right + (size.cx / 2);
+		rect.left = player_rect.left + (size.cx);
+		rect.right = player_rect.right + (size.cx);
 		break;
 	case UP:
-		rect.top = player_rect.top - (size.cy / 2);
+		rect.top = player_rect.top - (size.cy);
 		rect.bottom = player_rect.bottom - (size.cy);
 		break;
 	case DOWN:
 		rect.top = player_rect.top + (size.cy);
-		rect.bottom = player_rect.bottom + (size.cy / 2);
+		rect.bottom = player_rect.bottom + (size.cy);
 		break;
 	default:
 		break;
@@ -90,6 +90,9 @@ void Player::AttackCheck()
 
 bool Player::PlayerInput(float DeltaTime)
 {
+	if (MiniChange)
+		return false;
+
 	if (m_playerState >= PlayerState_FALLWATER || bHit)
 		return false;
 
@@ -110,13 +113,7 @@ bool Player::PlayerInput(float DeltaTime)
 		AttackCheck();
 	}
 
-	if (GetAsyncKeyState(0x45) && 0x8000) //E 변신
-	{
-		MiniChange = true;
-		MaxAnimCount = 20;
-		
-	}
-
+	
 
 	if (GetAsyncKeyState(0x57) && 0x8000) //W
 	{
@@ -259,6 +256,7 @@ void Player::Draw(HDC backDC, float DeltaTime)
 	else
 		player_rect = { AttackX + 10, AttackY, AttackX + 30 * 2 - 10, AttackY + 25 * 2 };
 	
+
 #ifdef DEBUG
 	//디버깅 드로우
 	std::string str = "m_posX : " + std::to_string(m_pos.X);
@@ -278,9 +276,35 @@ void Player::Draw(HDC backDC, float DeltaTime)
 
 #endif
 
-
-	if (m_playerState == PlayerState_FALLWATER)
+	switch (m_playerState)
 	{
+	case PlayerState_IDLE:
+	case PlayerState_WALK:
+		if (MiniChange) // 미니 체인지 애니메이션 재생 
+		{
+			m_MiniChangeAnimBitmap->AnimationUpdate(backDC, AnimationCount, screenX, screenY, size, 2.0f);
+		}
+		else
+		{
+			if (Mini)
+			{
+				m_MiniBitmap->AnimationUpdate(backDC, AnimationCount, screenX, screenY, size, 2.0f);
+			}
+			else
+			{
+				if (m_bmoveable)
+					m_playerDirBitmap[dir][PlayerState_WALK].AnimationUpdate(backDC, AnimationCount,
+						screenX,
+						screenY,
+						size, 2.0f);
+				else
+					m_playerDirBitmap[dir][PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount,
+						screenX,
+						screenY, size, 2.0f);
+			}
+		}
+		break;
+	case PlayerState_FALLWATER:
 		if (Mini)
 		{
 			m_MiniBitmap->AnimationUpdate(backDC, AnimationCount, screenX, screenY, size, 2.0f, 160);
@@ -296,13 +320,10 @@ void Player::Draw(HDC backDC, float DeltaTime)
 			fAnimSpeed = 0.1f;
 		}
 
-		
-
 
 		if (AnimationCount >= MaxAnimCount - 1)
 		{
-			
-			
+
 			switch (dir)
 			{
 			case LEFT:
@@ -326,9 +347,8 @@ void Player::Draw(HDC backDC, float DeltaTime)
 			m_bmoveable = false;
 
 		}
-	}
-	else if (m_playerState == PlayerState_Attack)
-	{
+		break;
+	case PlayerState_Attack:
 		m_playerSkillDirBitmap[dir]->AnimationUpdate(backDC, AnimationCount,
 			screenX,
 			screenY,
@@ -339,7 +359,7 @@ void Player::Draw(HDC backDC, float DeltaTime)
 
 		if (AnimationCount >= MaxAnimCount - 1)
 		{
-		
+
 			AnimLoop = true;
 			fAnimSpeed = 0.04;
 			m_playerState = PlayerState_IDLE;
@@ -352,43 +372,59 @@ void Player::Draw(HDC backDC, float DeltaTime)
 
 		}
 
-	}
-	else
-	{
+		break;
+	case PlayerState_HIT:
+		AnimLoop = false;
+		fAnimSpeed = 0.05f;
+		m_playerDirBitmap[dir][PlayerState_HIT].AnimationUpdate(backDC, AnimationCount,
+			screenX,
+			screenY, size, 2.0f);
+		
 
-		if (MiniChange) // 미니 체인지 애니메이션 재생 
+		// 방향별 뒤로 밀림
+		switch (dir)
 		{
-			m_MiniChangeAnimBitmap->AnimationUpdate(backDC, AnimationCount, screenX, screenY, size, 2.0f);
+		case LEFT:
+			m_pos.X += 2;
+			break;
+		case RIGHT:
+			m_pos.X -= 2;
+			break;
+		case UP:
+			m_pos.Y += 2;
+			break;
+		case DOWN:
+			m_pos.Y -= 2;
+			break;
+		default:
+			break;
 		}
-		else
+		
+		if (AnimationCount >= MaxAnimCount - 1)
 		{
-
-			if (Mini)
-			{
-				m_MiniBitmap->AnimationUpdate(backDC, AnimationCount, screenX, screenY, size, 2.0f);
-			}
-			else
-			{
-				if (m_bmoveable)
-					m_playerDirBitmap[dir][PlayerState_WALK].AnimationUpdate(backDC, AnimationCount,
-						screenX,
-						screenY,
-						size, 2.0f);
-				else
-					m_playerDirBitmap[dir][PlayerState_IDLE].AnimationUpdate(backDC, AnimationCount,
-						screenX,
-						screenY, size, 2.0f);
-			}
-
-
-			
+			AnimLoop = true;
+			fAnimSpeed = 0.04;
+			m_playerState = PlayerState_IDLE;
+			AnimationCount = 1;
+			m_bmoveable = false;
 
 			
 		}
-	
-			
+		break;
+	case PlayerState_PICKUP:
+		break;
+	case PlayerState_PICKUP_WALK:
+		break;
+	case PlayerState_PULL:
+		break;
+	case PlayerState_ROLL:
+		break;
+	default:
+
+		break;
 	}
-	
+
+
 
 	
 
@@ -420,13 +456,14 @@ void Player::Update(float DeltaTime)
 			if(AnimLoop)
 				AnimationCount = 1;
 
-			if (MiniChange)
+			if (MiniChange) //미니체인지 애니메이션 종료시
 			{
 				MiniChange = false;
 				Mini = true;
 				AnimationCount = 1;
 				MaxAnimCount = 6;
 				size = { 20,20 };
+				fAnimSpeed = 0.1f;
 			}
 				
 		}
@@ -462,7 +499,31 @@ void Player::MiniReset()
 	size.cx = 30;
 	size.cy = 25;
 	Mini = false;
+	fAnimSpeed = 0.04f;
+
+	
 }
+
+void Player::MiniModeChange(int x, int y)
+{
+	m_pos.X = x;
+	m_pos.Y = y;
+	MiniChange = true;
+	MaxAnimCount = 20;
+}
+
+void Player::DamageHP(float dmage)
+{
+	if (bHit)
+		return;
+
+	bHit = true;
+	AnimationCount = 1;
+	PlayerHP -= dmage;
+	SetPlayerState(PlayerState_HIT);
+}
+
+
 
 void Player::Hp_Portion()
 {

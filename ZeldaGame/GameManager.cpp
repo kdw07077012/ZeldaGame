@@ -40,6 +40,7 @@ void GameManager::Init(HWND hWnd)
 	m_ShoeStroe_Field = new ShoeStroe_Field;
 	m_StoreRoom_Field = new StoreRoom_Field;
 	m_Dungeon_Field = new Dungeon_Field;
+	
 
 	//다운캐스팅,
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
@@ -47,6 +48,8 @@ void GameManager::Init(HWND hWnd)
 	m_oPlayer = dynamic_cast<Object*>(m_Player);
 
 	Camera::GetInstance()->Init(650, 370); // 613 370
+
+	
 }
 
 void GameManager::Update(float DeltaTime)
@@ -110,6 +113,7 @@ void GameManager::Update(float DeltaTime)
 			Camera::GetInstance()->Update(DeltaTime);
 		}
 		
+	
 		m_Player->Update(DeltaTime);
 
 		
@@ -117,6 +121,10 @@ void GameManager::Update(float DeltaTime)
 		{
 		case FieldType_Default:
 			m_Field->Update(DeltaTime);
+			
+			
+			
+
 			break;
 		case FieldType_Store:
 			m_StoreField->Update(DeltaTime);
@@ -139,12 +147,24 @@ void GameManager::Update(float DeltaTime)
 			break;
 		}
 
-		//
-		if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+		if (GetAsyncKeyState(0x45) && 0x8000) //E 변신 , 아이템 구매
 		{
-			m_Player->DamageHP(0.2f);
+			switch (currentField)
+			{
+			case FieldType_Default:
+				m_Field->MiniChangeWood_Collision(m_Player->getCollision());
+				break;
+			case FieldType_Store_StoreRoom:
+				m_StoreRoom_Field->Buy_InputCheck();
+				break;
+
+			}
+
+			
+			
 		}
-		
+
+
 		break;
 	case GAMESTATE_INVENTORY:
 	
@@ -211,6 +231,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		{
 		case FieldType_Default:
 			m_Field->Draw(backDC, DeltaTime);
+			
 			break;
 		case FieldType_Store:
 			m_StoreField->Draw(backDC, DeltaTime);
@@ -235,8 +256,6 @@ void GameManager::DoubleBuffer(float DeltaTime)
 
 
 		
-		
-
 		m_Player->Draw(backDC, DeltaTime);	
 		m_HUD->Draw(backDC, DeltaTime);
 		BitMapManager::GetInstance()->ChangeFont_TextDraw(backDC, std::to_string(m_Player->GetCurrentCoin()), 20, 270, 15);
@@ -315,6 +334,8 @@ bool GameManager::FieldObject_AttackCollision(RECT rect)
 			obj->AttackedObject();
 			return true;
 		}
+
+		m_Field->Monsters_Collision(rect);
 			
 		break;
 	case FieldType_Store:

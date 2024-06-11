@@ -8,6 +8,8 @@
 #include <vector>
 #include "dstrObj.h"
 #include "MiniWood.h"
+#include "SnakeMonster.h"
+
 //#define DEBUG
 
 class Field : public Object
@@ -22,6 +24,8 @@ protected:
 	BackGround* m_BackGround; // 필드 배경 
 	BitMap* MiniWoodBitmap; //미니변신 나무 비트맵
 	
+	SnakeMonster* m_Snake;
+	
 	MiniWood* wood;
 	FieldNPC* NPC;
 	std::vector<dstrObj*> AttackableObjects;
@@ -34,7 +38,10 @@ public:
 	virtual void Reset() override;
 	
 	virtual bool Collision(RECT rect);  // 필드 콜리전 체크 
+	void MiniChangeWood_Collision(RECT rect);
+	void InputCheck(int vKey);
 	dstrObj* AttackableObjects_Collision(RECT rect);	//플레이어가 공격가능한 오브젝트들의 콜리전체크
+	void Monsters_Collision(RECT rect);
 
 
 };

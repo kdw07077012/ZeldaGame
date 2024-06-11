@@ -20,13 +20,15 @@ void MiniWood::Draw(HDC backDC, float DeltaTime)
 
 	collision = { screenX, screenY, screenX + 57 , screenY + 48 };
 
-	Rectangle(backDC, collision.left, collision.top, collision.right, collision.bottom);
+	
 
 	m_BitMap->AnimationUpdate(backDC, 0, screenX, screenY, size, 1.5);
 }
 
 void MiniWood::Update(float DeltaTime)
 {
+	
+	
 }
 
 void MiniWood::Reset()

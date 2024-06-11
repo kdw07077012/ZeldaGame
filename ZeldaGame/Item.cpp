@@ -43,7 +43,7 @@ void Item::Draw(HDC backDC, float DeltaTime)
 		screenY = (((msize.cy / 2) - (size.cy * 4)) - (Camera::GetInstance()->GetY()) + itemPos.Y);
 
 		ItemCollision = { screenX, screenY, screenX + size.cx * 2 , screenY + size.cy * 4 };
-		Rectangle(backDC, ItemCollision.left, ItemCollision.top, ItemCollision.right, ItemCollision.bottom);
+		//Rectangle(backDC, ItemCollision.left, ItemCollision.top, ItemCollision.right, ItemCollision.bottom);
 		m_BitMap[item].AnimationUpdate(backDC, 0, screenX, screenY, size, 2.0f);
 
 		

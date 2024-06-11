@@ -1,7 +1,9 @@
 #pragma once
 #include "BitMap.h"
-
 #include <string>
+
+#define WINDOWSIZE_WIDTH 720
+#define WINDOWSIZE_HEIGHT 540
 
 //#define DEBUG // 콜리전 텍스트딩 디버깅 
 enum ImageType // 이미지 타입을 통해 불러옴
@@ -29,6 +31,7 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_MiniWood,
 	ImageType_PlayerMini,
 	ImageType_Player_MiniChange,
+	ImageType_Monster,
 };
 
 enum FieldType
@@ -79,6 +82,7 @@ private:
 	BitMap* m_MiniWoodBitmap;   // 작아지기위한 나무 비트맵
 	BitMap* m_PlayerMiniBitMap; // 플레이어 미니 비트맵
 	BitMap* m_PlayerMiniChangeBitMap; // 플레이어 체인지 애니메이션 비트맵
+	BitMap* m_MonsterBitMap;
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지
 	PlayerDirBitmap playerSkillDirBitmap;  // 플레이어 방향별이미지

@@ -10,12 +10,12 @@ enum PlayerState
 	PlayerState_IDLE,		// 가만히 있는상태
 	PlayerState_WALK,     //걷는상태
 	PlayerState_FALLWATER, // 물에 빠진상태
-	PlayerState_Attack,
 	PlayerState_HIT,	   // 히트
 	PlayerState_PICKUP,   //물건줍는 상태
 	PlayerState_PICKUP_WALK, //물건줍은상태에서 걷는 상태
 	PlayerState_PULL,		//물건 당기는 상태
 	PlayerState_ROLL,	  //구르는상태
+	PlayerState_Attack,
 };
 
 enum Direction
@@ -80,12 +80,15 @@ public:
 	float GetMaxHP() const { return PlayerMaxHP; }
 	bool GetMini() const { return Mini; } //플레이어 미니상태인지
 	void MiniReset(); // 미니모드 해제 리셋
+	void MiniModeChange(int x, int y);
 
-	void DamageHP(float dmage) { PlayerHP -= dmage; }
+	void DamageHP(float dmage);
 	void AddMaxHP() { PlayerMaxHP += 1; }
 	void Hp_Portion();
 	void SetPlayerState(PlayerState state);
 	Position GetPlayerPos() const { return m_pos; }
+	RECT& getCollision() { return player_rect; }
+	bool GetHit() const { return bHit; }
 	
 
 };

@@ -9,6 +9,7 @@
 #include "ShoeStroe_Field.h"
 #include "StoreRoom_Field.h"
 #include "Dungeon_Field.h"
+
 enum GAMESTATE
 {
 	GAMESTATE_TITLE,
@@ -41,12 +42,14 @@ private:
 	StoreRoom_Field* m_StoreRoom_Field;
 	Dungeon_Field* m_Dungeon_Field;
 
+	
 	HUD* m_HUD;
 	Menu* m_Menu;
 	Title* m_Title;
 	Player* m_Player;
 	Inventory* m_Ivnentory;
 	POINT ptMouse;
+	
 
 public:
 	static GameManager* GetInstance()

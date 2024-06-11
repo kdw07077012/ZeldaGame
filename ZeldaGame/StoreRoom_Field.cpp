@@ -81,16 +81,14 @@ void StoreRoom_Field::Draw(HDC backDC, float DeltaTime)
 void StoreRoom_Field::Update(float DeltaTime)
 {
     Npc->Update(DeltaTime);
+}
 
-
-    if (GetAsyncKeyState(0x45) & 0x8000) // EŰ
+void StoreRoom_Field::Buy_InputCheck()
+{
+    if (itembarDraw)
     {
-        if (itembarDraw)
-        {
-            GameManager::GetInstance()->StoreItemBuy((InGame_Item)itembarCount, ItemPrice[itembarCount]);
-        }
+        GameManager::GetInstance()->StoreItemBuy((InGame_Item)itembarCount, ItemPrice[itembarCount]);
     }
-
 }
 
 void StoreRoom_Field::Reset()
