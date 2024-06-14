@@ -28,6 +28,12 @@
     <Filter Include="헤더 파일\NPC">
       <UniqueIdentifier>{d96ef19b-63a3-4019-b62e-1d81b1bc595e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Quest">
+      <UniqueIdentifier>{39779005-cea5-4d75-82e8-2cc15a04f1ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Quest">
+      <UniqueIdentifier>{21e13bb5-7fac-4d85-b9bb-aedc1885030e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -70,9 +76,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Water.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Obstacle.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="HUD.h">
@@ -129,6 +132,30 @@
     <ClInclude Include="SnakeMonster.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ISubject.h">
+      <Filter>소스 파일\Quest</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>헤더 파일\Quest</Filter>
+    </ClInclude>
+    <ClInclude Include="Quest.h">
+      <Filter>헤더 파일\Quest</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestSystem.h">
+      <Filter>헤더 파일\Quest</Filter>
+    </ClInclude>
+    <ClInclude Include="SnakeKill_Quest.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ShoeHelp_Quest.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Treasure_Chest.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ZeldaGame.cpp">
@@ -159,9 +186,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Water.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Obstacle.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="HUD.cpp">
@@ -216,6 +240,24 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="SnakeMonster.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Quest.cpp">
+      <Filter>소스 파일\Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestSystem.cpp">
+      <Filter>소스 파일\Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>소스 파일\Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="SnakeKill_Quest.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ShoeHelp_Quest.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Treasure_Chest.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

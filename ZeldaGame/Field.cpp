@@ -23,7 +23,7 @@ Field::Field()
 	AttackableObjects.push_back(obj1);
 	
 	m_BackGround = new BackGround(FieldType_Default);
-	NPC = new FieldNPC;
+	m_NPC = new FieldNPC;
 
 	int left, top, width, height, frame;
 	FILE* fp = fopen("Field0.txt", "rt");
@@ -56,8 +56,18 @@ Field::Field()
 	NextField_obstacles[1].Init(81, 659, 123, 675);
 
 
-	m_Snake = new SnakeMonster;
-	m_Snake->Init(400, 400);
+	for (int i = 0; i < SNAKE_SIZE; i++)
+	{
+		SnakeMonster* Snake = new SnakeMonster;
+		m_Snake[i] = Snake;
+	}
+
+	m_Snake[0]->Init(400, 400);
+	m_Snake[1]->Init(870, 400);
+	m_Snake[2]->Init(950,-160);
+	m_Snake[3]->Init(746, 163);
+
+	Chest = new Treasure_Chest(550, 450); // 보물상자 드로우
 }
 
 Field::~Field()
@@ -69,12 +79,15 @@ void Field::Init()
 	Camera::GetInstance()->Init(EndPosition.X, EndPosition.Y);
 	GameManager::GetInstance()->GetPlayer()->m_pos = EndPosition;
 	Camera::GetInstance()->SetHeight(1024);
+	Reset();
+
+	
 }
 
 void Field::Draw(HDC backDC, float DeltaTime)
 {
 	m_BackGround->Draw(backDC, DeltaTime); // 배경을 그려줌 
-	NPC->Draw(backDC, DeltaTime);
+	m_NPC->Draw(backDC, DeltaTime);
 
 	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
 	int  cameraX = Camera::GetInstance()->GetX();
@@ -103,24 +116,52 @@ void Field::Draw(HDC backDC, float DeltaTime)
 		NextField_obstacles[i].Draw(backDC, cameraX, cameraY);
 	}
 
-	m_Snake->Draw(backDC, DeltaTime);
+	for (int i = 0; i < SNAKE_SIZE; i++)
+	{
+		m_Snake[i]->Draw(backDC, DeltaTime);
+	}
 
+
+	if (m_NPC->GetQuest()->GetComplete())
+	{
+		Chest->Draw(backDC, DeltaTime);
+	}
+	
 }
 
 
 void Field::Update(float DeltaTime)
 {
 	m_BackGround->Update(DeltaTime);
-	NPC->Update(DeltaTime);
+	m_NPC->Update(DeltaTime);
 
-	m_Snake->Update(DeltaTime);
+	for (int i = 0; i < SNAKE_SIZE; i++)
+	{
+		m_Snake[i]->Update(DeltaTime);
+		m_Snake[i]->Collision(GameManager::GetInstance()->GetPlayer()->getCollision());
+	}
 
-	m_Snake->Collision(GameManager::GetInstance()->GetPlayer()->getCollision());
+	RECT tmp;  // 박스 열기 
+	if (IntersectRect(&tmp, &Chest->GetEvent_Collision(), &GameManager::GetInstance()->GetPlayer()->getCollision()) && 
+		m_NPC->GetQuest()->GetComplete())
+	{
+		if (GetAsyncKeyState(0x45) & 0x8000) // E 상자 열기
+		{
+			Chest->BoxOpen = true;
+		}
+		
+	}
 }
+	
 
 //0 955
 void Field::Reset()
 {
+	m_Snake[0]->Init(400, 400);
+	m_Snake[1]->Init(870, 400);
+	m_Snake[2]->Init(950, -160);
+	m_Snake[3]->Init(746, 163);
+
 }
 
 bool Field::Collision(RECT rect)
@@ -137,7 +178,7 @@ bool Field::Collision(RECT rect)
 	}
 
 
-	for (int i = 0; i < WaterobstacleSize; i++)
+	for (int i = 0; i < WaterobstacleSize; i++) // 강 콜리전
 	{
 		if (IntersectRect(&tmp, &Waterobstacles[i].GetCollision(), &rect))
 		{
@@ -146,7 +187,7 @@ bool Field::Collision(RECT rect)
 		}
 	}
 
-	for (auto obj : AttackableObjects)
+	for (auto obj : AttackableObjects) // 파괴 오브젝트 풀, 항아리 체크
 	{
 		if (IntersectRect(&tmp, &obj->GetCollision(), &rect))
 		{
@@ -157,12 +198,25 @@ bool Field::Collision(RECT rect)
 				GameManager::GetInstance()->GetPlayer()->AddCoin(obj->CoinPickup());
 				return false;
 			}
-
-
-
 		}
-
 	}
+
+	if (m_NPC->GetQuest()->GetComplete())
+	{
+		if (IntersectRect(&tmp, &Chest->GetCollision(), &rect) && !Chest->BoxOpen)  // 박스 오픈시 콜리전 해제 
+		{
+			return true;
+		}
+		else if (IntersectRect(&tmp, &Chest->GetCollision(), &rect) && Chest->BoxOpen)
+		{
+			Chest->Collision();
+		}
+	}
+
+	
+
+
+	//GameManager::GetInstance()->GetPlayer()->AddCoin(obj->CoinPickup());
 
 
 	if (IntersectRect(&tmp, &NextField_obstacles[0].GetCollision(), &rect)) // 스토어 포탈
@@ -180,12 +234,20 @@ bool Field::Collision(RECT rect)
 		return true;
 	}
 
-
-
-	NPC->EventCollision(rect);
-
+	
 
 	return false;
+}
+
+NPC* Field::FieldNpcCollision(RECT rect)
+{
+	if (m_NPC->EventCollision(rect)) // npc 콜리전
+	{
+		return m_NPC;
+	}
+
+	return NULL;
+
 }
 
 void Field::MiniChangeWood_Collision(RECT rect)
@@ -195,9 +257,7 @@ void Field::MiniChangeWood_Collision(RECT rect)
 	if (IntersectRect(&tmp, &wood->GetCollision(), &rect)) // 미니 변신 나무 
 	{
 		GameManager::GetInstance()->GetPlayer()->MiniModeChange(735, 168); // 나무의 현좌표값 넘겨줌
-	}
-
-	
+	}	
 }
 
 void Field::InputCheck(int vKey)
@@ -216,7 +276,6 @@ dstrObj* Field::AttackableObjects_Collision(RECT rect)
 			if(!obj->Attacked)
 				return obj;		
 		}
-
 	}
 	return NULL;
 }
@@ -225,8 +284,12 @@ void Field::Monsters_Collision(RECT rect)
 {
 	RECT tmp;
 
-	if (IntersectRect(&tmp, &m_Snake->GetCollision(), &rect))
+	for (int i = 0; i < SNAKE_SIZE; i++)
 	{
-		m_Snake->Hit();
+		if (IntersectRect(&tmp, &m_Snake[i]->GetCollision(), &rect))
+		{
+			m_Snake[i]->Hit();
+		}
 	}
+	
 }

@@ -24,6 +24,7 @@ void BitMapManager::Init(HDC hdc)
     m_MiniWoodBitmap   = ImageRoad(hdc, (char*)"Image//Mini//Wood%d.bmp", ImageType_MiniWood);
     m_PlayerMiniBitMap = ImageRoad(hdc, (char*)"Image//Mini//Player_Mini%d.bmp", ImageType_PlayerMini);
     m_PlayerMiniChangeBitMap = ImageRoad(hdc, (char*)"Image//Player//Player_MiniChange%d.bmp", ImageType_Player_MiniChange);
+    m_TreasureChestBitmap = ImageRoad(hdc, (char*)"Image//Block//Treasure_Chest%d.bmp", ImageType_Treasure_Chest);
 
     //플레이어 방향별 비트맵
     playerDirBitmap.Down_Bitmap   = ImageRoad(hdc, (char*)"Image//Player//DOWN//%d_(1).bmp", ImageType_Player);
@@ -43,6 +44,9 @@ void BitMapManager::Init(HDC hdc)
     m_FieldBitMap[FieldType_Dungeon]         = ImageRoad(hdc, (char*)"Image//Map//Dungeon//DunGeon%d.bmp", ImageType_Dungeon);
 
     m_MonsterBitMap  = ImageRoad(hdc, (char*)"Image//Monster//Monster%d.bmp", ImageType_Monster);
+
+    m_QuestMenuBitMap =  ImageRoad(hdc, (char*)"Image//Menu//Inventory//Quest_Menu%d.bmp", ImageType_QuestMenu);
+    m_QuestListBitMap = ImageRoad(hdc, (char*)"Image//Quest//Quest%d.bmp", ImageType_QuestList);
 
 
     //Thicket0
@@ -102,7 +106,7 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
         break;
     case ImageType_NPC:
         Size = 3;
-        break;
+        break;  
     case ImageType_Dungeon:
     case ImageType_DstrObj:
     case ImageType_Store:
@@ -117,9 +121,12 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     case ImageType_HUD:
         Size = 1;
         break;
+    case ImageType_QuestList:
     case ImageType_Button:
         Size = 3;
         break;
+    case ImageType_Treasure_Chest:
+    case ImageType_QuestMenu:
     case ImageType_Player_MiniChange:
     case ImageType_PlayerMini:
     case ImageType_MiniWood:
@@ -162,6 +169,15 @@ BitMap* BitMapManager::GetBitMap(ImageType Image) const
 {
     switch (Image)
     {
+    case ImageType_Treasure_Chest:
+        return m_TreasureChestBitmap;
+        break;
+    case ImageType_QuestList:
+        return m_QuestListBitMap;
+        break;
+    case ImageType_QuestMenu:
+        return m_QuestMenuBitMap;
+        break;
     case ImageType_Monster:
         return m_MonsterBitMap;
         break;

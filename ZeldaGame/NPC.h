@@ -3,6 +3,10 @@
 #include "Obstacle.h"
 #include "Camera.h"
 
+#include "Quest.h"
+#include "ShoeHelp_Quest.h"
+#include "SnakeKill_Quest.h"
+
 class NPC : public Object
 {
 protected:
@@ -12,6 +16,8 @@ protected:
 	float fMoveDeltaTime;
 	float fAnimSpeed;
 	int AnimationCount, MaxAnimCount;
+	Quest* current_Quest; // 현재 npc 퀘스트
+	
 public:
 	NPC();
 	~NPC();
@@ -19,5 +25,6 @@ public:
 	virtual bool EventCollision(RECT player) = 0;
 	virtual void Update(float DeltaTime) = 0;
 	virtual void Reset() override;
+	Quest* GetQuest() const { return current_Quest; }  // 현재 npc 퀘스트 확인
 };
 

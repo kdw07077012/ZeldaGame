@@ -35,6 +35,8 @@ void Coin::Draw(HDC backDC, float DeltaTime)
 
 void Coin::Update(float DeltaTime)
 {
+
+
 }
 
 void Coin::Reset()

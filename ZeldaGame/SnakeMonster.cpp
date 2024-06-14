@@ -8,6 +8,9 @@ void SnakeMonster::Init(int x, int y)
 	fMoveDeltaTime = 0.0f;
 	fSpeed = 0.020f;
 	HP = SANKE_HP;
+	Die = false;
+	DieAim = false;
+	AnimationCount = 0;
 }
 void SnakeMonster::Draw(HDC backDC, float DeltaTime)
 {
@@ -30,10 +33,6 @@ void SnakeMonster::Draw(HDC backDC, float DeltaTime)
 		else
 			m_BitMap->AnimationUpdate(backDC, Tracking ? AnimationCount : 0, screenX, screenY, m_Size, 0.5f, m_eDir);
 	}
-
-	float fWidth = GameManager::GetInstance()->GetPlayer()->m_pos.Y - m_iy;
-	std::string str = "m_posX : " + std::to_string(abs(fWidth));
-	TextOutA(backDC, 200, 50, str.c_str(), str.length());
 
 	//Rectangle(backDC, collision.left, collision.top, collision.right, collision.bottom);
 }
@@ -146,11 +145,15 @@ void SnakeMonster::Update(float DeltaTime)
 
 bool SnakeMonster::Collision(RECT rect)
 {
+	if (Die)
+		return false;
+
 	RECT tmp;
 
 	if (IntersectRect(&tmp, &collision, &rect))
 	{
 		GameManager::GetInstance()->GetPlayer()->DamageHP(0.2F);
+		return false;
 	}
 
 
@@ -164,10 +167,11 @@ void SnakeMonster::Hit()
 	if (HP <= 0)
 	{
 		DieAim = true;
+		GameManager::GetInstance()->Quest_OnNotify(QuestType_SnakeSkill);
 	}
 }
 
 void SnakeMonster::Reset()
 {
-	HP = SANKE_HP;
+
 }

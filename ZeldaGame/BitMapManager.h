@@ -32,6 +32,9 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_PlayerMini,
 	ImageType_Player_MiniChange,
 	ImageType_Monster,
+	ImageType_QuestMenu,
+	ImageType_QuestList,
+	ImageType_Treasure_Chest,
 };
 
 enum FieldType
@@ -82,7 +85,10 @@ private:
 	BitMap* m_MiniWoodBitmap;   // 작아지기위한 나무 비트맵
 	BitMap* m_PlayerMiniBitMap; // 플레이어 미니 비트맵
 	BitMap* m_PlayerMiniChangeBitMap; // 플레이어 체인지 애니메이션 비트맵
-	BitMap* m_MonsterBitMap;
+	BitMap* m_MonsterBitMap;		// 몬스터 비트맵
+	BitMap* m_QuestMenuBitMap;		//퀘스트 메뉴 비트맵
+	BitMap* m_QuestListBitMap;		// 다양한 퀘스트 비트맵
+	BitMap* m_TreasureChestBitmap; // 보물상자 비트맵 
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지
 	PlayerDirBitmap playerSkillDirBitmap;  // 플레이어 방향별이미지

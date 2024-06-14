@@ -10,12 +10,10 @@ private:
 	int AnimationCount;
 	bool bHit;
 	bool Tracking; //추적중인가
-	int m_eDir;
-	int HP;
+	int  m_eDir;
+	int  HP;
 	bool DieAim;
 	bool Die;
-	
-
 public:
 	SnakeMonster() : Monster(0,0,MonsterType_Snake) {
 		Move = true;

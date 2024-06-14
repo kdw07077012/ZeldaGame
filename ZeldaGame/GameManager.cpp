@@ -40,6 +40,7 @@ void GameManager::Init(HWND hWnd)
 	m_ShoeStroe_Field = new ShoeStroe_Field;
 	m_StoreRoom_Field = new StoreRoom_Field;
 	m_Dungeon_Field = new Dungeon_Field;
+	m_QuestSystem = new QuestSystem;
 	
 
 	//다운캐스팅,
@@ -48,13 +49,12 @@ void GameManager::Init(HWND hWnd)
 	m_oPlayer = dynamic_cast<Object*>(m_Player);
 
 	Camera::GetInstance()->Init(650, 370); // 613 370
-
 	
 }
 
 void GameManager::Update(float DeltaTime)
 {
-	if (m_eCurGameState == GAMESTATE_START || m_eCurGameState == GAMESTATE_INVENTORY)
+	if (m_eCurGameState == GAMESTATE_START || m_eCurGameState == GAMESTATE_INVENTORY || m_eCurGameState == GAMESTATE_QUEST)
 	{
 		if (GetAsyncKeyState(0x49) && 0x8000) // 인벤토리 열고 닫기 I키
 		{
@@ -70,8 +70,24 @@ void GameManager::Update(float DeltaTime)
 			}
 			
 		}
+
+		if (GetAsyncKeyState(0x51) && 0x8000) // 퀘스트 열고 닫기 I키
+		{
+			if (m_QuestSystem->Enabled == false)
+			{
+				m_QuestSystem->Enabled = true;
+				m_eCurGameState = GAMESTATE_QUEST;
+			}
+			else
+			{
+				m_QuestSystem->Enabled = false;
+				m_eCurGameState = GAMESTATE_START;
+			}
+			
+		}
 	}
 	
+	NPC* temp = NULL; // 필드 NPC 체크하기 위한 담을 포인터
 
 	switch (m_eCurGameState)
 	{
@@ -112,30 +128,61 @@ void GameManager::Update(float DeltaTime)
 		{
 			Camera::GetInstance()->Update(DeltaTime);
 		}
-		
-	
-		m_Player->Update(DeltaTime);
 
+		m_Player->Update(DeltaTime);
 		
 		switch (currentField)
 		{
 		case FieldType_Default:
 			m_Field->Update(DeltaTime);
-			
-			
-			
+			temp = m_Field->FieldNpcCollision(GetPlayer()->getCollision());
+			if (NULL != temp)
+			{
+				if (GetAsyncKeyState(VK_RETURN) & 0x8000) // Enter 퀘스트 수락
+				{
+					//퀘스트 수락
+					Quest_Add(temp->GetQuest());
+				}
 
+			}
 			break;
 		case FieldType_Store:
 			m_StoreField->Update(DeltaTime);
 			break;
 		case FieldType_Store_ShoeStroe:
 			m_ShoeStroe_Field->Update(DeltaTime);
+
+			temp = m_ShoeStroe_Field->FieldNpcCollision(GetPlayer()->getCollision());
+			if (NULL != temp)
+			{
+				if (GetAsyncKeyState(VK_RETURN) & 0x8000) // Enter 퀘스트 수락
+				{
+					// 현재 퀘스트가 중복 퀘스트가 없을시
+					Quest* quest = m_QuestSystem->FindQuest(temp->GetQuest()->GetQuestType());
+
+
+					if (quest != NULL)
+					{
+						quest->CompleateCheck();
+
+						//if (temp->GetQuest()->GetComplete()) // 뱀 처치 퀘스트 처리시
+						//{
+						//	Quest_OnNotify(QuestType_ShoeHelp); // 신발가게아저씨 도와주는 퀘스트 완료
+						//}
+					}
+					else
+					{
+						Quest_Add(temp->GetQuest());
+					}
+					//퀘스트 수락
+
+
+				}
+			}
 			break;
 		case FieldType_Store_StoreRoom:
 			m_StoreRoom_Field->Update(DeltaTime);
-			
-			
+
 			break;
 		case FieldType_Dungeon:
 			break;
@@ -146,6 +193,7 @@ void GameManager::Update(float DeltaTime)
 		default:
 			break;
 		}
+
 
 		if (GetAsyncKeyState(0x45) && 0x8000) //E 변신 , 아이템 구매
 		{
@@ -226,7 +274,10 @@ void GameManager::DoubleBuffer(float DeltaTime)
 	case GAMESTATE_MENU:
 		m_Menu->Draw(backDC, DeltaTime);
 		break;
-	case GAMESTATE_START:	
+	case GAMESTATE_START:
+
+		
+
 		switch (currentField)
 		{
 		case FieldType_Default:
@@ -257,16 +308,24 @@ void GameManager::DoubleBuffer(float DeltaTime)
 
 		
 		m_Player->Draw(backDC, DeltaTime);	
-		m_HUD->Draw(backDC, DeltaTime);
-		BitMapManager::GetInstance()->ChangeFont_TextDraw(backDC, std::to_string(m_Player->GetCurrentCoin()), 20, 270, 15);
+		m_HUD->Draw(backDC, DeltaTime);						  // HUD 표시
+		m_QuestSystem->QuestComplete_Draw(backDC, DeltaTime); // 퀘스트 컴플리트시 표시
+
+		// 플레이어 현재 루비 표시
+		BitMapManager::GetInstance()->ChangeFont_TextDraw(backDC, std::to_string(m_Player->GetCurrentCoin()), 20, 270, 15); 
 		if (currentField == FieldType_Store)
 			m_StoreField->BackDraw(backDC, DeltaTime);
 		else if (currentField == FieldType_Dungeon)
 			m_Dungeon_Field->BackDraw(backDC, DeltaTime);
 		break;
+
+		
 	case GAMESTATE_INVENTORY:
 		m_Ivnentory->Draw(backDC, DeltaTime);
 
+		break;
+	case GAMESTATE_QUEST:
+		m_QuestSystem->Draw(backDC, DeltaTime);
 		break;
 	default:
 		break;
@@ -295,6 +354,8 @@ bool GameManager::FieldCollision(RECT rect)
 	case FieldType_Default:
 		if (m_Field->Collision(rect))
 			return true;
+
+
 		break;
 	case FieldType_Store:
 		if (m_StoreField->Collision(rect))
@@ -418,4 +479,32 @@ void GameManager::StoreItemBuy(InGame_Item itemType, int price)
 
 		m_Player->RemvoeCoin(price);
 	}
+}
+
+void GameManager::useItem(InGame_Item itemType)
+{
+	switch (itemType)
+	{
+	case InGame_Item_HpAdd:
+		m_Player->AddMaxHP();
+		m_HUD->HPMaxAdd();
+		// 바로 체력증가
+		break;
+	case InGame_Item_Position:
+		m_Player->Hp_Portion();
+		// 바로 회복
+		break;
+	default:
+		break;
+	}
+}
+
+void GameManager::Quest_OnNotify(QuestType type)
+{
+	m_QuestSystem->Notify(type);
+}
+
+void GameManager::Quest_Add(Quest* quest)
+{
+	m_QuestSystem->AddObserver(quest);
 }

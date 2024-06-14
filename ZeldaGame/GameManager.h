@@ -10,12 +10,17 @@
 #include "StoreRoom_Field.h"
 #include "Dungeon_Field.h"
 
+#include "QuestSystem.h"
+#include "SnakeKill_Quest.h"
+#include "ShoeHelp_Quest.h"
+
 enum GAMESTATE
 {
 	GAMESTATE_TITLE,
 	GAMESTATE_MENU,
 	GAMESTATE_START,
 	GAMESTATE_INVENTORY,
+	GAMESTATE_QUEST,
 };
 
 
@@ -41,7 +46,7 @@ private:
 	ShoeStroe_Field* m_ShoeStroe_Field;
 	StoreRoom_Field* m_StoreRoom_Field;
 	Dungeon_Field* m_Dungeon_Field;
-
+	QuestSystem* m_QuestSystem;
 	
 	HUD* m_HUD;
 	Menu* m_Menu;
@@ -68,6 +73,10 @@ public:
 	bool FieldObject_AttackCollision(RECT rect);
 	void NextField(FieldType Field);
 	void StoreItemBuy(InGame_Item itemType, int price);
+	void useItem(InGame_Item itemType);
+
+	void Quest_OnNotify(QuestType type);
+	void Quest_Add(Quest* quest);
 
 	Player* GetPlayer() { return m_Player; }
 	SIZE  GetWindowSize() const { return WindowSize; }

@@ -10,6 +10,7 @@ NPC::NPC()
 	fAnimSpeed = 0.05f;
 	bCollision = false;
 	Collision = { 0,0,0,0 };
+	current_Quest = NULL;
 }
 
 NPC::~NPC()

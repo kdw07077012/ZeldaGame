@@ -2,6 +2,9 @@
 
 ShoeNPC::ShoeNPC()
 {
+	SnakeKill_Quest* quest = new SnakeKill_Quest;
+	current_Quest = quest;
+
 	MaxAnimCount = 20;
 	Collisioon.Init(622, 402, 768, 493);
 }

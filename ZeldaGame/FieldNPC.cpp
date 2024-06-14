@@ -1,8 +1,10 @@
 #include "FieldNPC.h"
 
 FieldNPC::FieldNPC()
-{
-	
+{ 
+	// npc 퀘스트 정의
+	ShoeHelp_Quest* quest = new ShoeHelp_Quest;
+	current_Quest = quest;
 }
 
 FieldNPC::~FieldNPC()
@@ -28,7 +30,7 @@ bool FieldNPC::EventCollision(RECT player)
 {
 	RECT temp;
 
-	if (IntersectRect(&temp, &Collision, &player))
+	if (IntersectRect(&temp, &Collision, &player)) // 플레이어 충돌시
 	{
 		bCollision = true;
 		return true;

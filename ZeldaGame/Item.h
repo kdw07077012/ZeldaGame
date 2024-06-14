@@ -15,7 +15,6 @@ enum InGame_Item
 	InGame_Item_Shield,	//πÊ∆–
 	InGame_Item_HpAdd,
 	InGame_Item_Position,
-
 };
 
 enum ItemImageType
