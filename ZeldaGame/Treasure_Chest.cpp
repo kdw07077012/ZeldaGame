@@ -11,8 +11,8 @@ Treasure_Chest::Treasure_Chest(int x, int y) : Object(x,y)
 	collision = { 0,0,0,0 };
 	Event_Collision = { 0,0,0,0 };
 	BoxOpen = false;
-	// 랜덤적으로 포션과 체력증가, 코인 중 드랍
-	Drop_item = new Item(rand() % 2 ? Item_Shield : Item_Lanton, x - DROP_ITEM_OFFSET, y + DROP_ITEM_OFFSET, ItemImageType_InGame);
+	// 랜덤적으로  체력증가, 코인 중 드랍
+	Drop_item = new Item(Item_Shield, x - DROP_ITEM_OFFSET, y + DROP_ITEM_OFFSET, ItemImageType_InGame);
 	Drop_Coin = new Coin(x, y);
 
 	//랜덤적으로 아이템 , 코인 중선택
@@ -36,10 +36,10 @@ void Treasure_Chest::Draw(HDC backDC, float DeltaTime)
 	int screenY = (((msize.cy / 2) - (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_iy;
 
 	collision = { screenX, screenY, screenX + size.cx * 2 , screenY + size.cy * 2 };
-	Event_Collision = { screenX, screenY - (size.cx), screenX + size.cx * 2 , screenY + size.cy * 2};
+	Event_Collision = { screenX, screenY - (size.cx), screenX + size.cx * 2 , screenY + size.cy * 4};
 
 	m_BitMap->AnimationUpdate(backDC, BoxOpen, screenX, screenY, size, 2.0f);
-	//Rectangle(backDC, collision.left, collision.top, collision.right, collision.bottom);
+	//Rectangle(backDC, Event_Collision.left, Event_Collision.top, Event_Collision.right, Event_Collision.bottom);
 
 	if (BoxOpen && !ItemPickup)
 	{

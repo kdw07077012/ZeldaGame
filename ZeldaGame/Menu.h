@@ -7,7 +7,6 @@
 enum SelectMenu
 {
 	SelectMenu_START,
-	SelectMenu_EDIT,
 	SelectMenu_QUIT,
 	SelectMenu_End,
 };

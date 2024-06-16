@@ -25,6 +25,9 @@ void BitMapManager::Init(HDC hdc)
     m_PlayerMiniBitMap = ImageRoad(hdc, (char*)"Image//Mini//Player_Mini%d.bmp", ImageType_PlayerMini);
     m_PlayerMiniChangeBitMap = ImageRoad(hdc, (char*)"Image//Player//Player_MiniChange%d.bmp", ImageType_Player_MiniChange);
     m_TreasureChestBitmap = ImageRoad(hdc, (char*)"Image//Block//Treasure_Chest%d.bmp", ImageType_Treasure_Chest);
+    m_DungeonObjectBitmap = ImageRoad(hdc, (char*)"Image//Map//Dungeon//Dungeon_Object%d.bmp", ImageType_Dungeon_Object);
+    m_PlayerFallBitmap  = ImageRoad(hdc, (char*)"Image//Player//Player_FALL%d.bmp", ImageType_Player_FALL);
+
 
     //플레이어 방향별 비트맵
     playerDirBitmap.Down_Bitmap   = ImageRoad(hdc, (char*)"Image//Player//DOWN//%d_(1).bmp", ImageType_Player);
@@ -42,6 +45,7 @@ void BitMapManager::Init(HDC hdc)
     m_FieldBitMap[FieldType_Store_ShoeStroe] = ImageRoad(hdc, (char*)"Image//Map//Store//ShoeStore%d.bmp", ImageType_BackGround);
     m_FieldBitMap[FieldType_Store_StoreRoom] = ImageRoad(hdc, (char*)"Image//Map//Store//StoreRoom%d.bmp", ImageType_BackGround);
     m_FieldBitMap[FieldType_Dungeon]         = ImageRoad(hdc, (char*)"Image//Map//Dungeon//DunGeon%d.bmp", ImageType_Dungeon);
+    m_FieldBitMap[FieldType_Boss]            = ImageRoad(hdc, (char*)"Image//Map//BossStage//BossMap%d.bmp", ImageType_Dungeon);
 
     m_MonsterBitMap  = ImageRoad(hdc, (char*)"Image//Monster//Monster%d.bmp", ImageType_Monster);
 
@@ -97,6 +101,7 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     case ImageType_Monster:
         Size = 1;
         break;
+    case ImageType_Dungeon_Object:
     case ImageType_ItemTextBar:
     case ImageType_Item:
         Size = 4;
@@ -125,6 +130,7 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     case ImageType_Button:
         Size = 3;
         break;
+    case ImageType_Player_FALL:
     case ImageType_Treasure_Chest:
     case ImageType_QuestMenu:
     case ImageType_Player_MiniChange:
@@ -169,6 +175,12 @@ BitMap* BitMapManager::GetBitMap(ImageType Image) const
 {
     switch (Image)
     {
+    case ImageType_Player_FALL:
+        return m_PlayerFallBitmap;
+        break;
+    case ImageType_Dungeon_Object:
+        return m_DungeonObjectBitmap;
+        break;
     case ImageType_Treasure_Chest:
         return m_TreasureChestBitmap;
         break;

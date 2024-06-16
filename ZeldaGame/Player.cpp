@@ -14,6 +14,7 @@ Player::Player()
 
 	m_MiniChangeAnimBitmap = BitMapManager::GetInstance()->GetBitMap(ImageType_Player_MiniChange);
 	m_MiniBitmap		   = BitMapManager::GetInstance()->GetBitMap(ImageType_PlayerMini);
+	m_PlayerFallBitmap     = BitMapManager::GetInstance()->GetBitMap(ImageType_Player_FALL);
 
 	msize = BitMapManager::GetInstance()->GetWindowSize();
 	m_pos.X = 650;
@@ -93,7 +94,7 @@ bool Player::PlayerInput(float DeltaTime)
 	if (MiniChange)
 		return false;
 
-	if (m_playerState >= PlayerState_FALLWATER || bHit)
+	if (m_playerState == PlayerState_FALLWATER || bHit || m_playerState == PlayerState_FALL)
 		return false;
 
 	m_bmoveable = false;
@@ -419,18 +420,46 @@ void Player::Draw(HDC backDC, float DeltaTime)
 		break;
 	case PlayerState_ROLL:
 		break;
-	default:
+	case PlayerState_FALL:
+		m_PlayerFallBitmap->AnimationUpdate(backDC, AnimationCount,
+			screenX,
+			screenY, size, 2.0f);
+		AnimLoop = false;
+		fAnimSpeed = 0.1f;
+		
+		if (AnimationCount >= MaxAnimCount - 1)
+		{
 
+			switch (dir)
+			{
+			case LEFT:
+				break;
+			case RIGHT:
+				break;
+			case UP:
+				m_pos.Y += size.cy *2;
+				break;
+			case DOWN:
+				m_pos.Y -= size.cy * 2;
+				break;
+			default:
+				break;
+			}
+			AnimLoop = true;
+			fAnimSpeed = 0.04;
+			m_playerState = PlayerState_IDLE;
+			AnimationCount = 1;
+			bHit = true;
+			m_bmoveable = false;
+
+		}
+		break;
+	default:
 		break;
 	}
 
-
-
-	
-
-
-
 }
+
 
 void Player::Update(float DeltaTime)
 {
@@ -543,7 +572,16 @@ void Player::Hp_Portion()
 
 void Player::SetPlayerState(PlayerState state)
 {
-	m_playerState = state;
+	if (m_playerState != PlayerState_FALL
+		&& m_playerState != PlayerState_FALL)
+	{
+		m_playerState = state;
+		AnimationCount = 0;
+	}
+
+	
+	
+	
 
 
 }

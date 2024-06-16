@@ -13,6 +13,7 @@
 #include "QuestSystem.h"
 #include "SnakeKill_Quest.h"
 #include "ShoeHelp_Quest.h"
+#include "Boss_Field.h"
 
 enum GAMESTATE
 {
@@ -46,6 +47,7 @@ private:
 	ShoeStroe_Field* m_ShoeStroe_Field;
 	StoreRoom_Field* m_StoreRoom_Field;
 	Dungeon_Field* m_Dungeon_Field;
+	Boss_Field* m_Boss_Field;
 	QuestSystem* m_QuestSystem;
 	
 	HUD* m_HUD;

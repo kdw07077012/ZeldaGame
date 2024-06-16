@@ -130,9 +130,11 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BitMap.h" />
     <ClInclude Include="BitMapManager.h" />
+    <ClInclude Include="Boss_Field.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="dstrObj.h" />
+    <ClInclude Include="Dungeon_Button.h" />
     <ClInclude Include="Dungeon_Field.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="FieldNPC.h" />
@@ -172,9 +174,11 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="BitMapManager.cpp" />
+    <ClCompile Include="Boss_Field.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="dstrObj.cpp" />
+    <ClCompile Include="Dungeon_Button.cpp" />
     <ClCompile Include="Dungeon_Field.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="FieldNPC.cpp" />

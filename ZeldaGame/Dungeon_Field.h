@@ -1,7 +1,20 @@
 #pragma once
 #include "Field.h"
+#include "Dungeon_Button.h"
+#include "Treasure_Chest.h"
+
+#define MAX_BUTTON_COUNT 5
+#define MAX_CHEST_COUNT 2
 class Dungeon_Field : public Field
 {
+private:
+	Dungeon_Button* dungeon_Button[MAX_BUTTON_COUNT];
+
+	BitMap RoadBitmap;
+	BitMap DoorBitmap[2];
+	RECT Object_collision[3];
+	Treasure_Chest* Chest[MAX_CHEST_COUNT]; //보상 상자
+	
 public:
 	Dungeon_Field();
 	~Dungeon_Field();

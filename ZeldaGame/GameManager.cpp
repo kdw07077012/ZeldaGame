@@ -24,7 +24,7 @@ void GameManager::Init(HWND hWnd)
 	backDC = CreateCompatibleDC(m_hDC);
 	BitMapManager::GetInstance()->Init(m_hDC);
 	WindowSize = BitMapManager::GetInstance()->GetWindowSize();
-	m_eCurGameState = GAMESTATE_START;
+	m_eCurGameState = GAMESTATE_MENU;
 	Camera::GetInstance()->Init(0,0);
 	currentField = FieldType_Default;
 
@@ -41,6 +41,7 @@ void GameManager::Init(HWND hWnd)
 	m_StoreRoom_Field = new StoreRoom_Field;
 	m_Dungeon_Field = new Dungeon_Field;
 	m_QuestSystem = new QuestSystem;
+	m_Boss_Field = new Boss_Field;
 	
 
 	//다운캐스팅,
@@ -49,6 +50,8 @@ void GameManager::Init(HWND hWnd)
 	m_oPlayer = dynamic_cast<Object*>(m_Player);
 
 	Camera::GetInstance()->Init(650, 370); // 613 370
+
+	NextField(FieldType_Dungeon);
 	
 }
 
@@ -114,8 +117,6 @@ void GameManager::Update(float DeltaTime)
 			case SelectMenu_START:
 				m_eCurGameState = GAMESTATE_START;
 				break;
-			case SelectMenu_EDIT:
-				break;
 			case SelectMenu_QUIT:
 				break;
 			}
@@ -140,8 +141,20 @@ void GameManager::Update(float DeltaTime)
 			{
 				if (GetAsyncKeyState(VK_RETURN) & 0x8000) // Enter 퀘스트 수락
 				{
-					//퀘스트 수락
-					Quest_Add(temp->GetQuest());
+
+					Quest* quest = m_QuestSystem->FindQuest(temp->GetQuest()->GetQuestType());
+
+
+					if (quest != NULL)
+					{
+						quest->CompleateCheck(); // 퀘스트 확인 클리어 체크
+
+					}
+					else
+					{
+						Quest_Add(temp->GetQuest());
+					}
+
 				}
 
 			}
@@ -163,12 +176,9 @@ void GameManager::Update(float DeltaTime)
 
 					if (quest != NULL)
 					{
-						quest->CompleateCheck();
-
-						//if (temp->GetQuest()->GetComplete()) // 뱀 처치 퀘스트 처리시
-						//{
-						//	Quest_OnNotify(QuestType_ShoeHelp); // 신발가게아저씨 도와주는 퀘스트 완료
-						//}
+						quest->CompleateCheck(); // 퀘스트 확인 클리어 체크
+						Quest_OnNotify(QuestType_ShoeHelp); // 신발가게 도와주는 퀘스트 완료 알림 
+	
 					}
 					else
 					{
@@ -185,6 +195,8 @@ void GameManager::Update(float DeltaTime)
 
 			break;
 		case FieldType_Dungeon:
+			m_Dungeon_Field->Update(DeltaTime);
+			m_Dungeon_Field->Collision(m_Player->getCollision());
 			break;
 		case FieldType_Boss:
 			break;
@@ -298,6 +310,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 			m_Dungeon_Field->Draw(backDC, DeltaTime);
 			break;
 		case FieldType_Boss: 
+			m_Boss_Field->Draw(backDC, DeltaTime);
 			break;
 		case End_Field:
 			break;
@@ -305,11 +318,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 			break;
 		}
 
-
-		
-		m_Player->Draw(backDC, DeltaTime);	
-		m_HUD->Draw(backDC, DeltaTime);						  // HUD 표시
-		m_QuestSystem->QuestComplete_Draw(backDC, DeltaTime); // 퀘스트 컴플리트시 표시
+		m_Player->Draw(backDC, DeltaTime);
 
 		// 플레이어 현재 루비 표시
 		BitMapManager::GetInstance()->ChangeFont_TextDraw(backDC, std::to_string(m_Player->GetCurrentCoin()), 20, 270, 15); 
@@ -317,9 +326,11 @@ void GameManager::DoubleBuffer(float DeltaTime)
 			m_StoreField->BackDraw(backDC, DeltaTime);
 		else if (currentField == FieldType_Dungeon)
 			m_Dungeon_Field->BackDraw(backDC, DeltaTime);
-		break;
-
 		
+		m_HUD->Draw(backDC, DeltaTime);						  // HUD 표시
+		m_QuestSystem->QuestComplete_Draw(backDC, DeltaTime); // 퀘스트 컴플리트시 표시
+		
+		break;
 	case GAMESTATE_INVENTORY:
 		m_Ivnentory->Draw(backDC, DeltaTime);
 
@@ -354,8 +365,6 @@ bool GameManager::FieldCollision(RECT rect)
 	case FieldType_Default:
 		if (m_Field->Collision(rect))
 			return true;
-
-
 		break;
 	case FieldType_Store:
 		if (m_StoreField->Collision(rect))
@@ -370,6 +379,8 @@ bool GameManager::FieldCollision(RECT rect)
 			return true;
 		break;
 	case FieldType_Dungeon:
+		if (m_Dungeon_Field->Collision(rect))
+			return true;
 		break;
 	case FieldType_Boss:
 		break;
@@ -440,6 +451,7 @@ void GameManager::NextField(FieldType Field)
 		m_Dungeon_Field->Init();
 		break;
 	case FieldType_Boss:
+		m_Boss_Field->Init();
 		break;
 	case End_Field:
 		break;

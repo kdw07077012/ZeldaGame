@@ -156,6 +156,12 @@
     <ClInclude Include="Treasure_Chest.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Dungeon_Button.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss_Field.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ZeldaGame.cpp">
@@ -258,6 +264,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Treasure_Chest.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Dungeon_Button.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss_Field.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

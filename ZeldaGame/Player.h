@@ -16,6 +16,7 @@ enum PlayerState
 	PlayerState_PULL,		//물건 당기는 상태
 	PlayerState_ROLL,	  //구르는상태
 	PlayerState_Attack,
+	PlayerState_FALL,   // 추락 애니메이션
 };
 
 enum Direction
@@ -34,6 +35,7 @@ private:
 
 	BitMap* m_MiniChangeAnimBitmap;
 	BitMap* m_MiniBitmap;
+	BitMap* m_PlayerFallBitmap;
 
 	PlayerState m_playerState; //플레이어 상태
 	RECT player_rect;			// 콜리전
@@ -87,7 +89,14 @@ public:
 	void Hp_Portion();
 	void SetPlayerState(PlayerState state);
 	Position GetPlayerPos() const { return m_pos; }
-	RECT& getCollision() { return player_rect; }
+	RECT& getCollision() {
+		if (bHit)
+		{
+			player_rect = { 0,0,0,0 };
+			return player_rect;
+
+		}
+		return player_rect; }
 	bool GetHit() const { return bHit; }
 	
 

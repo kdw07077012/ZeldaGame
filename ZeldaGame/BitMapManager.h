@@ -35,6 +35,8 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_QuestMenu,
 	ImageType_QuestList,
 	ImageType_Treasure_Chest,
+	ImageType_Dungeon_Object,
+	ImageType_Player_FALL,
 };
 
 enum FieldType
@@ -89,6 +91,9 @@ private:
 	BitMap* m_QuestMenuBitMap;		//퀘스트 메뉴 비트맵
 	BitMap* m_QuestListBitMap;		// 다양한 퀘스트 비트맵
 	BitMap* m_TreasureChestBitmap; // 보물상자 비트맵 
+	BitMap* m_DungeonObjectBitmap;  // 던전오브젝트비트맵
+	BitMap* m_PlayerFallBitmap;		// 플레이어 추락 애니메이션 비트맵
+
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지
 	PlayerDirBitmap playerSkillDirBitmap;  // 플레이어 방향별이미지
