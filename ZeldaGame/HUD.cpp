@@ -42,37 +42,33 @@ void HUD::Draw(HDC backDC, float DeltaTime)
 	//(MaxHP % i) * 5
 	m_BitMap->Draw(backDC, 0, 0, 1);
 	float hp = player->GetHp();
-
-	for (int i = 0; i < MaxHP; i++)
+	int i = 0, j = 0;
+	for (i = 0; j < MaxHP; i++)
 	{
+		for (int k = 0; k < 5; k++, j++)
+		{
+			if (j >= MaxHP)
+				return;
 
-		if (hp >= i + 1)
-		{
-			m_HpBitmaps[i]->AnimationUpdate(backDC, 4, 450 + (i * 30), 40, m_HpBitmap_Size, 0.8f);
-		}
-		else
-		{
-			if (fmodf(hp, i) < 1.0f)
-				m_HpBitmaps[i]->AnimationUpdate(backDC, fmodf(hp, i) * 5, 450 + (i * 30), 40, m_HpBitmap_Size, 0.8f);
+			if (hp >= j + 1)
+			{
+				m_HpBitmaps[j]->AnimationUpdate(backDC, 4, 450 + ((k + 1) * 30), (40 + (20 * (i))), m_HpBitmap_Size, 0.8f);
+			}
 			else
-				m_HpBitmaps[i]->AnimationUpdate(backDC, 0, 450 + (i * 30), 40, m_HpBitmap_Size, 0.8f);
+			{	// 현재 체력이 해당 하트의를 나누었을때 나머지가 1.0 이상일때 원상태 하트, 1.0 이하일때
+				if (fmodf(hp, j) < 1.0f) //하트 이미지 갯수가 5개 1.0 나누기했을때 해당 값을 hp이미지로 적용
+				{
+					m_HpBitmaps[j]->AnimationUpdate(backDC, fmodf(hp, j) * 5, 450 + ((k + 1) * 30), (40 + (20 * (i))), m_HpBitmap_Size, 0.8f);
+				}
+				else
+				{
+					m_HpBitmaps[j]->AnimationUpdate(backDC, 0, 450 + ((k + 1) * 30), (40 + (20 * (i))), m_HpBitmap_Size, 0.8f);
+				}
 
-
+			}
 			
 		}
-		
-		
-		//m_HpBitmaps[i]->AnimationUpdate(backDC, 0, 450 + (i * 30), 40, m_HpBitmap_Size, 0.8f);
-		
 
-		//if ((float)hp / i < 1.0f)
-		//{
-		//
-		//}
-
-		
-
-		
 		
 	}
 }

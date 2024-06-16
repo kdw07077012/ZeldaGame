@@ -6,18 +6,25 @@ enum MonsterType
 {
 	MonsterType_Snake,
 	MonsterType_Octoroc,
-	MonsterType_Moblin,
 };
 
 class Monster : public Object
 {
 protected:
+	float fMoveDeltaTime;
+	int AnimationCount;
+	bool bHit;
+	int  m_eDir;
+	int  HP;
+	bool DieAim;
+	bool Die;
+protected:
 	 SIZE m_Size; // 몬스터 하나당 크기
 	 RECT collision;
-	 
 	 bool Move;		//이동하는 몬스터인지
 	 float m_fAngle;
 	 float fSpeed;
+	 MonsterType m_Type;
 public:
 	Monster(int x, int y, MonsterType Type);
 	~Monster() {};

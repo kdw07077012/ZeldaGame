@@ -51,7 +51,7 @@ void GameManager::Init(HWND hWnd)
 
 	Camera::GetInstance()->Init(650, 370); // 613 370
 
-	NextField(FieldType_Dungeon);
+	//NextField(FieldType_Default);
 	
 }
 
@@ -417,6 +417,8 @@ bool GameManager::FieldObject_AttackCollision(RECT rect)
 	case FieldType_Store_StoreRoom:
 		break;
 	case FieldType_Dungeon:
+
+		m_Dungeon_Field->Monsters_Collision(rect);
 		break;
 	case FieldType_Boss:
 		break;

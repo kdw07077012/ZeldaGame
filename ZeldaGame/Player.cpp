@@ -433,8 +433,10 @@ void Player::Draw(HDC backDC, float DeltaTime)
 			switch (dir)
 			{
 			case LEFT:
+				m_pos.X += size.cx * 2;
 				break;
 			case RIGHT:
+				m_pos.X -= size.cx * 2;
 				break;
 			case UP:
 				m_pos.Y += size.cy *2;

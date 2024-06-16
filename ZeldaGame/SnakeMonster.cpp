@@ -1,6 +1,9 @@
 #include "SnakeMonster.h"
 #include "Camera.h"
 #include "GameManager.h"
+SnakeMonster::SnakeMonster() : Monster(0, 0, MonsterType_Snake)
+{
+}
 void SnakeMonster::Init(int x, int y)
 {
 	m_ix = x;
@@ -24,14 +27,14 @@ void SnakeMonster::Draw(HDC backDC, float DeltaTime)
 
 	if (DieAim)
 	{
-		m_BitMap->AnimationUpdate(backDC, AnimationCount, screenX, screenY, m_Size, 0.5f, 400);
+		m_BitMap[m_Type].AnimationUpdate(backDC, AnimationCount, screenX, screenY, m_Size, 0.5f, 400);
 	}
 	else
 	{
 		if (bHit)
-			m_BitMap->AnimationUpdate(backDC, (m_eDir / 100), screenX, screenY, m_Size, 0.5f, 500);
+			m_BitMap[m_Type].AnimationUpdate(backDC, (m_eDir / 100), screenX, screenY, m_Size, 0.5f, 500);
 		else
-			m_BitMap->AnimationUpdate(backDC, Tracking ? AnimationCount : 0, screenX, screenY, m_Size, 0.5f, m_eDir);
+			m_BitMap[m_Type].AnimationUpdate(backDC, Tracking ? AnimationCount : 0, screenX, screenY, m_Size, 0.5f, m_eDir);
 	}
 
 	//Rectangle(backDC, collision.left, collision.top, collision.right, collision.bottom);
@@ -90,6 +93,7 @@ void SnakeMonster::Update(float DeltaTime)
 
 
 	
+	//ÃßÀû 
 	if (!bHit)
 	{
 		if (GameManager::GetInstance()->GetPlayer()->GetHit())

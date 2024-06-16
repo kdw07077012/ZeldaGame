@@ -1,6 +1,6 @@
 #pragma once
 #include <Windows.h>
-#define DEBUG
+//#define DEBUG
 class Obstacle
 {
 protected:
@@ -17,4 +17,14 @@ public:
 
 
 };
+
+
+
+/*
+
+
+
+
+
+*/
 

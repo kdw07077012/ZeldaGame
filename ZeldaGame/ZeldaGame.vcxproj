@@ -152,6 +152,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="OctorocMonster.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Quest.h" />
     <ClInclude Include="QuestSystem.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="OctorocMonster.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Quest.cpp" />
     <ClCompile Include="QuestSystem.cpp" />

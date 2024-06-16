@@ -5,7 +5,7 @@ Dungeon_Field::Dungeon_Field()
 {
     srand(time(NULL));
     m_BackGround = new BackGround(FieldType_Dungeon);
-    EndPosition = { 415, 700 }; // 2500
+    EndPosition = { 415, 2500 }; // 2500
 
     //땅바닥 버튼
     dungeon_Button[0] = new Dungeon_Button(480, 2030, 3, 0);
@@ -31,6 +31,16 @@ Dungeon_Field::Dungeon_Field()
     int left, top, width, height, frame;
     FILE* fp = fopen("Field4.txt", "rt");
     fscanf_s(fp, "%d", &frame);
+    obstacles = new Obstacle[frame];
+    obstacleSize = frame;
+    // 메모장에 있는 맵 콜리전 정보를 가져옴
+    for (int i = 0; i < frame; i++)
+    {
+        fscanf(fp, "%d %d %d %d", &left, &top, &width, &height);
+        obstacles[i].Init(left, top, width, height);
+    }
+
+    fscanf_s(fp, "%d", &frame);
     WaterobstacleSize = frame;
     Waterobstacles = new Obstacle[frame];
     // 강 콜리전을 정보를 가져옴
@@ -42,6 +52,17 @@ Dungeon_Field::Dungeon_Field()
     fclose(fp);
 
     NextField_obstacles->Init(669, 70, 820, 145);
+
+
+    for (int i = 0; i < MAX_MONSTER_COUNT; i++)
+    {
+        OctorocMonster* monster = new OctorocMonster;
+        octorocMonster[i] = monster;
+    }
+
+    octorocMonster[0]->Init(520, 1800, Octoroc_DOWN);
+    octorocMonster[1]->Init(50, 1080, Octoroc_DOWN);
+    octorocMonster[2]->Init(600, 1080, Octoroc_DOWN);
 }
 
 Dungeon_Field::~Dungeon_Field()
@@ -64,6 +85,7 @@ void Dungeon_Field::Draw(HDC backDC, float DeltaTime)
         dungeon_Button[i]->Draw(backDC, DeltaTime);
 
     }
+
 
     int  cameraX = Camera::GetInstance()->GetX();
     int  cameraY = Camera::GetInstance()->GetY();
@@ -114,7 +136,16 @@ void Dungeon_Field::Draw(HDC backDC, float DeltaTime)
 
     NextField_obstacles->Draw(backDC, cameraX, cameraY); //보스 포탈 
 
-   
+
+    for (int i = 0; i < MAX_MONSTER_COUNT; i++)
+    {     
+        octorocMonster[i]->Draw(backDC, DeltaTime);
+    }
+
+    for (int i = 0; i < obstacleSize; i++) // 벽
+    {
+        obstacles[i].Draw(backDC, cameraX, cameraY);
+    }
 
 }
 
@@ -134,7 +165,11 @@ void Dungeon_Field::Update(float DeltaTime)
         }
     }
 
-
+    for (int i = 0; i < MAX_MONSTER_COUNT; i++)
+    {
+        octorocMonster[i]->Update(DeltaTime);
+    }
+    
    
 }
 
@@ -194,7 +229,7 @@ bool Dungeon_Field::Collision(RECT rect)
     }
    
 
-    for (int i = 0; i < WaterobstacleSize; i++) // 강 콜리전
+    for (int i = 0; i < WaterobstacleSize; i++) // 추락 콜리전
     {
         if (IntersectRect(&tmp, &Waterobstacles[i].GetCollision(), &rect))
         {
@@ -203,14 +238,41 @@ bool Dungeon_Field::Collision(RECT rect)
         }
     }
 
-    if (IntersectRect(&tmp, &NextField_obstacles->GetCollision(), &rect)) // 스토어 포탈
+    if (IntersectRect(&tmp, &NextField_obstacles->GetCollision(), &rect)) // 보스 포탈
     {
         EndPosition = GameManager::GetInstance()->GetPlayer()->m_pos;
         GameManager::GetInstance()->NextField(FieldType_Boss);
         return true;
     }
+
+
+    for (int i = 0; i < MAX_MONSTER_COUNT; i++) // 옥토패스 총알 콜리전
+    {
+        octorocMonster[i]->Collision(rect);
+    }
+
+    for (int i = 0; i < obstacleSize; i++)
+    {
+        if (IntersectRect(&tmp, &obstacles[i].GetCollision(), &rect))
+        {
+            return true;
+        }
+    }
  
     
 
     return false;
+}
+
+void Dungeon_Field::Monsters_Collision(RECT rect)
+{
+    RECT tmp;
+
+    for (int i = 0; i < MAX_MONSTER_COUNT; i++)
+    {
+        if (IntersectRect(&tmp, &octorocMonster[i]->GetCollision(), &rect))
+        {
+            octorocMonster[i]->Hit();
+        }
+    }
 }

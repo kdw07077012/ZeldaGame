@@ -99,7 +99,7 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     switch (type)
     {  
     case ImageType_Monster:
-        Size = 1;
+        Size = 2;
         break;
     case ImageType_Dungeon_Object:
     case ImageType_ItemTextBar:
