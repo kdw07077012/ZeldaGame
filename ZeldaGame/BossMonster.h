@@ -12,7 +12,7 @@
 #define InvisibleAnimEnd 28  // 사라지는 애니메이션 길이
 #define Colliison_Offset 60
 #define Raser_OffsetX 20
-
+#define Boss_MAXHP 300
 enum Boss_State
 {
 	Boss_State_Idle,

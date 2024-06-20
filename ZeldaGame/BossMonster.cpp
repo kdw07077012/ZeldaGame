@@ -40,7 +40,7 @@ void BossMonster::Init(int x, int y)
 	m_iy = y;
 	fMoveDeltaTime = 0.0f;
 	fSpeed = 0.020f;
-	HP = 100;
+	HP = Boss_MAXHP;
 	Die = false;
 	DieAim = false;
 	AnimationCount = 0;
@@ -217,9 +217,11 @@ void BossMonster::RaserAttack(HDC backDC, float DeltaTime)
 				if (Rasers[i]->Bullet_AnimCount >= 5)
 				{
 
-					Rasers[i]->Collision = { (Sceen_RaserBulletpos.X + Rasers[i]->pos.X) + 20, (Sceen_RaserBulletpos.Y + Rasers[i]->pos.Y),
-						(Sceen_RaserBulletpos.X + Rasers[i]->pos.X) + RaserBulletSIZE.cx * ((Rasers[i]->dir) + 1), (Sceen_RaserBulletpos.Y + Rasers[i]->pos.Y) + RaserBulletSIZE.cy - 20 };
+					Rasers[i]->Collision = { (Sceen_RaserBulletpos.X + Rasers[i]->pos.X) + 20, (Sceen_RaserBulletpos.Y + Rasers[i]->pos.Y) + 20,
+						(Sceen_RaserBulletpos.X + Rasers[i]->pos.X) + RaserBulletSIZE.cx * ((Rasers[i]->dir) + 1), 
+						(Sceen_RaserBulletpos.Y + Rasers[i]->pos.Y) + RaserBulletSIZE.cy - 20 };
 
+					//Rectangle(backDC, Rasers[i]->Collision.left, Rasers[i]->Collision.top, Rasers[i]->Collision.right, Rasers[i]->Collision.bottom);
 
 					DelayTime += DeltaTime;
 
@@ -249,7 +251,7 @@ void BossMonster::RaserAttack(HDC backDC, float DeltaTime)
 						
 					}
 
-					Rectangle(backDC, Rasers[i]->Collision.left, Rasers[i]->Collision.top, Rasers[i]->Collision.right, Rasers[i]->Collision.bottom);
+					
 
 
 				}
@@ -323,14 +325,16 @@ void BossMonster::Draw(HDC backDC, float DeltaTime)
 
 		if (!bAttack)
 		{
-			if (random)
+			switch (random)
 			{
+			case 0:
 				SlowRotationAttack(DeltaTime, false); // 기본 공격
-			}
-			else
-			{
+				break;
+			case 1:
 				SlowRotationAttack(DeltaTime, true); // 기본 공격
+				break;
 			}
+
 		}
 		else
 		{
@@ -559,7 +563,7 @@ void BossMonster::Hit()
 	}
 	else
 	{
-		if (HP < 50 && bRaserAttackCompleate == false)
+		if (HP < 120 && bRaserAttackCompleate == false)
 		{
 			boss_State = Boss_State_Invisible;
 		}

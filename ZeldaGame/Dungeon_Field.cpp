@@ -36,7 +36,7 @@ Dungeon_Field::Dungeon_Field()
     // 메모장에 있는 맵 콜리전 정보를 가져옴
     for (int i = 0; i < frame; i++)
     {
-        fscanf(fp, "%d %d %d %d", &left, &top, &width, &height);
+        fscanf_s(fp, "%d %d %d %d", &left, &top, &width, &height);
         obstacles[i].Init(left, top, width, height);
     }
 
@@ -46,7 +46,7 @@ Dungeon_Field::Dungeon_Field()
     // 강 콜리전을 정보를 가져옴
     for (int i = 0; i < frame; i++)
     {
-        fscanf(fp, "%d %d %d %d", &left, &top, &width, &height);
+        fscanf_s(fp, "%d %d %d %d", &left, &top, &width, &height);
         Waterobstacles[i].Init(left, top, width, height);
     }
     fclose(fp);
