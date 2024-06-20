@@ -16,6 +16,7 @@ enum PlayerState
 	PlayerState_PULL,		//물건 당기는 상태
 	PlayerState_ROLL,	  //구르는상태
 	PlayerState_Attack,
+	PlayerState_Shield, // 쉴드 
 	PlayerState_FALL,   // 추락 애니메이션
 };
 
@@ -36,6 +37,8 @@ private:
 	BitMap* m_MiniChangeAnimBitmap;
 	BitMap* m_MiniBitmap;
 	BitMap* m_PlayerFallBitmap;
+	BitMap* m_ShieldBitmap;
+	RECT ShieldCollision;
 
 	PlayerState m_playerState; //플레이어 상태
 	RECT player_rect;			// 콜리전
@@ -94,10 +97,17 @@ public:
 		{
 			player_rect = { 0,0,0,0 };
 			return player_rect;
-
 		}
+		else if (m_playerState == PlayerState_Shield)
+			return ShieldCollision;
 		return player_rect; }
 	bool GetHit() const { return bHit; }
+	PlayerState GetState() const { return m_playerState; }
+	bool GetEquipment_Lanton() {
+		if (Equipment[1] == Item_Lanton)
+			return true;
+		return false;
+	}
 	
 
 };

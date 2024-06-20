@@ -25,6 +25,7 @@ public:
 	virtual void Draw(HDC backDC, float DeltaTime) override;
 	void ButtonCollision(RECT rect);
 	bool ButtonCheck();
+	bool GetTorchlight() const { return Torchlight; }
 	virtual void Update(float DeltaTime);
 	virtual void Reset() override;
 };

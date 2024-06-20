@@ -6,6 +6,7 @@ enum MonsterType
 {
 	MonsterType_Snake,
 	MonsterType_Octoroc,
+	MonsterType_Boss,
 };
 
 class Monster : public Object
@@ -18,8 +19,8 @@ protected:
 	int  HP;
 	bool DieAim;
 	bool Die;
+	int MaxAnimCount;
 protected:
-	 SIZE m_Size; // 몬스터 하나당 크기
 	 RECT collision;
 	 bool Move;		//이동하는 몬스터인지
 	 float m_fAngle;
@@ -34,6 +35,7 @@ public:
 	virtual void Hit() = 0;
 	virtual void Reset() override;
 	RECT& GetCollision() { return collision; }
+	bool GetDie() const { return Die; }
 
 };
 

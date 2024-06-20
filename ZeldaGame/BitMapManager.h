@@ -37,6 +37,11 @@ enum ImageType // 이미지 타입을 통해 불러옴
 	ImageType_Treasure_Chest,
 	ImageType_Dungeon_Object,
 	ImageType_Player_FALL,
+	ImageType_Boss,
+	ImageType_Zelda,
+	ImageType_Ending,
+	ImageType_Credit,
+	ImageType_Shield,
 };
 
 enum FieldType
@@ -47,6 +52,8 @@ enum FieldType
 	FieldType_Store_StoreRoom, // 상점 맵 안 스토어 
 	FieldType_Dungeon,
 	FieldType_Boss,
+	FieldType_Ending,
+	FieldType_ending_credits, // 엔딩 크레딧
 	End_Field,
 };
 
@@ -93,6 +100,10 @@ private:
 	BitMap* m_TreasureChestBitmap; // 보물상자 비트맵 
 	BitMap* m_DungeonObjectBitmap;  // 던전오브젝트비트맵
 	BitMap* m_PlayerFallBitmap;		// 플레이어 추락 애니메이션 비트맵
+	BitMap* m_BossBitmap;			// 보스 비트맵
+	BitMap* m_ZeldaBitmap;
+	BitMap* m_CreditBitmap;
+	BitMap* m_ShieldBitmap;
 
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지

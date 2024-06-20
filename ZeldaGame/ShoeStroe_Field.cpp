@@ -56,6 +56,8 @@ void ShoeStroe_Field::Update(float DeltaTime)
 
 void ShoeStroe_Field::Reset()
 {
+	Chest->Reset();
+	m_NPC->Reset();
 }
 
 NPC* ShoeStroe_Field::FieldNpcCollision(RECT rect)

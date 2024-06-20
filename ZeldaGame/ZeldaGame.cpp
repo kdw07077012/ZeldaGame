@@ -45,8 +45,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ZeroMemory(&msg, sizeof(msg));
 
     GameManager::GetInstance()->Init(hWnd);
-    SIZE size = GameManager::GetInstance()->GetWindowSize();
-    MoveWindow(hWnd, 0, 0, size.cx, size.cy, true); // 사이즈 변경
+   
+    MoveWindow(hWnd, 0, 0, WINDOWSIZE_WIDTH, WINDOWSIZE_HEIGHT, true); // 사이즈 변경
 
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);

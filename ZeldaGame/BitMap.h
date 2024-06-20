@@ -6,7 +6,6 @@ private:
 	HDC m_memdc;		// 기본 HDC		
 	HBITMAP m_Bitmap;	// 비트맵
 	SIZE m_Size;		// 비트맵 사이즈
-	
 
 public:
 	SIZE GetSize() const { return m_Size; }  

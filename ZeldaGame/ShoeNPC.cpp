@@ -63,4 +63,5 @@ void ShoeNPC::Update(float DeltaTime)
 
 void ShoeNPC::Reset()
 {
+	current_Quest->Reset();
 }

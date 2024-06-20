@@ -27,7 +27,7 @@ void BitMapManager::Init(HDC hdc)
     m_TreasureChestBitmap = ImageRoad(hdc, (char*)"Image//Block//Treasure_Chest%d.bmp", ImageType_Treasure_Chest);
     m_DungeonObjectBitmap = ImageRoad(hdc, (char*)"Image//Map//Dungeon//Dungeon_Object%d.bmp", ImageType_Dungeon_Object);
     m_PlayerFallBitmap  = ImageRoad(hdc, (char*)"Image//Player//Player_FALL%d.bmp", ImageType_Player_FALL);
-
+    m_ShieldBitmap      = ImageRoad(hdc, (char*)"Image//Player//ShieldBullet%d.bmp", ImageType_Shield);
 
     //플레이어 방향별 비트맵
     playerDirBitmap.Down_Bitmap   = ImageRoad(hdc, (char*)"Image//Player//DOWN//%d_(1).bmp", ImageType_Player);
@@ -46,12 +46,15 @@ void BitMapManager::Init(HDC hdc)
     m_FieldBitMap[FieldType_Store_StoreRoom] = ImageRoad(hdc, (char*)"Image//Map//Store//StoreRoom%d.bmp", ImageType_BackGround);
     m_FieldBitMap[FieldType_Dungeon]         = ImageRoad(hdc, (char*)"Image//Map//Dungeon//DunGeon%d.bmp", ImageType_Dungeon);
     m_FieldBitMap[FieldType_Boss]            = ImageRoad(hdc, (char*)"Image//Map//BossStage//BossMap%d.bmp", ImageType_Dungeon);
+    m_FieldBitMap[FieldType_Ending]          = ImageRoad(hdc, (char*)"Image//Map//BossStage//EndingStage%d.bmp", ImageType_Dungeon);
 
     m_MonsterBitMap  = ImageRoad(hdc, (char*)"Image//Monster//Monster%d.bmp", ImageType_Monster);
 
     m_QuestMenuBitMap =  ImageRoad(hdc, (char*)"Image//Menu//Inventory//Quest_Menu%d.bmp", ImageType_QuestMenu);
     m_QuestListBitMap = ImageRoad(hdc, (char*)"Image//Quest//Quest%d.bmp", ImageType_QuestList);
-
+    m_BossBitmap      = ImageRoad(hdc, (char*)"Image//Monster//Boss//Boss%d.bmp", ImageType_Boss);
+    m_ZeldaBitmap     = ImageRoad(hdc, (char*)"Image//Ending//Zelda//Zelda%d.bmp", ImageType_Zelda);
+    m_CreditBitmap    = ImageRoad(hdc, (char*)"Image//Ending//Ending%d.bmp", ImageType_Credit);
 
     //Thicket0
 
@@ -97,7 +100,13 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     char buf[256];
     int Size = 0;
     switch (type)
-    {  
+    {
+    case ImageType_Credit:
+        Size = 4;
+        break;
+    case ImageType_Boss:
+        Size = 5;
+        break;
     case ImageType_Monster:
         Size = 2;
         break;
@@ -130,6 +139,8 @@ BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)
     case ImageType_Button:
         Size = 3;
         break;
+    case ImageType_Shield:
+    case ImageType_Zelda:
     case ImageType_Player_FALL:
     case ImageType_Treasure_Chest:
     case ImageType_QuestMenu:
@@ -175,6 +186,17 @@ BitMap* BitMapManager::GetBitMap(ImageType Image) const
 {
     switch (Image)
     {
+    case ImageType_Shield:
+        return m_ShieldBitmap;
+        break;
+    case ImageType_Credit:
+        return m_CreditBitmap;
+    case ImageType_Zelda:
+        return m_ZeldaBitmap;
+        break;
+    case ImageType_Boss:
+        return m_BossBitmap;
+        break;
     case ImageType_Player_FALL:
         return m_PlayerFallBitmap;
         break;

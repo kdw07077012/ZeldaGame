@@ -24,7 +24,7 @@ void GameManager::Init(HWND hWnd)
 	backDC = CreateCompatibleDC(m_hDC);
 	BitMapManager::GetInstance()->Init(m_hDC);
 	WindowSize = BitMapManager::GetInstance()->GetWindowSize();
-	m_eCurGameState = GAMESTATE_MENU;
+	m_eCurGameState = GAMESTATE_TITLE;
 	Camera::GetInstance()->Init(0,0);
 	currentField = FieldType_Default;
 
@@ -42,17 +42,17 @@ void GameManager::Init(HWND hWnd)
 	m_Dungeon_Field = new Dungeon_Field;
 	m_QuestSystem = new QuestSystem;
 	m_Boss_Field = new Boss_Field;
-	
+	m_EndingField = new Ending_Field;
+	m_EndingCredit_Field = new EndingCredit_Field;
 
 	//다운캐스팅,
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
 	m_oTitle = dynamic_cast<Object*>(m_Title);
 	m_oPlayer = dynamic_cast<Object*>(m_Player);
 
-	Camera::GetInstance()->Init(650, 370); // 613 370
-
-	//NextField(FieldType_Default);
 	
+	Item* item = new Item(Item_Shield, 0, 0, ItemImageType_Inven);
+	m_Ivnentory->AddItem(item);
 }
 
 void GameManager::Update(float DeltaTime)
@@ -92,7 +92,7 @@ void GameManager::Update(float DeltaTime)
 	
 	NPC* temp = NULL; // 필드 NPC 체크하기 위한 담을 포인터
 
-	switch (m_eCurGameState)
+	switch (m_eCurGameState) //필드별 업데이트
 	{
 	case GAMESTATE_TITLE:
 		m_Title->Update(DeltaTime);
@@ -115,7 +115,18 @@ void GameManager::Update(float DeltaTime)
 			switch (m_Menu->m_currSelectMenu)
 			{
 			case SelectMenu_START:
+				Camera::GetInstance()->Init(650, 370); // 613 370
+				GetPlayer()->m_pos = { 650, 370 };
+				currentField = FieldType_Default;
 				m_eCurGameState = GAMESTATE_START;
+
+				m_Field->Reset();
+				m_ShoeStroe_Field->Reset();
+			
+				m_StoreField->Reset();
+				m_Player->Reset();
+				m_HUD->Reset();
+				m_Ivnentory->Reset();
 				break;
 			case SelectMenu_QUIT:
 				break;
@@ -199,8 +210,10 @@ void GameManager::Update(float DeltaTime)
 			m_Dungeon_Field->Collision(m_Player->getCollision());
 			break;
 		case FieldType_Boss:
+			m_Boss_Field->Update(DeltaTime);
 			break;
-		case End_Field:
+		case FieldType_Ending:
+			m_EndingField->Update(DeltaTime);
 			break;
 		default:
 			break;
@@ -245,6 +258,7 @@ void GameManager::Update(float DeltaTime)
 				}
 				else
 				{
+					m_Ivnentory->IvenSlotEquipmentCheck();
 					m_Ivnentory->SelectItem->IvenSlot->ItemEquipment = true;
 					m_HUD->EquipmentedItem(m_Ivnentory->SelectItem->GetItem()->item, true);
 					m_Player->EqupmentAdd(m_Ivnentory->SelectItem->GetItem()->item, true);
@@ -276,7 +290,7 @@ void GameManager::DoubleBuffer(float DeltaTime)
 	RECT rect = { windowRect.left,windowRect.top, windowRect.right, windowRect.bottom };
 	FillRect(backDC, &rect, brush);
 
-	
+
 	
 	switch (m_eCurGameState)
 	{
@@ -310,9 +324,10 @@ void GameManager::DoubleBuffer(float DeltaTime)
 			m_Dungeon_Field->Draw(backDC, DeltaTime);
 			break;
 		case FieldType_Boss: 
-			m_Boss_Field->Draw(backDC, DeltaTime);
+			m_Boss_Field->Draw(backDC, DeltaTime);		
 			break;
-		case End_Field:
+		case FieldType_Ending:
+			m_EndingField->Draw(backDC, DeltaTime);
 			break;
 		default:
 			break;
@@ -325,8 +340,11 @@ void GameManager::DoubleBuffer(float DeltaTime)
 		if (currentField == FieldType_Store)
 			m_StoreField->BackDraw(backDC, DeltaTime);
 		else if (currentField == FieldType_Dungeon)
-			m_Dungeon_Field->BackDraw(backDC, DeltaTime);
-		
+			m_Dungeon_Field->BackDraw(backDC, DeltaTime);	
+		else if(currentField == FieldType_Ending)
+			m_EndingField->BackDraw(backDC, DeltaTime);
+
+
 		m_HUD->Draw(backDC, DeltaTime);						  // HUD 표시
 		m_QuestSystem->QuestComplete_Draw(backDC, DeltaTime); // 퀘스트 컴플리트시 표시
 		
@@ -338,9 +356,13 @@ void GameManager::DoubleBuffer(float DeltaTime)
 	case GAMESTATE_QUEST:
 		m_QuestSystem->Draw(backDC, DeltaTime);
 		break;
+	case GAMESTATE_Credit:
+		m_EndingCredit_Field->Draw(backDC, DeltaTime);
+		break;
 	default:
 		break;
 	}
+	
 
 
 
@@ -383,8 +405,11 @@ bool GameManager::FieldCollision(RECT rect)
 			return true;
 		break;
 	case FieldType_Boss:
+		if (m_Boss_Field->Collision(rect))
+			return true;
 		break;
-	case End_Field:
+	case FieldType_Ending:
+		m_EndingField->Collision(rect);
 		break;
 	default:
 		break;
@@ -421,6 +446,7 @@ bool GameManager::FieldObject_AttackCollision(RECT rect)
 		m_Dungeon_Field->Monsters_Collision(rect);
 		break;
 	case FieldType_Boss:
+		m_Boss_Field->Boss_Collision(rect);
 		break;
 	case End_Field:
 		break;
@@ -455,7 +481,11 @@ void GameManager::NextField(FieldType Field)
 	case FieldType_Boss:
 		m_Boss_Field->Init();
 		break;
-	case End_Field:
+	case FieldType_Ending:
+		m_EndingField->Init();
+		break;
+	case FieldType_ending_credits:
+		m_eCurGameState = GAMESTATE_Credit;
 		break;
 	default:
 		break;

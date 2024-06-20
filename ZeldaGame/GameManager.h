@@ -14,6 +14,8 @@
 #include "SnakeKill_Quest.h"
 #include "ShoeHelp_Quest.h"
 #include "Boss_Field.h"
+#include "Ending_Field.h"
+#include "EndingCredit_Field.h"
 
 enum GAMESTATE
 {
@@ -22,6 +24,7 @@ enum GAMESTATE
 	GAMESTATE_START,
 	GAMESTATE_INVENTORY,
 	GAMESTATE_QUEST,
+	GAMESTATE_Credit,
 };
 
 
@@ -49,6 +52,8 @@ private:
 	Dungeon_Field* m_Dungeon_Field;
 	Boss_Field* m_Boss_Field;
 	QuestSystem* m_QuestSystem;
+	Ending_Field* m_EndingField;
+	EndingCredit_Field* m_EndingCredit_Field;
 	
 	HUD* m_HUD;
 	Menu* m_Menu;
@@ -76,12 +81,12 @@ public:
 	void NextField(FieldType Field);
 	void StoreItemBuy(InGame_Item itemType, int price);
 	void useItem(InGame_Item itemType);
-
+	
 	void Quest_OnNotify(QuestType type);
 	void Quest_Add(Quest* quest);
 
+	void SetGameState(GAMESTATE state) { m_eCurGameState = state; }
 	Player* GetPlayer() { return m_Player; }
-	SIZE  GetWindowSize() const { return WindowSize; }
 	POINT GetMousePos() const { return ptMouse; }
 };
 

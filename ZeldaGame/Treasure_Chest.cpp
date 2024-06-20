@@ -31,9 +31,8 @@ Treasure_Chest::~Treasure_Chest()
 
 void Treasure_Chest::Draw(HDC backDC, float DeltaTime)
 {
-	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
-	int screenX = (((msize.cx / 2) - (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_ix;
-	int screenY = (((msize.cy / 2) - (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_iy;
+	int screenX = (((WINDOWSIZE_WIDTH  / 2) - (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_ix;
+	int screenY = (((WINDOWSIZE_HEIGHT / 2) - (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_iy;
 
 	collision = { screenX, screenY, screenX + size.cx * 2 , screenY + size.cy * 2 };
 	Event_Collision = { screenX, screenY - (size.cx), screenX + size.cx * 2 , screenY + size.cy * 4};
@@ -65,8 +64,6 @@ void Treasure_Chest::Collision()
 		}
 		else
 		{
-		}
-		{
 			GameManager::GetInstance()->GetPlayer()->AddCoin(Drop_Coin->GetCoinIndex());
 		}
 
@@ -80,4 +77,11 @@ void Treasure_Chest::Collision()
 // 바로 체력증가
 void Treasure_Chest::Reset()
 {
+	ItemPickup = false;
+	BoxOpen = false;
+
+	if (rand() % 2)
+		bItem = true;
+	else
+		bItem = false;
 }

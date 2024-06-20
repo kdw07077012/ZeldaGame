@@ -191,7 +191,18 @@ bool Dungeon_Field::Collision(RECT rect)
 {
     for (int i = 0; i < MAX_BUTTON_COUNT; i++)
     {
-        dungeon_Button[i]->ButtonCollision(rect);
+        if (dungeon_Button[i]->GetTorchlight())
+        {
+            if (GameManager::GetInstance()->GetPlayer()->GetEquipment_Lanton())
+                dungeon_Button[i]->ButtonCollision(rect);
+        }
+        else
+        {
+            dungeon_Button[i]->ButtonCollision(rect);
+        }
+        
+
+       
     }
     RECT tmp;
 

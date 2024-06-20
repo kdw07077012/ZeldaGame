@@ -21,6 +21,7 @@ protected:
 	int obstacleSize;
 	int WaterobstacleSize;
 	Position EndPosition;
+	Position StartPos;
 	Obstacle* obstacles;  //벽 콜리전 
 	Obstacle* Waterobstacles; // 물 콜리전 
 	Obstacle* NextField_obstacles; // 다음 필드로 갈 수 있는 콜리전 
@@ -34,6 +35,7 @@ protected:
 	MiniWood* wood;
 	FieldNPC* m_NPC;
 	std::vector<dstrObj*> AttackableObjects;
+	bool FieldReset;
 public:
 	Field();
 	~Field();

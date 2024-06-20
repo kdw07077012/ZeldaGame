@@ -44,5 +44,6 @@ void Quest::Complate_Draw(HDC backDC, float DeltaTime)
 
 
 void Quest::Reset()
-{					
+{			
+	Complete = false;
 }

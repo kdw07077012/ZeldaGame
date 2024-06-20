@@ -15,7 +15,8 @@ Field::Field()
 	//578, 363
 
 	wood = new MiniWood(735, 192);
-
+	StartPos = { 350, 370 };
+	FieldReset = false;
 	dstrObj* obj = new dstrObj(dstrObjType_Jar, 145 + 200, 312);
 	AttackableObjects.push_back(obj);
 
@@ -76,6 +77,15 @@ Field::~Field()
 
 void Field::Init()
 {
+	if (FieldReset)
+	{
+
+		Camera::GetInstance()->Init(StartPos.X, StartPos.Y); // 613 370
+		GameManager::GetInstance()->GetPlayer()->m_pos = StartPos;
+		FieldReset = false;
+	}
+
+
 	Camera::GetInstance()->Init(EndPosition.X, EndPosition.Y);
 	GameManager::GetInstance()->GetPlayer()->m_pos = EndPosition;
 	Camera::GetInstance()->SetHeight(1024);
@@ -89,7 +99,7 @@ void Field::Draw(HDC backDC, float DeltaTime)
 	m_BackGround->Draw(backDC, DeltaTime); // ¹è°æÀ» ±×·ÁÁÜ 
 	m_NPC->Draw(backDC, DeltaTime);
 
-	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
+
 	int  cameraX = Camera::GetInstance()->GetX();
 	int  cameraY = Camera::GetInstance()->GetY();
 	
@@ -163,6 +173,10 @@ void Field::Reset()
 	m_Snake[1]->Init(870, 400);
 	m_Snake[2]->Init(950, -160);
 	m_Snake[3]->Init(746, 163);
+
+
+	Chest->Reset();
+	m_NPC->Reset();
 
 }
 

@@ -15,8 +15,8 @@ void FieldNPC::Draw(HDC backDC, float DeltaTime)
 {
 	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
 	SIZE size = { 25,40 };
-	int screenX = (((msize.cx / 2) - (size.cx * 2)) - Camera::GetInstance()->GetX()) + 575;
-	int screenY = (((msize.cy / 2) - (size.cy * 2)) - Camera::GetInstance()->GetY()) + 375;
+	int screenX = (((WINDOWSIZE_WIDTH  / 2) - (size.cx * 2)) - Camera::GetInstance()->GetX()) + 575;
+	int screenY = (((WINDOWSIZE_HEIGHT / 2) - (size.cy * 2)) - Camera::GetInstance()->GetY()) + 375;
 
 	Collision = { screenX + 10, screenY, screenX + size.cx * 2 - 10, screenY + size.cy * 2 };
 
@@ -60,4 +60,5 @@ void FieldNPC::Update(float DeltaTime)
 
 void FieldNPC::Reset()
 {
+	current_Quest->Reset();
 }

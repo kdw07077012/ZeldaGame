@@ -32,6 +32,11 @@ void ItemSlot::Draw(HDC backDC, float DeltaTime)
 
 void ItemSlot::Reset()
 {
+	IvenSlot->ItemEquipment = false;
+	Selected = false;
+	itemType = None;
+	IvenSlot = NULL;
+	item = NULL;
 }
 
 void ItemSlot::SlotItemAdd(Item* _item)

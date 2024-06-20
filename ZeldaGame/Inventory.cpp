@@ -39,6 +39,42 @@ Inventory::~Inventory()
 
 }
 
+
+void Inventory::IvenSlotEquipmentCheck()
+{
+	for (ItemSlot* slot : itemSlots)
+	{
+		if (slot->GetItem())
+		{
+			if (slot->GetItem()->item != Item_Sword)
+				slot->IvenSlot->ItemEquipment = false;			
+		}
+	}
+}
+
+void Inventory::Reset()
+{
+	for (ItemSlot* slot : itemSlots)
+	{
+		if (slot->GetItem())
+		{
+			if(slot->GetItem()->item != Item_Sword)
+				slot->Reset();
+			else
+			{
+				if (slot->IvenSlot)
+					slot->IvenSlot->ItemEquipment = false;
+			}
+			
+			slot->Selected = false;
+			
+		}
+	}
+
+	
+}
+
+
 void Inventory::Draw(HDC backDC, float DeltaTime)
 {
 	m_BitMap->Draw(backDC, 0, 0, 0);
@@ -101,6 +137,3 @@ bool Inventory::AddItem(Item* _item)
 	return false;
 }
 
-void Inventory::Reset()
-{
-}

@@ -27,7 +27,9 @@ void OctorocMonster::Init(int x, int y, int Dir)
 	Launch = false;
 	bulletCollision = { 0,0,0,0 };
 	BulletPosY = DEFINE_BULLET_POSY;
-	switch (Dir)
+	MaxAnimCount = 2;
+
+	switch (Dir) // 방향별 총알 속도와 위치 조정
 	{
 	case Octoroc_DOWN:
 		m_AttackDir = 0;
@@ -66,14 +68,14 @@ void OctorocMonster::Draw(HDC backDC, float DeltaTime)
 
 	if (DieAim)
 	{
-		m_BitMap[m_Type].AnimationUpdate(backDC, AnimationCount, screenX, screenY, m_Size, 0.5f, 800);
+		m_BitMap[m_Type].AnimationUpdate(backDC, AnimationCount, screenX, screenY, m_OneSize, 0.5f, 800);
 	}
 	else
 	{
 		if (bHit)
-			m_BitMap[m_Type].AnimationUpdate(backDC, m_AttackDir, screenX, screenY, m_Size, 0.5f, 1000);
+			m_BitMap[m_Type].AnimationUpdate(backDC, m_AttackDir, screenX, screenY, m_OneSize, 0.5f, 1000);
 		else
-			m_BitMap[m_Type].AnimationUpdate(backDC, Launch ? AnimationCount : 0, screenX, screenY, m_Size, 0.5f, m_eDir);
+			m_BitMap[m_Type].AnimationUpdate(backDC, Launch ? AnimationCount : 0, screenX, screenY, m_OneSize, 0.5f, m_eDir);
 	}
 
 
@@ -85,7 +87,7 @@ void OctorocMonster::Draw(HDC backDC, float DeltaTime)
 
 		if (m_AttackDir == 0 ? BulletPosX < Bullet_Distance : BulletPosX > Bullet_Distance) // 총알 거리가될때까지 드로우 
 		{
-			bulletBitmap.AnimationUpdate(backDC, AnimationCount, screenX - BulletPosX, screenY - 10, m_Size, 0.7f, Octoroc_Bullet);
+			bulletBitmap.AnimationUpdate(backDC, AnimationCount, screenX - BulletPosX, screenY - 10, m_OneSize, 0.7f, Octoroc_Bullet);
 		}
 		else
 		{
@@ -100,7 +102,7 @@ void OctorocMonster::Draw(HDC backDC, float DeltaTime)
 
 		if (m_AttackDir == 0 ? BulletPosY < Bullet_Distance : BulletPosY > Bullet_Distance) // 총알 거리가될때까지 드로우 
 		{
-			bulletBitmap.AnimationUpdate(backDC, AnimationCount, screenX - 10, (screenY + BulletPosY) - 30, m_Size, 0.7f, Octoroc_Bullet);
+			bulletBitmap.AnimationUpdate(backDC, AnimationCount, screenX - 10, (screenY + BulletPosY) - 30, m_OneSize, 0.7f, Octoroc_Bullet);
 		}
 		else
 		{
@@ -163,7 +165,7 @@ void OctorocMonster::Update(float DeltaTime)
 		if (fMoveDeltaTime > 0.1f)
 		{
 			//
-			if (AnimationCount + 1 >= 2)
+			if (AnimationCount + 1 >= MaxAnimCount)
 			{
 				AnimationCount = 0;
 				if (Launch) // 총알발사 애니메이션 중인지

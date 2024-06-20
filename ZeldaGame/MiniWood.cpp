@@ -13,10 +13,10 @@ MiniWood::~MiniWood()
 
 void MiniWood::Draw(HDC backDC, float DeltaTime)
 {
-	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
+	
 	SIZE size = { 38,32 };
-	int screenX = (((msize.cx / 2) - (size.cx * 1.5)) - Camera::GetInstance()->GetX()) + m_ix;
-	int screenY = (((msize.cy / 2) - (size.cy * 1.5)) - Camera::GetInstance()->GetY()) + m_iy;
+	int screenX = (((WINDOWSIZE_WIDTH / 2) - (size.cx * 1.5)) - Camera::GetInstance()->GetX()) + m_ix;
+	int screenY = (((WINDOWSIZE_HEIGHT / 2) - (size.cy * 1.5)) - Camera::GetInstance()->GetY()) + m_iy;
 
 	collision = { screenX, screenY, screenX + 57 , screenY + 48 };
 

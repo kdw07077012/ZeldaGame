@@ -20,12 +20,12 @@ void Title::PlaySelect()
 
 void Title::Draw(HDC backDC, float DeltaTime)
 {
-	SIZE size = BitMapManager::GetInstance()->GetWindowSize();
-	const int& TitleCount = m_BitMap[0].GetSize().cx / size.cx;
+	
+	const int& TitleCount = m_BitMap[0].GetSize().cx / WINDOWSIZE_WIDTH;
 	
 	TitleDeltaTime += DeltaTime;
 
-	m_BitMap[0].Draw(backDC, -size.cx * TitleCountindex, 10, 0);
+	m_BitMap[0].Draw(backDC, -WINDOWSIZE_WIDTH * TitleCountindex, 10, 0);
 
 	if (TitleDeltaTime > 0.05f)
 	{

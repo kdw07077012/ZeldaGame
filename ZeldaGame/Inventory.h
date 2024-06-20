@@ -27,6 +27,7 @@ public:
 	bool AddItem(Item* _item);
 	bool Enabled; //이벤토리가 켜져있는지
 
+	void IvenSlotEquipmentCheck();
 	virtual void Reset() override;
 };
 

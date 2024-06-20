@@ -11,6 +11,7 @@ Coin::Coin(int x, int y) : Object(x,y)
 	collision = { 0,0,0,0 };
 	CoinPickup = false;
 	CoinIndex = (RandomCoinBitCount + 1) * 50;
+	m_OneSize = { 21,15 };
 }
 
 Coin::~Coin()
@@ -22,14 +23,14 @@ void Coin::Draw(HDC backDC, float DeltaTime)
 	if (CoinPickup)
 		return;
 
-	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
-	SIZE size = { 21,15 };
-	int screenX = (((msize.cx / 2) - (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_ix;
-	int screenY = (((msize.cy / 2) - (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_iy;
 
-	collision = { screenX, screenY, screenX + size.cx * 2 , screenY + size.cy * 2 };
 
-	m_BitMap->AnimationUpdate(backDC, RandomCoinBitCount, screenX, screenY, size, 2.0f);
+	int screenX = (((WINDOWSIZE_WIDTH / 2) - (m_OneSize.cx * 2)) - Camera::GetInstance()->GetX()) + m_ix;
+	int screenY = (((WINDOWSIZE_HEIGHT / 2) - (m_OneSize.cy * 2)) - Camera::GetInstance()->GetY()) + m_iy;
+
+	collision = { screenX, screenY, screenX + m_OneSize.cx * 2 , screenY + m_OneSize.cy * 2 };
+
+	m_BitMap->AnimationUpdate(backDC, RandomCoinBitCount, screenX, screenY, m_OneSize, 2.0f);
 
 }
 

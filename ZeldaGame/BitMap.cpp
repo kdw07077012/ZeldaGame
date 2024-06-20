@@ -1,5 +1,5 @@
 #include "BitMap.h"
-
+#include "Camera.h"
 void BitMap::Init(HDC hdc, char* FileName)
 {
 	m_memdc = CreateCompatibleDC(hdc);
@@ -12,7 +12,8 @@ void BitMap::Init(HDC hdc, char* FileName)
 	m_Size.cx = BitMap_info.bmWidth;
 	m_Size.cy = BitMap_info.bmHeight;
 }
-	
+
+
 
 void BitMap::Draw(HDC backDC, int x, int y, bool isAlpha)
 {

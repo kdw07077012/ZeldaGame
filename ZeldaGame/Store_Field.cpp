@@ -67,10 +67,10 @@ void Store_Field::Update(float DeltaTime)
 
 void Store_Field::BackDraw(HDC backDC, float DeltaTime)
 {
-	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
+	
 	SIZE size = { 255,181 };
-	int screenX = (((msize.cx / 2) - (size.cx)) - Camera::GetInstance()->GetX()) + 510;
-	int screenY = (((msize.cy / 2) - (size.cy)) - Camera::GetInstance()->GetY()) + 600;
+	int screenX = (((WINDOWSIZE_WIDTH / 2) - (size.cx)) - Camera::GetInstance()->GetX()) + 510;
+	int screenY = (((WINDOWSIZE_HEIGHT / 2) - (size.cy)) - Camera::GetInstance()->GetY()) + 600;
 
 	m_BackGround->GetBitMap()[1].CutDraw(backDC, screenX, screenY, 0,0,size);
 }

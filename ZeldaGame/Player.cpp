@@ -15,8 +15,7 @@ Player::Player()
 	m_MiniChangeAnimBitmap = BitMapManager::GetInstance()->GetBitMap(ImageType_Player_MiniChange);
 	m_MiniBitmap		   = BitMapManager::GetInstance()->GetBitMap(ImageType_PlayerMini);
 	m_PlayerFallBitmap     = BitMapManager::GetInstance()->GetBitMap(ImageType_Player_FALL);
-
-	msize = BitMapManager::GetInstance()->GetWindowSize();
+	m_ShieldBitmap         = BitMapManager::GetInstance()->GetBitMap(ImageType_Shield);
 	m_pos.X = 650;
 	m_pos.Y = 372;
 	AnimationCount = 0;
@@ -43,6 +42,15 @@ Player::~Player()
 {
 	
 }
+
+void Player::Reset()
+{
+	PlayerMaxHP = PLAYER_DEFAULT_HP;
+	PlayerHP = PLAYER_DEFAULT_HP;
+	Equipment[0] = None;
+	Equipment[1] = None;
+}
+
 
 void Player::AddCoin(int Count)
 {
@@ -81,12 +89,7 @@ void Player::AttackCheck()
 		break;
 	}
 
-
-
-	if (GameManager::GetInstance()->FieldObject_AttackCollision(rect))
-	{
-		
-	}
+	GameManager::GetInstance()->FieldObject_AttackCollision(rect);
 }
 
 bool Player::PlayerInput(float DeltaTime)
@@ -114,7 +117,20 @@ bool Player::PlayerInput(float DeltaTime)
 		AttackCheck();
 	}
 
+	if (GetAsyncKeyState(0x4C) && 0x8000 && Equipment[1] == Item_Shield) // L : 방패
+	{
+		m_playerState = PlayerState_Shield;
+		Skill = true;
+		AnimationCount = 1;
+		MaxAnimCount = 8;
+
+		size.cx = 200;
+		size.cy = 200;
+	}
+
 	
+	if (m_playerState == PlayerState_Shield)
+		return false;
 
 	if (GetAsyncKeyState(0x57) && 0x8000) //W
 	{
@@ -240,17 +256,17 @@ void Player::Draw(HDC backDC, float DeltaTime)
 	//화면 중심 좌표에서 카메라랜더링 좌표값과 플레이어윈도우 좌표값 대입
 	if (Skill)
 	{
-		screenX = (((msize.cx / 2) - (size.cx / 2)) - Camera::GetInstance()->GetX()) + m_pos.X;
-		screenY = (((msize.cy / 2) - (size.cy / 2)) - Camera::GetInstance()->GetY()) + m_pos.Y;
+		screenX = (((WINDOWSIZE_WIDTH  / 2) - (size.cx / 2)) - Camera::GetInstance()->GetX()) + m_pos.X;
+		screenY = (((WINDOWSIZE_HEIGHT / 2) - (size.cy / 2)) - Camera::GetInstance()->GetY()) + m_pos.Y;
 	}
 	else
 	{
-		screenX = (((msize.cx / 2) - (size.cx * 2)) - Camera::GetInstance()->GetX()) + m_pos.X;
-		screenY = (((msize.cy / 2) - (size.cy * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y;
+		screenX = ((WINDOWSIZE_WIDTH  / 2) - (size.cx * 2)) - Camera::GetInstance()->GetX() + m_pos.X;
+		screenY = ((WINDOWSIZE_HEIGHT / 2) - (size.cy * 2)) - Camera::GetInstance()->GetY() + m_pos.Y;
 	}
 
-	int AttackX = (((msize.cx / 2) - (30 * 2)) - Camera::GetInstance()->GetX()) + m_pos.X;
-	int AttackY = (((msize.cy / 2) - (25 * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y;
+	int AttackX = (((WINDOWSIZE_WIDTH  / 2) - (30 * 2)) - Camera::GetInstance()->GetX()) + m_pos.X;
+	int AttackY = (((WINDOWSIZE_HEIGHT / 2) - (25 * 2)) - Camera::GetInstance()->GetY()) + m_pos.Y;
 
 	if (Mini) // 미니 상태 콜리전 변경
 		player_rect = { AttackX + 20, AttackY + 20, AttackX + 30 * 2 - 20, AttackY + 25 * 2 };
@@ -412,6 +428,33 @@ void Player::Draw(HDC backDC, float DeltaTime)
 			
 		}
 		break;
+	case PlayerState_Shield:
+		m_ShieldBitmap->AnimationUpdate(backDC, 0, screenX, screenY, m_ShieldBitmap->GetSize(), 1.0F);
+		m_playerSkillDirBitmap[dir]->AnimationUpdate(backDC, AnimationCount,
+			screenX,
+			screenY,
+			size, 0.7f, 800);
+
+		ShieldCollision = { screenX, screenY, screenX + m_ShieldBitmap->GetSize().cx, screenY + m_ShieldBitmap->GetSize().cy };
+		//Rectangle(backDC, ShieldCollision.left, ShieldCollision.top, ShieldCollision.right, ShieldCollision.bottom);
+		AnimLoop = false;
+		fAnimSpeed = 0.01f;
+
+		if (AnimationCount >= MaxAnimCount - 1)
+		{
+
+			AnimLoop = true;
+			fAnimSpeed = 0.04;
+			m_playerState = PlayerState_IDLE;
+			AnimationCount = 1;
+			MaxAnimCount = 5;
+			size.cx = 30;
+			size.cy = 25;
+			Skill = false;
+			m_bmoveable = false;
+
+		}
+		break;
 	case PlayerState_PICKUP:
 		break;
 	case PlayerState_PICKUP_WALK:
@@ -521,9 +564,6 @@ void Player::EqupmentAdd(EItem item, bool Equipped)
 	}
 }
 
-void Player::Reset()
-{
-}
 
 void Player::MiniReset()
 {
@@ -545,7 +585,7 @@ void Player::MiniModeChange(int x, int y)
 
 void Player::DamageHP(float dmage)
 {
-	if (bHit)
+	if (bHit || m_playerState == PlayerState_Shield)
 		return;
 
 	bHit = true;
@@ -574,6 +614,9 @@ void Player::Hp_Portion()
 
 void Player::SetPlayerState(PlayerState state)
 {
+	if (m_playerState == PlayerState_Shield)
+		return;
+
 	if (m_playerState != PlayerState_FALL
 		&& m_playerState != PlayerState_FALL)
 	{

@@ -34,10 +34,10 @@ dstrObj::~dstrObj()
 
 void dstrObj::Draw(HDC backDC, float DeltaTime)
 {
-	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
 	
-	int screenX = (((msize.cx / 2) - (m_size.cx * 2)) - (Camera::GetInstance()->GetX()) + m_ix);
-	int screenY = (((msize.cy / 2) - (m_size.cy * 2)) - (Camera::GetInstance()->GetY()) + m_iy);
+	
+	int screenX = (((WINDOWSIZE_WIDTH / 2) - (m_size.cx * 2)) - (Camera::GetInstance()->GetX()) + m_ix);
+	int screenY = (((WINDOWSIZE_HEIGHT / 2) - (m_size.cy * 2)) - (Camera::GetInstance()->GetY()) + m_iy);
 
 	collision = { screenX, screenY, screenX + m_size.cx * 2 , screenY + m_size.cy * 2 };
 

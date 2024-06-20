@@ -22,7 +22,6 @@ void Camera::Init(int x, int y)
 
 void Camera::Update(float DeltaTime)
 {
-	SIZE msize = BitMapManager::GetInstance()->GetWindowSize();
 	fTime += DeltaTime;
 
 	// 나중에 필드 맵 크기를 받아와서 필드별로 처리하기 
@@ -57,7 +56,7 @@ void Camera::Update(float DeltaTime)
 		{
 
 
-			if (m_posY > m_height - msize.cy)
+			if (m_posY > m_height - WINDOWSIZE_HEIGHT)
 				bMapEndY = true;
 			else
 			{
@@ -71,7 +70,7 @@ void Camera::Update(float DeltaTime)
 		{
 
 
-			if (m_posX >= m_width - msize.cx)
+			if (m_posX >= m_width - WINDOWSIZE_WIDTH)
 				bMapEndX = true;
 			else
 			{
@@ -84,7 +83,8 @@ void Camera::Update(float DeltaTime)
 		
 
 		
-
+		
+			
 		
 
 		

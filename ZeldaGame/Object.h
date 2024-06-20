@@ -30,6 +30,10 @@ protected:
 	BitMap* m_BitMap;
 	int m_ix, m_iy;
 
+	int m_ScreenX;  //맵에 그릴 위치
+	int m_ScreenY;
+	SIZE m_OneSize;  //이미지 한개당 사이즈
+
 public:
 	Object() : m_ix(0), m_iy(0) {};
 	Object(int x, int y) : m_ix(x), m_iy(y) {};
@@ -37,6 +41,7 @@ public:
 
 	virtual void Draw(HDC backDC, float DeltaTime = 0.0f) = 0; 
 	virtual void Reset() = 0;
+
 
 
 };

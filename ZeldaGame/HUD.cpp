@@ -33,6 +33,14 @@ HUD::~HUD()
 {
 }
 
+
+void HUD::Reset()
+{
+	ItemEquiqmentSlot[WEAPON_SLOT]->IvenSlot->item = None;
+	ItemEquiqmentSlot[EQUIPMENT_SLOT]->IvenSlot->item = None;
+}
+
+
 void HUD::Draw(HDC backDC, float DeltaTime)
 {
 	ItemEquiqmentSlot[WEAPON_SLOT]->IvenSlot->Draw(backDC, DeltaTime);
@@ -102,8 +110,4 @@ void HUD::EquipmentedItem(EItem _item, bool eqippend)
 	}
 
 	
-}
-
-void HUD::Reset()
-{
 }
