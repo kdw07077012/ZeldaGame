@@ -6,6 +6,8 @@ dstrObj::dstrObj(dstrObjType Type, int x, int y)
 	m_type = Type;
 	m_ix = x;
 	m_iy = y;
+	fAnimDeltaTime = 0.0f;
+	m_size = { 0,0 };
 	m_BitMap = BitMapManager::GetInstance()->GetBitMap(ImageType_DstrObj);
 	collision = { 0,0,0,0 };
 	Attacked = false;
