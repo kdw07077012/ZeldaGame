@@ -93,6 +93,16 @@ void BitMapManager::ChangeFont_TextDraw(HDC backDC, std::string str, int FontSiz
 
 }
 
+void BitMapManager::Release()
+{
+    for (BitMap* bitmap : Bitmaps) // 이미지 동적할당 해제 
+    {
+        delete[] bitmap;
+    }
+
+    Bitmaps.clear();
+}
+
 
 
 BitMap* BitMapManager::ImageRoad(HDC hdc, const char* FileName, ImageType type)

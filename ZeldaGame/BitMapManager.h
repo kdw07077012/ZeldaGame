@@ -2,6 +2,7 @@
 #pragma warning(disable:4996)
 #include "BitMap.h"
 #include <string>
+#include <vector>
 
 #define WINDOWSIZE_WIDTH 720
 #define WINDOWSIZE_HEIGHT 540
@@ -106,6 +107,8 @@ private:
 	BitMap* m_CreditBitmap;
 	BitMap* m_ShieldBitmap;
 
+	std::vector<BitMap*> Bitmaps;
+
 
 	PlayerDirBitmap playerDirBitmap;	    // 플레이어 방향별이미지
 	PlayerDirBitmap playerSkillDirBitmap;  // 플레이어 방향별이미지
@@ -137,6 +140,7 @@ public:
 	}
 
 	void ChangeFont_TextDraw(HDC backDC, std::string str, int FontSize, int x, int y);
+	void Release();
 
 };
 

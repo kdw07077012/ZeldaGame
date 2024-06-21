@@ -49,6 +49,29 @@ void GameManager::Init(HWND hWnd)
 	m_oMenu = dynamic_cast<Object*>(m_Menu);
 	m_oTitle = dynamic_cast<Object*>(m_Title);
 	m_oPlayer = dynamic_cast<Object*>(m_Player);
+	m_oStoreField = dynamic_cast<Object*>(m_StoreField);
+	m_oShoeField = dynamic_cast<Object*>(m_ShoeStroe_Field);
+	m_oDungeonField = dynamic_cast<Object*>(m_Dungeon_Field);
+	m_oBossField = dynamic_cast<Object*>(m_Boss_Field);
+	m_oQuestSystem = dynamic_cast<Object*>(m_QuestSystem);
+	m_oEndingField = dynamic_cast<Object*>(m_EndingField);
+	m_oEndingCreditField = dynamic_cast<Object*>(m_EndingCredit_Field);
+	m_oHUD = dynamic_cast<Object*>(m_HUD);
+	m_oInventory = dynamic_cast<Object*>(m_Ivnentory);
+
+	// 메모리 관리를 위해 오브젝트 리스트에 담음 : 한꺼번에 동정할당 해제 
+	objects.push_back(m_oMenu);
+	objects.push_back(m_oTitle);
+	objects.push_back(m_oPlayer);
+	objects.push_back(m_oStoreField);
+	objects.push_back(m_oShoeField);
+	objects.push_back(m_oDungeonField);
+	objects.push_back(m_oBossField);
+	objects.push_back(m_oQuestSystem);
+	objects.push_back(m_oEndingField);
+	objects.push_back(m_oEndingCreditField);
+	objects.push_back(m_oHUD);
+	objects.push_back(m_oInventory);
 
 	
 	Item* item = new Item(Item_Shield, 0, 0, ItemImageType_Inven);
@@ -376,6 +399,13 @@ void GameManager::DoubleBuffer(float DeltaTime)
 
 void GameManager::Release(HWND hWnd)
 {
+	for (Object* object : objects)
+	{
+		free(object);
+	}
+
+	objects.clear();
+	BitMapManager::GetInstance()->Release(); // 메모리 해체
 	DeleteObject(backDC);
 	ReleaseDC(hWnd, m_hDC);
 }

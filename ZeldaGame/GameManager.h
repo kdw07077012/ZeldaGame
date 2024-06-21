@@ -43,7 +43,20 @@ private:
 
 	Object* m_oMenu;
 	Object* m_oTitle;
+	Object* m_oStoreField;
+	Object* m_oShoeField;
+	Object* m_oDungeonField;
+	Object* m_oBossField;
+	Object* m_oQudingField;
+	Object* m_oEnestSystem;
+	Object* m_oEndingCreditField;
+	Object* m_oHUD;
 	Object* m_oPlayer;
+	Object* m_oInventory;
+	Object* m_oQuestSystem;
+	Object* m_oEndingField;
+
+	std::vector<Object*> objects;
 
 	Field* m_Field;
 	Store_Field*	m_StoreField;
